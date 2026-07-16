@@ -7,6 +7,99 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  /* ═══════════ RESPONSIVO MOBILE ═══════════ */
+@media(max-width:768px){
+
+  /* Header compacto */
+  header{padding:0 14px;height:58px}
+  .logo-cube{width:38px;height:38px;font-size:14px;border-radius:10px}
+  .logo-text .t1{font-size:18px;letter-spacing:1px}
+  .logo-text .t2{display:none}
+  .mes-input-wrap label{display:none}
+  .mes-sel{font-size:12px;padding:3px 6px}
+  #driveLbl{display:none}
+
+  /* Nav: scroll horizontal */
+  nav{padding:0 8px;gap:0}
+  .ntab{padding:12px 14px;font-size:10px;letter-spacing:.5px;gap:5px}
+  .ntab .ni{font-size:13px}
+
+  /* Pages */
+  .page{padding:14px 12px 32px}
+
+  /* KPI strips: 2 colunas */
+  .kpi-strip{grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:10px}
+  .kpi-strip-pct{grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
+  .kpi-val{font-size:28px}
+  .kpi-val.sm{font-size:22px}
+  .kpi3d{padding:14px 14px 12px}
+  .kpi-ico{font-size:24px}
+
+  /* Grids: 1 coluna */
+  .g2,.g3,.g64,.g46,.rank-row,.breakdown-grid,.calc-grid,.rel-opts,.fr{
+    grid-template-columns:1fr!important;gap:12px
+  }
+
+  /* Act-row: coluna */
+  .act-row{flex-direction:column;align-items:flex-start;padding:12px 14px;gap:10px}
+  .act-row .btn{width:100%;justify-content:center}
+
+  /* Filter pills: wrap menor */
+  .fbar{gap:6px}
+  .fpill{padding:6px 12px;font-size:10px}
+
+  /* Tabelas: scroll horizontal */
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table.tbl{font-size:11px;min-width:600px}
+  table.tbl th,table.tbl td{padding:8px 10px}
+
+  /* Cards */
+  .card{padding:16px 14px}
+  .card-title{font-size:13px}
+
+  /* Ranking */
+  .rank-pct{font-size:28px}
+  .rank-name{font-size:20px}
+  .rank-card{min-height:auto;padding:14px 16px}
+
+  /* Modais */
+  .modal{width:95vw;margin:10px auto}
+  .modal-body,.modal-hdr{padding:16px 18px}
+  .fr{grid-template-columns:1fr!important}
+
+  /* Perfil pessoal */
+  .ppo-header{flex-direction:column;gap:16px;padding:20px 18px}
+  .ppo-avatar{width:56px;height:56px;font-size:20px}
+  .ppo-name{font-size:26px}
+  .person-profile-overlay{padding:16px}
+  .ppo-close{top:14px;right:14px}
+
+  /* Breakdown */
+  .breakdown-card{margin-bottom:0}
+
+  /* Funil visual: largura menor */
+  .funil-step{min-width:80px!important;font-size:10px!important;padding:8px 10px!important}
+
+  /* Botões menores */
+  .btn{padding:10px 16px;font-size:11px}
+  .btn-sm{padding:6px 10px;font-size:10px}
+
+  /* Calculadora */
+  .calc-grid-res{grid-template-columns:repeat(2,1fr)}
+
+  /* Relatório */
+  .rel-opt{padding:16px}
+  .rel-opt-ico{font-size:28px}
+
+  /* Charts menor */
+  .card canvas{max-height:200px!important}
+}
+
+@media(max-width:400px){
+  .kpi-strip,.kpi-strip-pct{grid-template-columns:1fr}
+  .ntab{padding:10px 10px;font-size:9px}
+  header{height:52px}
+}
 <style>
 /* ═══════════ TOKENS ═══════════ */
 :root {
