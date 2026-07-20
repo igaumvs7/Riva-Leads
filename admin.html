@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin — Gerenciar Usuários</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwZDFmNmQiLz4KICA8cGF0aCBkPSJNMTUgOXY0Nmg5VjM1aDEwbDExIDIwaDEwTDQzIDMyYzYtMyA5LTkgOS0xNSAwLTctNS0xMC0xMy0xMEgxNXptOSA5aDEzYzQgMCA2IDIgNiA2cy0yIDYtNiA2SDI0VjE4eiIgZmlsbD0iI2ZmZmZmZiIvPgogIDxwYXRoIGQ9Ik0yNiAzMHYxNWwxMy04LTEzLTd6IiBmaWxsPSIjZmYxZTFlIi8+CiAgPGcgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOTNjNWZkIiBzdHJva2Utd2lkdGg9IjEuOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj4KICAgIDxjaXJjbGUgY3g9IjciIGN5PSIyMCIgcj0iMi40Ii8+PGNpcmNsZSBjeD0iNyIgY3k9IjMxIiByPSIyLjQiLz48Y2lyY2xlIGN4PSI3IiBjeT0iNDIiIHI9IjIuNCIvPgogICAgPGxpbmUgeDE9IjkuNCIgeTE9IjIwIiB4Mj0iMTUiIHkyPSIyMCIvPjxsaW5lIHgxPSI5LjQiIHkxPSIzMSIgeDI9IjE1IiB5Mj0iMzEiLz48bGluZSB4MT0iOS40IiB5MT0iNDIiIHgyPSIxNSIgeTI9IjQyIi8+CiAgICA8bGluZSB4MT0iNyIgeTE9IjIyLjQiIHgyPSI3IiB5Mj0iMjguNiIvPjxsaW5lIHgxPSI3IiB5MT0iMzMuNCIgeDI9IjciIHkyPSIzOS42Ii8+CiAgPC9nPgo8L3N2Zz4=">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--royal:#1648d8;--ferrari:#ff1e1e;--ink:#0c1e48;--muted:#687695;--line:#dfe6f2;--canvas:#f0f4ff;--white:#fff;--success:#15a46f}
+[data-theme="dark"]{--ink:#e8eeff;--muted:#8a9bcc;--line:#1e2a45;--canvas:#080d1a;--white:#111827}
+body{font-family:'Inter',sans-serif;background:var(--canvas);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+.topbar{background:var(--white);border-bottom:1px solid var(--line);padding:0 28px;height:64px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:10;box-shadow:0 2px 12px rgba(7,31,109,.06)}
+.topbar img{width:38px;height:38px;border-radius:10px}
+.topbar strong{font-size:15px;font-weight:800;color:var(--ink)}
+.topbar span{font-size:11px;color:var(--muted)}
+.topbar .backBtn{margin-left:auto;padding:8px 16px;border-radius:10px;border:1.5px solid var(--line);background:var(--white);color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:6px}
+.topbar .backBtn:hover{border-color:var(--royal);color:var(--royal)}
+.main{max-width:900px;margin:0 auto;padding:32px 20px}
+h2{font-size:22px;font-weight:800;color:var(--ink);margin-bottom:6px}
+.subtitle{font-size:13px;color:var(--muted);margin-bottom:28px}
+.panel{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:24px;margin-bottom:20px;box-shadow:0 4px 16px rgba(7,31,109,.04)}
+.panel h3{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.formRow{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:12px;align-items:end;margin-bottom:12px}
+.formGroup label{display:block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.formGroup input,.formGroup select{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--canvas);color:var(--ink);font-size:13px;outline:none;transition:.2s}
+.formGroup input:focus,.formGroup select:focus{border-color:var(--royal);background:var(--white)}
+.btnSave{padding:10px 20px;background:var(--royal);color:#fff;font-size:13px;font-weight:700;border:none;border-radius:10px;cursor:pointer;white-space:nowrap;transition:.2s}
+.btnSave:hover{background:var(--royal-dark,#0d33a8)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead tr{background:var(--canvas)}
+th{padding:10px 12px;text-align:left;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line)}
+td{padding:12px 12px;border-bottom:1px solid var(--line);color:var(--ink)}
+tr:last-child td{border-bottom:none}
+.badge{display:inline-flex;padding:3px 10px;border-radius:6px;font-size:10px;font-weight:700;letter-spacing:.5px}
+.badge.ativo{background:rgba(21,164,111,.1);color:var(--success)}
+.badge.inativo{background:rgba(255,30,30,.1);color:var(--ferrari)}
+.actionBtn{padding:6px 12px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid;transition:.2s}
+.actionBtn.edit{border-color:var(--royal);color:var(--royal);background:rgba(22,72,216,.06)}
+.actionBtn.edit:hover{background:var(--royal);color:#fff}
+.actionBtn.del{border-color:var(--ferrari);color:var(--ferrari);background:rgba(255,30,30,.06);margin-left:6px}
+.actionBtn.del:hover{background:var(--ferrari);color:#fff}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0c1e48;color:#fff;padding:12px 24px;border-radius:12px;font-size:13px;font-weight:600;display:none;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.instrucoes{font-size:12px;color:var(--muted);line-height:1.7;background:rgba(22,72,216,.04);border:1px solid rgba(22,72,216,.1);border-radius:12px;padding:16px 18px;margin-bottom:20px}
+.instrucoes strong{color:var(--royal)}
+[data-theme="dark"] .panel{background:#111827;border-color:#1e2a45}
+[data-theme="dark"] .formGroup input,[data-theme="dark"] .formGroup select{background:#0d1425;border-color:#1e2a45;color:#e8eeff}
+[data-theme="dark"] thead tr{background:#0d1425}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwZDFmNmQiLz4KICA8cGF0aCBkPSJNMTUgOXY0Nmg5VjM1aDEwbDExIDIwaDEwTDQzIDMyYzYtMyA5LTkgOS0xNSAwLTctNS0xMC0xMy0xMEgxNXptOSA5aDEzYzQgMCA2IDIgNiA2cy0yIDYtNiA2SDI0VjE4eiIgZmlsbD0iI2ZmZmZmZiIvPgogIDxwYXRoIGQ9Ik0yNiAzMHYxNWwxMy04LTEzLTd6IiBmaWxsPSIjZmYxZTFlIi8+CiAgPGcgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOTNjNWZkIiBzdHJva2Utd2lkdGg9IjEuOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj4KICAgIDxjaXJjbGUgY3g9IjciIGN5PSIyMCIgcj0iMi40Ii8+PGNpcmNsZSBjeD0iNyIgY3k9IjMxIiByPSIyLjQiLz48Y2lyY2xlIGN4PSI3IiBjeT0iNDIiIHI9IjIuNCIvPgogICAgPGxpbmUgeDE9IjkuNCIgeTE9IjIwIiB4Mj0iMTUiIHkyPSIyMCIvPjxsaW5lIHgxPSI5LjQiIHkxPSIzMSIgeDI9IjE1IiB5Mj0iMzEiLz48bGluZSB4MT0iOS40IiB5MT0iNDIiIHgyPSIxNSIgeTI9IjQyIi8+CiAgICA8bGluZSB4MT0iNyIgeTE9IjIyLjQiIHgyPSI3IiB5Mj0iMjguNiIvPjxsaW5lIHgxPSI3IiB5MT0iMzMuNCIgeDI9IjciIHkyPSIzOS42Ii8+CiAgPC9nPgo8L3N2Zz4=" alt="Riva">
+  <div><strong>ADMIN — Usuários</strong><span>Gerenciar acessos ao sistema</span></div>
+  <a href="home.html" class="backBtn">← Painel Inicial</a>
+</div>
+
+<div class="main">
+  <h2>Gerenciar Usuários</h2>
+  <p class="subtitle">Crie e edite os acessos de cada pessoa cadastrada. A senha é convertida em hash antes de salvar — ninguém consegue ver a senha real no Sheets.</p>
+
+  <div class="instrucoes">
+    <strong>Como funciona:</strong> selecione a pessoa, defina um nome de usuário e senha. A senha é criptografada (SHA-256) antes de ir para o Sheets — nem você conseguirá ver a senha depois de salvar. Para resetar, basta criar uma nova senha. O campo <strong>Ativo</strong> controla se o acesso está liberado.
+  </div>
+
+  <div class="panel">
+    <h3>Adicionar / Editar Usuário</h3>
+    <div class="formRow">
+      <div class="formGroup">
+        <label>Pessoa</label>
+        <select id="fPessoa"><option value="">Carregando...</option></select>
+      </div>
+      <div class="formGroup">
+        <label>Nome de usuário</label>
+        <input type="text" id="fUsuario" placeholder="ex: humberto">
+      </div>
+      <div class="formGroup">
+        <label>Senha (deixe em branco para não alterar)</label>
+        <input type="password" id="fSenha" placeholder="nova senha">
+      </div>
+      <button class="btnSave" onclick="salvarUsuario()">Salvar</button>
+    </div>
+    <div class="formRow" style="grid-template-columns:auto 1fr">
+      <div class="formGroup">
+        <label>Status</label>
+        <select id="fAtivo" style="width:140px">
+          <option value="true">Ativo</option>
+          <option value="false">Inativo</option>
+        </select>
+      </div>
+      <input type="hidden" id="fEditId" value="">
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Usuários cadastrados</h3>
+    <table id="tblUsuarios">
+      <thead><tr><th>Pessoa</th><th>Cargo</th><th>Usuário</th><th>Último acesso</th><th>Status</th><th>Ações</th></tr></thead>
+      <tbody id="tbodyUsuarios"><tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">Carregando...</td></tr></tbody>
+    </table>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzhEqHsbzemeVhCfGIhdgZgrqRZcsSK7V8eIHUnk2xdLCAQbL0WLLK0bq9eGqnuo8DtDw/exec';
+let dados = { pessoas:[], usuarios:[], leads:[] };
+
+async function sha256(msg){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+function toast(msg, err){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = err ? '#cc0000' : '#0c1e48';
+  t.style.display = 'block';
+  setTimeout(()=>t.style.display='none', 3000);
+}
+
+// Carregar dados
+window._dataCB = function(j){
+  const sc=document.getElementById('_dt');if(sc)sc.parentNode.removeChild(sc);
+  if(j.status==='ok'){
+    dados.pessoas = j.data.pessoas||[];
+    renderSelectPessoas();
+    carregarUsuariosSheets();
+  } else toast('Erro: '+j.msg, true);
+};
+const sc=document.createElement('script');sc.id='_dt';
+sc.src=SHEETS_URL+'?action=getData&callback=_dataCB&t='+Date.now();
+document.head.appendChild(sc);
+
+function renderSelectPessoas(){
+  const sel = document.getElementById('fPessoa');
+  sel.innerHTML = '<option value="">Selecione a pessoa...</option>' +
+    dados.pessoas.map(p=>`<option value="${p.id}">${p.nome} — ${p.cargo}</option>`).join('');
+}
+
+// Carregar usuários direto do Sheets (aba Usuarios)
+function carregarUsuariosSheets(){
+  window._uCB = function(j){
+    const sc=document.getElementById('_ut');if(sc)sc.parentNode.removeChild(sc);
+    dados.usuarios = j.status==='ok'&&j.usuarios ? j.usuarios : [];
+    renderTabela();
+  };
+  const sc=document.createElement('script');sc.id='_ut';
+  sc.src=SHEETS_URL+'?action=getUsuarios&callback=_uCB&t='+Date.now();
+  sc.onerror=function(){ dados.usuarios=[]; renderTabela(); };
+  document.head.appendChild(sc);
+}
+
+function renderTabela(){
+  const tbody = document.getElementById('tbodyUsuarios');
+  if(!dados.usuarios.length){
+    tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">Nenhum usuário cadastrado ainda.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = dados.usuarios.map(u=>{
+    const p = dados.pessoas.find(x=>x.id===u.pessoaId)||{};
+    const ativo = String(u.ativo)!=='false';
+    return `<tr>
+      <td><strong>${p.nome||u.pessoaId}</strong></td>
+      <td>${p.cargo||'—'}</td>
+      <td><code style="background:var(--canvas);padding:3px 8px;border-radius:6px;font-size:12px">${u.usuario}</code></td>
+      <td style="color:var(--muted)">${u.ultimoAcesso||'Nunca'}</td>
+      <td><span class="badge ${ativo?'ativo':'inativo'}">${ativo?'Ativo':'Inativo'}</span></td>
+      <td>
+        <button class="actionBtn edit" onclick="editarUsuario('${u.pessoaId}','${u.usuario}','${u.ativo}')">Editar</button>
+        <button class="actionBtn del" onclick="desativarUsuario('${u.pessoaId}')">Desativar</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function editarUsuario(pessoaId, usuario, ativo){
+  document.getElementById('fPessoa').value  = pessoaId;
+  document.getElementById('fUsuario').value = usuario;
+  document.getElementById('fSenha').value   = '';
+  document.getElementById('fAtivo').value   = String(ativo)!=='false'?'true':'false';
+  document.getElementById('fEditId').value  = pessoaId;
+  document.getElementById('fUsuario').focus();
+}
+
+async function salvarUsuario(){
+  const pessoaId = document.getElementById('fPessoa').value;
+  const usuario  = document.getElementById('fUsuario').value.trim().toLowerCase();
+  const senha    = document.getElementById('fSenha').value;
+  const ativo    = document.getElementById('fAtivo').value;
+  const editId   = document.getElementById('fEditId').value;
+
+  if(!pessoaId){ toast('Selecione a pessoa.',true); return; }
+  if(!usuario){  toast('Digite o nome de usuário.',true); return; }
+
+  const payload = { pessoaId, usuario, ativo: ativo==='true' };
+
+  if(senha){
+    payload.senhaHash = await sha256(senha);
+  } else if(!editId){
+    toast('Digite uma senha para o novo usuário.',true); return;
+  }
+
+  fetch(SHEETS_URL, {
+    method:'POST',
+    body: JSON.stringify({ action:'saveUsuario', usuario:payload }),
+    headers:{'Content-Type':'text/plain'},
+    mode:'no-cors'
+  }).then(()=>{
+    toast('✅ Usuário salvo! Aguarde alguns segundos e recarregue.');
+    document.getElementById('fPessoa').value='';
+    document.getElementById('fUsuario').value='';
+    document.getElementById('fSenha').value='';
+    document.getElementById('fEditId').value='';
+    setTimeout(carregarUsuariosSheets, 2500);
+  }).catch(()=>toast('Erro ao salvar.',true));
+}
+
+async function desativarUsuario(pessoaId){
+  if(!confirm('Desativar acesso desta pessoa?')) return;
+  fetch(SHEETS_URL, {
+    method:'POST',
+    body: JSON.stringify({ action:'saveUsuario', usuario:{ pessoaId, usuario:'', senhaHash:'', ativo:false } }),
+    headers:{'Content-Type':'text/plain'},
+    mode:'no-cors'
+  }).then(()=>{ toast('Acesso desativado.'); setTimeout(carregarUsuariosSheets, 2500); });
+}
+
+// Tema
+document.documentElement.setAttribute('data-theme', localStorage.getItem('riva_theme')||'light');
+</script>
+</body>
+</html>
