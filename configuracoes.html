@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configurações — Riva Vendas CE</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iIzI0NWVlOSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzBiMmY4YyIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iZyIgeD0iLTMwJSIgeT0iLTMwJSIgd2lkdGg9IjE2MCUiIGhlaWdodD0iMTYwJSI+PGZlRHJvcFNoYWRvdyBkeD0iMCIgZHk9IjEuNSIgc3RkRGV2aWF0aW9uPSIxLjQiIGZsb29kLWNvbG9yPSIjMTY0OGQ4IiBmbG9vZC1vcGFjaXR5PSIuMzgiLz48L2ZpbHRlcj48L2RlZnM+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iMTUiIGZpbGw9IiNmZmYiIHN0cm9rZT0iI2RiZTVmNSIgc3Ryb2tlLXdpZHRoPSIyIi8+PGcgZmlsdGVyPSJ1cmwoI2cpIj48cGF0aCBkPSJNMjAgMTF2NDJoOFYzNmg4bDEwIDE3aDEwTDQ0IDMzYzYtMyA5LTggOS0xNCAwLTYtNS04LTEyLThIMjB6bTggOGgxMmM0IDAgNiAxIDYgNHMtMiA1LTYgNUgyOHYtOXoiIGZpbGw9InVybCgjYikiLz48cGF0aCBkPSJNMjkgMjl2MTdsMTQtOS0xNC04eiIgZmlsbD0iI2ZmMWUxZSIvPjxnIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzE2NDhkOCIgc3Ryb2tlLXdpZHRoPSIyIj48Y2lyY2xlIGN4PSIxMSIgY3k9IjIxIiByPSIzIi8+PGNpcmNsZSBjeD0iMTEiIGN5PSIzMiIgcj0iMyIvPjxjaXJjbGUgY3g9IjExIiBjeT0iNDMiIHI9IjMiLz48L2c+PGcgc3Ryb2tlPSIjMTY0OGQ4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PHBhdGggZD0iTTE0IDIxaDZNMTQgMzJoNk0xNCA0M2g2Ii8+PC9nPjwvZz48L3N2Zz4K">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:background .3s,color .3s}
+body.claro{background:#f4f7fb;color:#0c1e48}
+body.escuro{background:#0d1117;color:#e2e8f0}
+.card{width:min(600px,95vw);border-radius:20px;overflow:hidden;box-shadow:0 24px 60px rgba(2,15,57,.18)}
+body.claro .card{background:#fff;border:1px solid #dfe6f2}
+body.escuro .card{background:#161b22;border:1px solid #30363d}
+header{padding:20px 24px;display:flex;align-items:center;gap:14px;border-bottom:1px solid;}
+body.claro header{border-color:#edf1f7}
+body.escuro header{border-color:#30363d}
+header img{width:42px;height:42px;border-radius:10px;object-fit:contain;background:#fff;padding:4px}
+header div strong{font-size:16px;font-weight:800}
+header div small{font-size:11px;color:#687695;display:block;margin-top:2px}
+header a{margin-left:auto;height:36px;padding:0 14px;display:inline-flex;align-items:center;gap:6px;border:1px solid #dfe6f2;border-radius:9px;font-size:11px;font-weight:700;color:#687695;text-decoration:none;transition:.2s}
+header a:hover{border-color:#aebff1;color:#1648d8}
+.body{padding:24px}
+.section{margin-bottom:28px}
+.section:last-child{margin-bottom:0}
+.sLabel{font-size:10px;font-weight:850;letter-spacing:.14em;text-transform:uppercase;color:#1648d8;margin-bottom:14px;display:block}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opt{padding:16px;border-radius:14px;cursor:pointer;border:2px solid transparent;transition:all .2s;display:flex;flex-direction:column;gap:6px}
+body.claro .opt{background:#f4f7fb}
+body.escuro .opt{background:#0d1117}
+.opt.sel{border-color:#1648d8;background:#edf2ff}
+body.escuro .opt.sel{background:rgba(22,72,216,.15)}
+.opt .preview{height:56px;border-radius:9px;margin-bottom:4px;display:flex;gap:6px;overflow:hidden}
+.opt .p-sidebar{width:30px;border-radius:6px 0 0 6px}
+.opt .p-content{flex:1;border-radius:0 6px 6px 0}
+.preview.light .p-sidebar{background:linear-gradient(165deg,#174ee4,#082a94)}
+.preview.light .p-content{background:#f4f7fb}
+.preview.dark .p-sidebar{background:linear-gradient(165deg,#0d1117,#161b22)}
+.preview.dark .p-content{background:#0d1117;border:1px solid #30363d}
+.opt .oName{font-size:13px;font-weight:750}
+.opt .oDesc{font-size:11px;color:#687695}
+.opt.sel .oName{color:#1648d8}
+.radio{width:18px;height:18px;border-radius:50%;border:2px solid #dfe6f2;display:inline-flex;align-items:center;justify-content:center;margin-top:4px;align-self:flex-end}
+.opt.sel .radio{border-color:#1648d8;background:#1648d8}
+.opt.sel .radio::after{content:"";width:7px;height:7px;border-radius:50%;background:#fff}
+.langOpts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.langOpt{padding:14px 18px;border-radius:12px;cursor:pointer;border:2px solid transparent;display:flex;align-items:center;gap:12px;transition:all .2s}
+body.claro .langOpt{background:#f4f7fb}
+body.escuro .langOpt{background:#0d1117}
+.langOpt.sel{border-color:#1648d8;background:#edf2ff}
+body.escuro .langOpt.sel{background:rgba(22,72,216,.15)}
+.flag{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.langOpt .ln{font-size:13px;font-weight:750}
+.langOpt .ls{font-size:10px;color:#687695}
+.langOpt.sel .ln{color:#1648d8}
+.saveRow{margin-top:24px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.bPri{height:44px;padding:0 22px;display:inline-flex;align-items:center;gap:8px;border:1px solid #1648d8;border-radius:11px;color:#fff;background:linear-gradient(145deg,#1b54ec,#123cc2);font-size:12px;font-weight:720;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.bPri:hover{transform:translateY(-2px);box-shadow:0 13px 25px rgba(22,72,216,.26)}
+.bSec{height:44px;padding:0 18px;display:inline-flex;align-items:center;gap:8px;border:1px solid #dfe6f2;border-radius:11px;color:#0d33a8;background:#fff;font-size:12px;font-weight:720;cursor:pointer;transition:.2s}
+.bSec:hover{border-color:#aebff1}
+.status{font-size:11px;color:#687695}
+.status.ok{color:#15a46f}
+.status.err{color:#dc2626}
+</style>
+</head>
+<body class="claro" id="body">
+
+<div class="card">
+  <header>
+    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTMiIGZpbGw9IiNmZmZmZmYiLz4KICA8cGF0aCBkPSJNMTggMTB2NDRoOFYzNmg5bDEwIDE4aDlMNDMgMzRjNS0zIDgtOCA4LTE0IDAtNi01LTEwLTEyLTEwSDE4em04IDhoMTJjNCAwIDYgMiA2IDVzLTIgNS02IDVIMjZWMTh6IiBmaWxsPSIjMGQyZjdhIi8+CiAgPHBhdGggZD0iTTI4IDI5djE3bDE0LTktMTQtOHoiIGZpbGw9IiNmZjFlMWUiLz4KICA8ZyBmaWxsPSJub25lIiBzdHJva2U9IiMxNjQ4ZDgiIHN0cm9rZS13aWR0aD0iMS43Ij4KICAgIDxjaXJjbGUgY3g9IjEwIiBjeT0iMjIiIHI9IjIuNiIvPjxjaXJjbGUgY3g9IjEwIiBjeT0iMzIiIHI9IjIuNiIvPjxjaXJjbGUgY3g9IjEwIiBjeT0iNDIiIHI9IjIuNiIvPgogICAgPHBhdGggZD0iTTEyLjUgMjJIMThNMTIuNSAzMkgxOE0xMi41IDQySDE4TTEwIDI0LjZ2NC44TTEwIDM0LjZ2NC44Ii8+CiAgPC9nPgo8L3N2Zz4=" alt="Riva">
+    <div><strong>Configurações</strong><small>Riva Vendas CE — as escolhas valem para todos</small></div>
+    <a href="home.html">← Voltar</a>
+  </header>
+  <div class="body">
+
+    <!-- TEMA -->
+    <div class="section">
+      <span class="sLabel">Aparência — Escolha o tema</span>
+      <div class="opts">
+        <div class="opt sel" id="optClaro" onclick="setTema('claro')">
+          <div class="preview light"><div class="p-sidebar"></div><div class="p-content"></div></div>
+          <div class="oName">Tema claro</div>
+          <div class="oDesc">Fundo branco, leitura leve e visual executivo.</div>
+          <span class="radio"></span>
+        </div>
+        <div class="opt" id="optEscuro" onclick="setTema('escuro')">
+          <div class="preview dark"><div class="p-sidebar"></div><div class="p-content"></div></div>
+          <div class="oName">Tema escuro</div>
+          <div class="oDesc">Gradiente escuro para ambientes com pouca luz.</div>
+          <span class="radio"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- IDIOMA -->
+    <div class="section">
+      <span class="sLabel">Idioma do sistema</span>
+      <div class="langOpts">
+        <div class="langOpt sel" id="langPT" onclick="setIdioma('pt')">
+          <div class="flag">🇧🇷</div>
+          <div><div class="ln">Português</div><div class="ls">Brasil</div></div>
+        </div>
+        <div class="langOpt" id="langEN" onclick="setIdioma('en')">
+          <div class="flag">🇺🇸</div>
+          <div><div class="ln">English</div><div class="ls">United States</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="saveRow">
+      <span class="status" id="statusMsg">Carregando configurações...</span>
+      <div style="display:flex;gap:9px">
+        <button class="bSec" onclick="window.location.href='home.html'">Cancelar</button>
+        <button class="bPri" onclick="salvar()" id="btnSalvar">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Salvar para todos
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+var SU = 'https://script.google.com/macros/s/AKfycbz1_ohqAABk-RhPb-i67e6eITzk9ve5hNnCI9qICtEuudSCl0Pu3pHtlV0cxMGUsZyKAg/exec';
+var _tema = 'claro';
+var _idioma = 'pt';
+
+// Carregar configurações do Sheets
+async function carregarCfg() {
+  try {
+    var r = await fetch(SU + '?action=getConfig');
+    var j = await r.json();
+    if (j.status === 'ok' && j.config) {
+      _tema = j.config.tema || 'claro';
+      _idioma = j.config.idioma || 'pt';
+    }
+  } catch(e) {
+    // fallback localStorage
+    try {
+      var local = JSON.parse(localStorage.getItem('riva_config') || '{}');
+      _tema = local.tema || 'claro';
+      _idioma = local.idioma || 'pt';
+    } catch(e2) {}
+  }
+  aplicarUI();
+  document.getElementById('statusMsg').textContent = 'Configurações carregadas.';
+}
+
+function aplicarUI() {
+  // Tema
+  document.getElementById('body').className = _tema;
+  document.getElementById('optClaro').classList.toggle('sel', _tema === 'claro');
+  document.getElementById('optEscuro').classList.toggle('sel', _tema === 'escuro');
+  // Idioma
+  document.getElementById('langPT').classList.toggle('sel', _idioma === 'pt');
+  document.getElementById('langEN').classList.toggle('sel', _idioma === 'en');
+}
+
+function setTema(t) { _tema = t; aplicarUI(); }
+function setIdioma(i) { _idioma = i; aplicarUI(); }
+
+async function salvar() {
+  var btn = document.getElementById('btnSalvar');
+  var msg = document.getElementById('statusMsg');
+  btn.disabled = true; btn.textContent = 'Salvando...';
+  var cfg = { tema: _tema, idioma: _idioma };
+  // Salvar no localStorage como cache
+  localStorage.setItem('riva_config', JSON.stringify(cfg));
+  // Salvar no Sheets
+  try {
+    var r = await fetch(SU, {
+      method: 'POST',
+      body: JSON.stringify({ config: cfg }),
+      headers: { 'Content-Type': 'text/plain' }
+    });
+    var j = await r.json();
+    if (j.status === 'ok') {
+      msg.textContent = '✓ Salvo para todos os usuários!';
+      msg.className = 'status ok';
+    } else throw new Error(j.msg || 'erro');
+  } catch(e) {
+    msg.textContent = 'Salvo localmente. Sem conexão com o servidor.';
+    msg.className = 'status err';
+  }
+  btn.disabled = false;
+  btn.innerHTML = '<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Salvar para todos';
+}
+
+carregarCfg();
+</script>
+</body>
+</html>
