@@ -227,7 +227,7 @@ function mostrarPortal(pessoaId,cargo){
   const mods=[
     ...(isAdmin?[{titulo:'Administração',desc:'Gerencie usuários e acessos.',icon:'⚙️',color:'purple',href:'admin.html',badge:'Admin',badgeClass:'director',lock:false}]:[]),
     {titulo:'Painel Diretor',desc:'Visão executiva, rankings e alertas.',icon:'📊',color:'red',href:'diretor.html',badge:isDiretor?'Acesso total':'Bloqueado',badgeClass:isDiretor?'all':'director',lock:!isDiretor},
-    {titulo:'Módulo Leads',desc:'Oportunidades, agendamentos, visitas, pastas e vendas do Núcleo Digital.',icon:'📋',color:'blue',href:isDiretor?'index.html':'view.html',badge:isDiretor?'Acesso total':'Visualização',badgeClass:isDiretor?'all':'view',lock:false},
+    {titulo:'Leads Online',desc:'Oportunidades, agendamentos, visitas, pastas e vendas do Núcleo Digital.',icon:'📋',color:'blue',href:isDiretor?'index.html':'view.html',badge:isDiretor?'Acesso total':'Visualização',badgeClass:isDiretor?'all':'view',lock:false},
     {titulo:'Gestão de Vendas',desc:'Registre vendas com todos os detalhes.',icon:'🏆',color:'green',href:'vendas.html',badge:isDiretor?'Acesso total':'Visualização',badgeClass:isDiretor?'all':'view',lock:false},
   ];
 
