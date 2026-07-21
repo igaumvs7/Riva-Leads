@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin — Usuários</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#060c18;color:#e8eeff;min-height:100vh;-webkit-font-smoothing:antialiased}
+.topbar{background:rgba(10,16,35,.95);border-bottom:1px solid rgba(255,255,255,.08);padding:0 24px;height:60px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10}
+.topbar strong{font-size:14px;font-weight:800;color:#fff}
+.topbar span{font-size:11px;color:rgba(255,255,255,.4)}
+.backBtn{margin-left:auto;padding:8px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:rgba(255,255,255,.6);font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;transition:.2s}
+.backBtn:hover{border-color:rgba(22,72,216,.5);color:#6b9fff}
+.main{max-width:860px;margin:0 auto;padding:32px 20px}
+h2{font-size:22px;font-weight:800;color:#fff;margin-bottom:6px}
+.sub{font-size:13px;color:rgba(255,255,255,.4);margin-bottom:24px;line-height:1.5}
+.panel{background:rgba(10,16,35,.8);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px;margin-bottom:20px}
+.panel h3{font-size:10px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.06)}
+.row{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:12px;align-items:end}
+.fg label{display:block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:7px}
+.fg select,.fg input{width:100%;padding:11px 13px;border:1.5px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.04);color:#e8eeff;font-size:13px;outline:none;transition:.2s;font-family:inherit}
+.fg select:focus,.fg input:focus{border-color:rgba(22,72,216,.6);background:rgba(22,72,216,.06)}
+.fg select option{background:#111827;color:#e8eeff}
+.btnSave{padding:11px 22px;background:#1648d8;color:#fff;font-size:13px;font-weight:700;border:none;border-radius:10px;cursor:pointer;white-space:nowrap;box-shadow:0 4px 16px rgba(22,72,216,.3);transition:.2s}
+.btnSave:hover{background:#0d33a8;transform:translateY(-1px)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{padding:10px 12px;text-align:left;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.3);border-bottom:1px solid rgba(255,255,255,.06)}
+td{padding:12px 12px;border-bottom:1px solid rgba(255,255,255,.05);color:#c8d4f0}
+tr:last-child td{border:none}
+.badge{display:inline-flex;padding:3px 10px;border-radius:6px;font-size:10px;font-weight:700}
+.badge.on{background:rgba(21,164,111,.15);color:#4dbb8a;border:1px solid rgba(21,164,111,.2)}
+.ab{display:flex;gap:8px}
+.ab button{padding:6px 14px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid;transition:.2s}
+.ab .edit{border-color:rgba(22,72,216,.4);color:#6b9fff;background:rgba(22,72,216,.08)}
+.ab .edit:hover{background:#1648d8;color:#fff}
+.ab .del{border-color:rgba(255,30,30,.3);color:#ff6b6b;background:rgba(255,30,30,.06)}
+.ab .del:hover{background:#cc0000;color:#fff}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:13px 28px;border-radius:12px;font-size:13px;font-weight:600;display:none;z-index:100;box-shadow:0 8px 28px rgba(0,0,0,.4)}
+.empty{text-align:center;padding:28px;color:rgba(255,255,255,.25);font-size:13px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <strong>ADMIN — Usuários</strong>
+  <span>Gerenciar acessos ao sistema</span>
+  <a href="home.html" class="backBtn">← Painel Inicial</a>
+</div>
+
+<div class="main">
+  <h2>Gerenciar Usuários</h2>
+  <p class="sub">Defina usuário e senha para cada pessoa. A senha é criptografada (SHA-256) antes de salvar — ninguém consegue ver a senha real.</p>
+
+  <div class="panel">
+    <h3>Adicionar / Editar Usuário</h3>
+    <div class="row">
+      <div class="fg">
+        <label>Pessoa</label>
+        <select id="fPessoa">
+          <option value="">Selecione...</option>
+          <option value="9999999999999">⭐ Igor Vivas — Administrador</option>
+          <option value="1784231642251">Humberto — Diretor de Vendas</option>
+          <option value="1784231674072">Cahú — Gerente Regional</option>
+          <option value="1784231712056">Rene — Gerente Regional</option>
+          <option value="1784231750469">Sergio — Gerente de Vendas</option>
+          <option value="1784231840482">Mikaella — Gerente de Vendas</option>
+          <option value="1784231874896">Priscila — Gerente de Vendas</option>
+          <option value="1784231885954">Pereira — Gerente de Vendas</option>
+          <option value="1784231893843">Lima — Gerente de Vendas</option>
+          <option value="1784231900951">Claudio — Gerente de Vendas</option>
+          <option value="1784231911005">Aloisio — Gerente de Vendas</option>
+          <option value="1784231933722">Carol — Gerente de Vendas</option>
+          <option value="1784557903848">Daniel — Gerente de Vendas</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Usuário</label>
+        <input type="text" id="fUsuario" placeholder="ex: igor">
+      </div>
+      <div class="fg">
+        <label>Senha (em branco = não altera)</label>
+        <input type="password" id="fSenha" placeholder="nova senha" onkeydown="if(event.key==='Enter')salvar()">
+      </div>
+      <button class="btnSave" onclick="salvar()">Salvar</button>
+    </div>
+    <input type="hidden" id="fEditId" value="">
+  </div>
+
+  <div class="panel">
+    <h3>Usuários cadastrados</h3>
+    <div style="margin-bottom:14px">
+      <button onclick="sincronizarTodos()" style="padding:9px 18px;background:rgba(22,72,216,.15);border:1.5px solid rgba(22,72,216,.3);color:#6b9fff;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s" onmouseover="this.style.background='rgba(22,72,216,.3)'" onmouseout="this.style.background='rgba(22,72,216,.15)'">
+        🔄 Sincronizar todos com Sheets
+      </button>
+      <span style="font-size:11px;color:rgba(255,255,255,.25);margin-left:12px">Clique se algum usuário não conseguir fazer login</span>
+    </div>
+    <div id="listaWrap"><p class="empty">Nenhum usuário cadastrado ainda.</p></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzhEqHsbzemeVhCfGIhdgZgrqRZcsSK7V8eIHUnk2xdLCAQbL0WLLK0bq9eGqnuo8DtDw/exec';
+
+const NOMES = {
+  '9999999999999':'Igor Vivas','1784231642251':'Humberto','1784231674072':'Cahú',
+  '1784231712056':'Rene','1784231750469':'Sergio','1784231840482':'Mikaella',
+  '1784231874896':'Priscila','1784231885954':'Pereira','1784231893843':'Lima',
+  '1784231900951':'Claudio','1784231911005':'Aloisio','1784231933722':'Carol',
+  '1784557903848':'Daniel'
+};
+
+const CARGOS = {
+  '9999999999999':'Administrador','1784231642251':'Diretor de Vendas',
+  '1784231674072':'Gerente Regional','1784231712056':'Gerente Regional',
+  '1784231750469':'Gerente de Vendas','1784231840482':'Gerente de Vendas',
+  '1784231874896':'Gerente de Vendas','1784231885954':'Gerente de Vendas',
+  '1784231893843':'Gerente de Vendas','1784231900951':'Gerente de Vendas',
+  '1784231911005':'Gerente de Vendas','1784231933722':'Gerente de Vendas',
+  '1784557903848':'Gerente de Vendas'
+};
+
+let usuarios = JSON.parse(localStorage.getItem('riva_admin_users')||'[]');
+renderLista();
+
+function toast(msg, err){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.style.background=err?'#7f1d1d':'#0c2264';
+  t.style.color=err?'#fca5a5':'#93c5fd';
+  t.style.display='block';
+  setTimeout(()=>t.style.display='none',3500);
+}
+
+function renderLista(){
+  const wrap=document.getElementById('listaWrap');
+  if(!usuarios.length){wrap.innerHTML='<p class="empty">Nenhum usuário cadastrado ainda.</p>';return;}
+  let rows='';
+  usuarios.forEach(function(u,i){
+    rows+=`<tr>
+      <td><strong>${NOMES[u.pessoaId]||u.pessoaId}</strong></td>
+      <td style="color:rgba(255,255,255,.4)">${CARGOS[u.pessoaId]||'—'}</td>
+      <td><code style="background:rgba(255,255,255,.06);padding:3px 9px;border-radius:6px;font-size:12px">${u.usuario}</code></td>
+      <td><span class="badge on">Ativo</span></td>
+      <td><div class="ab">
+        <button class="edit" onclick="editar(${i})">Editar</button>
+        <button class="del" onclick="remover(${i})">Remover</button>
+      </div></td>
+    </tr>`;
+  });
+  wrap.innerHTML='<table><thead><tr><th>Pessoa</th><th>Cargo</th><th>Usuário</th><th>Status</th><th>Ações</th></tr></thead><tbody>'+rows+'</tbody></table>';
+}
+
+function editar(i){
+  const u=usuarios[i];
+  document.getElementById('fPessoa').value=u.pessoaId;
+  document.getElementById('fUsuario').value=u.usuario;
+  document.getElementById('fSenha').value='';
+  document.getElementById('fEditId').value=i;
+}
+
+function remover(i){
+  if(!confirm('Remover acesso desta pessoa?'))return;
+  usuarios.splice(i,1);
+  localStorage.setItem('riva_admin_users',JSON.stringify(usuarios));
+  renderLista();
+  toast('Acesso removido.');
+}
+
+async function sha256(msg){
+  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+}
+
+function sincronizarTodos(){
+  if(!usuarios.length){toast('Nenhum usuário para sincronizar.',true);return;}
+  let count=0;
+  usuarios.forEach(function(u){
+    fetch(SHEETS_URL,{
+      method:'POST',
+      body:JSON.stringify({action:'saveUsuario',usuario:{pessoaId:u.pessoaId,usuario:u.usuario,senhaHash:u.senhaHash,ativo:true}}),
+      headers:{'Content-Type':'text/plain'},
+      mode:'no-cors'
+    }).then(function(){ count++; if(count===usuarios.length) toast('✅ '+count+' usuário(s) sincronizados com Sheets!'); }).catch(function(){});
+  });
+  toast('Sincronizando '+usuarios.length+' usuário(s)...');
+}
+
+async function salvar(){
+  const pessoaId=document.getElementById('fPessoa').value;
+  const usuario=document.getElementById('fUsuario').value.trim().toLowerCase();
+  const senha=document.getElementById('fSenha').value;
+  const editIdx=document.getElementById('fEditId').value;
+
+  if(!pessoaId){toast('Selecione uma pessoa.',true);return;}
+  if(!usuario){toast('Digite o nome de usuário.',true);return;}
+
+  let senhaHash='';
+  if(senha){
+    senhaHash=await sha256(senha);
+  } else if(editIdx===''){
+    toast('Digite uma senha para o novo usuário.',true);return;
+  } else {
+    senhaHash=usuarios[parseInt(editIdx)].senhaHash;
+  }
+
+  const entry={pessoaId:pessoaId,usuario:usuario,senhaHash:senhaHash};
+  const idx=editIdx!==''?parseInt(editIdx):usuarios.findIndex(function(u){return u.pessoaId===pessoaId;});
+
+  if(idx>=0) usuarios[idx]=entry;
+  else usuarios.push(entry);
+
+  localStorage.setItem('riva_admin_users',JSON.stringify(usuarios));
+  renderLista();
+
+  // Enviar para o Sheets
+  fetch(SHEETS_URL, {
+    method:'POST',
+    body:JSON.stringify({action:'saveUsuario',usuario:{pessoaId:pessoaId,usuario:usuario,senhaHash:senhaHash,ativo:true}}),
+    headers:{'Content-Type':'text/plain'},
+    mode:'no-cors'
+  }).catch(function(){});
+
+  document.getElementById('fPessoa').value='';
+  document.getElementById('fUsuario').value='';
+  document.getElementById('fSenha').value='';
+  document.getElementById('fEditId').value='';
+  toast('✅ Usuário salvo!');
+}
+</script>
+</body>
+</html>
