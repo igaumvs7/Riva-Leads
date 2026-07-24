@@ -205,6 +205,13 @@
             <!-- opções preenchidas via JS -->
           </div>
         </div>
+        <!-- Gerente específico (aparece quando "Gerente específico" é escolhido) -->
+        <div class="rFld" id="gvSelectWrap" style="display:none">
+          <label>Gerente específico</label>
+          <select id="rGvEspecifico" onchange="onEscopoChange()">
+            <option value="">Selecione o gerente...</option>
+          </select>
+        </div>
       </div>
       <div class="rFoot">
         <button class="btnDel" id="rBtnDel" onclick="excluirReuniao()" style="display:none">Excluir</button>
