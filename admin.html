@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTMiIGZpbGw9IiNmZmYiLz4KICA8cGF0aCBkPSJNMTQgOHY0OGg5VjM1aDEwbDExIDE4aDEwTDQyIDMxYzUtMyA4LTggOC0xNCAwLTctNS0xMC0xMy0xMEgxNHptOSA5aDEyYzQgMCA2IDIgNiA1cy0yIDUtNiA1SDIzVjE3eiIgZmlsbD0iIzBkMWY2ZCIvPgogIDxwYXRoIGQ9Ik0yNSAyOXYxNmwxMy04LTEzLTh6IiBmaWxsPSIjZGMyNjI2Ii8+CiAgPGNpcmNsZSBjeD0iOCIgY3k9IjIyIiByPSIyLjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzE2NDhkOCIgc3Ryb2tlLXdpZHRoPSIxLjYiLz4KICA8Y2lyY2xlIGN4PSI4IiBjeT0iMzIiIHI9IjIuOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMTY0OGQ4IiBzdHJva2Utd2lkdGg9IjEuNiIvPgogIDxjaXJjbGUgY3g9IjgiIGN5PSI0MiIgcj0iMi44IiBmaWxsPSJub25lIiBzdHJva2U9IiMxNjQ4ZDgiIHN0cm9rZS13aWR0aD0iMS42Ii8+CiAgPGxpbmUgeDE9IjEwLjgiIHkxPSIyMiIgeDI9IjE0IiB5Mj0iMjIiIHN0cm9rZT0iIzE2NDhkOCIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxsaW5lIHgxPSIxMC44IiB5MT0iMzIiIHgyPSIxNCIgeTI9IjMyIiBzdHJva2U9IiMxNjQ4ZDgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8bGluZSB4MT0iMTAuOCIgeTE9IjQyIiB4Mj0iMTQiIHkyPSI0MiIgc3Ryb2tlPSIjMTY0OGQ4IiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPGxpbmUgeDE9IjgiIHkxPSIyNC44IiB4Mj0iOCIgeTI9IjI5LjIiIHN0cm9rZT0iIzE2NDhkOCIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxsaW5lIHgxPSI4IiB5MT0iMzQuOCIgeDI9IjgiIHkyPSIzOS4yIiBzdHJva2U9IiMxNjQ4ZDgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9zdmc+">
+
+<script src="riva-config.js"></script>
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Admin — Riva Vendas CE</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#060c18;color:#e8eeff;min-height:100vh;-webkit-font-smoothing:antialiased}
+.topbar{background:rgba(10,16,35,.98);border-bottom:1px solid rgba(255,255,255,.08);padding:0 24px;height:60px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10}
+.topbar strong{font-size:14px;font-weight:800;color:#fff;letter-spacing:.5px}
+.topbar span{font-size:11px;color:rgba(255,255,255,.35)}
+.backBtn{margin-left:auto;padding:8px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:rgba(255,255,255,.5);font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;transition:.2s}
+.backBtn:hover{border-color:rgba(22,72,216,.4);color:#6b9fff}
+.tabs{display:flex;gap:0;padding:0 24px;background:rgba(10,16,35,.95);border-bottom:1px solid rgba(255,255,255,.06)}
+.tab{padding:14px 20px;font-size:13px;font-weight:600;color:rgba(255,255,255,.35);cursor:pointer;border-bottom:2px solid transparent;transition:.2s}
+.tab.active{color:#fff;border-bottom-color:#1648d8}
+.tab:hover:not(.active){color:rgba(255,255,255,.6)}
+.main{max-width:920px;margin:0 auto;padding:28px 20px}
+.panel{background:rgba(10,16,35,.8);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:24px;margin-bottom:18px}
+.panel-title{font-size:10px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.06)}
+.row{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:12px;align-items:end}
+.fg label{display:block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:7px}
+.fg select,.fg input{width:100%;padding:11px 13px;border:1.5px solid rgba(255,255,255,.09);border-radius:10px;background:rgba(255,255,255,.04);color:#e8eeff;font-size:13px;outline:none;transition:.2s;font-family:inherit}
+.fg select:focus,.fg input:focus{border-color:rgba(22,72,216,.6);background:rgba(22,72,216,.06)}
+.fg select option{background:#111827;color:#e8eeff}
+.btn{padding:11px 20px;border:none;border-radius:10px;cursor:pointer;font-size:13px;font-weight:700;transition:.2s}
+.btn-primary{background:#1648d8;color:#fff;box-shadow:0 4px 16px rgba(22,72,216,.3)}
+.btn-primary:hover{background:#0d33a8}
+.btn-success{background:rgba(21,164,111,.15);color:#4dbb8a;border:1.5px solid rgba(21,164,111,.25)}
+.btn-success:hover{background:rgba(21,164,111,.25)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{padding:10px 12px;text-align:left;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.25);border-bottom:1px solid rgba(255,255,255,.06)}
+td{padding:12px 12px;border-bottom:1px solid rgba(255,255,255,.04);color:#c8d4f0;vertical-align:middle}
+tr:last-child td{border:none}
+.badge{display:inline-flex;padding:3px 10px;border-radius:6px;font-size:10px;font-weight:700}
+.badge.on{background:rgba(21,164,111,.15);color:#4dbb8a;border:1px solid rgba(21,164,111,.2)}
+.badge.off{background:rgba(255,30,30,.1);color:#ff6b6b;border:1px solid rgba(255,30,30,.15)}
+.ab{display:flex;gap:6px}
+.ab button{padding:5px 12px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid;transition:.2s}
+.ab .edit{border-color:rgba(22,72,216,.35);color:#6b9fff;background:rgba(22,72,216,.06)}
+.ab .edit:hover{background:#1648d8;color:#fff}
+.ab .del{border-color:rgba(255,30,30,.25);color:#ff6b6b;background:rgba(255,30,30,.05)}
+.ab .del:hover{background:#cc0000;color:#fff}
+/* Permissoes */
+.perm-table{width:100%;border-collapse:collapse}
+.perm-table th{padding:10px 14px;text-align:left;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.25);border-bottom:1px solid rgba(255,255,255,.06)}
+.perm-table th.center{text-align:center}
+.perm-table td{padding:13px 14px;border-bottom:1px solid rgba(255,255,255,.04);color:#c8d4f0;font-size:13px}
+.perm-table tr:last-child td{border:none}
+.perm-table tr:hover td{background:rgba(255,255,255,.02)}
+.toggle{position:relative;display:inline-flex;width:42px;height:24px;cursor:pointer}
+.toggle input{opacity:0;width:0;height:0}
+.slider{position:absolute;inset:0;background:rgba(255,255,255,.1);border-radius:24px;transition:.25s;border:1.5px solid rgba(255,255,255,.1)}
+.slider::before{content:'';position:absolute;width:16px;height:16px;left:3px;top:2px;background:rgba(255,255,255,.4);border-radius:50%;transition:.25s}
+.toggle input:checked+.slider{background:rgba(22,72,216,.6);border-color:rgba(22,72,216,.4)}
+.toggle input:checked+.slider::before{transform:translateX(18px);background:#fff}
+.perm-cell{text-align:center}
+.cargo-tag{display:inline-flex;padding:2px 9px;border-radius:5px;font-size:10px;font-weight:700}
+.cargo-d{background:rgba(255,30,30,.12);color:#ff6b6b;border:1px solid rgba(255,30,30,.2)}
+.cargo-r{background:rgba(22,72,216,.12);color:#6b9fff;border:1px solid rgba(22,72,216,.2)}
+.cargo-g{background:rgba(230,168,23,.12);color:#f0c040;border:1px solid rgba(230,168,23,.2)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:12px 28px;border-radius:12px;font-size:13px;font-weight:600;display:none;z-index:100;box-shadow:0 8px 28px rgba(0,0,0,.5)}
+.empty{text-align:center;padding:28px;color:rgba(255,255,255,.2);font-size:13px}
+.page{display:none}.page.active{display:block}
+code{background:rgba(255,255,255,.07);padding:2px 8px;border-radius:5px;font-size:12px;font-family:monospace}
+
+[data-theme="dark"] body{background:#0d1117!important;color:#e2e8f0!important}
+[data-theme="dark"] .panel,[data-theme="dark"] .card,[data-theme="dark"] .modalCard{background:#161b22!important;border-color:#30363d!important;color:#e2e8f0!important}
+[data-theme="dark"] .topbar,[data-theme="dark"] header{background:rgba(22,27,34,.96)!important;border-color:#30363d!important}
+[data-theme="dark"] table thead{background:#0d1117!important}
+[data-theme="dark"] th{color:#8b949e!important}
+[data-theme="dark"] td{border-color:#21262d!important;color:#8b949e!important}
+[data-theme="dark"] tbody tr:hover{background:#161b22!important}
+[data-theme="dark"] input,[data-theme="dark"] select,[data-theme="dark"] textarea{background:#0d1117!important;border-color:#30363d!important;color:#e2e8f0!important}
+
+@media(max-width:760px){
+  .topbar{padding:0 14px;height:52px}
+  .topbar strong{font-size:13px}
+  .tabs{padding:0 10px;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap}
+  .tab{padding:12px 14px;font-size:12px}
+  .main{padding:16px 12px}
+  .row{grid-template-columns:1fr 1fr;gap:10px}
+  .panel{padding:16px}
+  table{font-size:12px}
+  th,td{padding:10px 8px}
+  .ab{flex-wrap:wrap}
+  .ab button{flex:1;min-width:60px;padding:7px 8px}
+}
+@media(max-width:480px){
+  .row{grid-template-columns:1fr}
+  .backBtn span{display:none}
+  th,td{padding:8px 6px;font-size:11px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <strong>⚙️ ADMIN</strong>
+  <span>Riva Vendas CE</span>
+  <a href="home.html" class="backBtn">← Painel Inicial</a>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('usuarios')">👥 Usuários</div>
+  <div class="tab" onclick="showTab('permissoes')">🔐 Permissões</div>
+</div>
+
+<!-- ══ ABA USUÁRIOS ══ -->
+<div class="main page active" id="tab-usuarios">
+  <div class="panel">
+    <div class="panel-title">Adicionar / Editar Usuário</div>
+    <div class="row">
+      <div class="fg">
+        <label>Pessoa</label>
+        <select id="fPessoa">
+          <option value="">Selecione...</option>
+          <option value="9999999999999|igor|Administrador">⭐ Igor Vivas — Administrador</option>
+          <option value="1784231642251|humberto|Diretor de Vendas">Humberto — Diretor de Vendas</option>
+          <option value="1784231674072|cahu|Gerente Regional">Cahú — Gerente Regional</option>
+          <option value="1784231712056|rene|Gerente Regional">Rene — Gerente Regional</option>
+          <option value="1784231750469|sergio|Gerente de Vendas">Sergio — Gerente de Vendas</option>
+          <option value="1784231840482|mikaella|Gerente de Vendas">Mikaella — Gerente de Vendas</option>
+          <option value="1784231874896|priscila|Gerente de Vendas">Priscila — Gerente de Vendas</option>
+          <option value="1784231885954|pereira|Gerente de Vendas">Pereira — Gerente de Vendas</option>
+          <option value="1784231893843|lima|Gerente de Vendas">Lima — Gerente de Vendas</option>
+          <option value="1784231900951|claudio|Gerente de Vendas">Claudio — Gerente de Vendas</option>
+          <option value="1784231911005|aloisio|Gerente de Vendas">Aloisio — Gerente de Vendas</option>
+          <option value="1784231933722|carol|Gerente de Vendas">Carol — Gerente de Vendas</option>
+          <option value="1784557903848|daniel|Gerente de Vendas">Daniel — Gerente de Vendas</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Usuário</label>
+        <input type="text" id="fUsuario" placeholder="ex: igor">
+      </div>
+      <div class="fg">
+        <label>Senha (em branco = não altera)</label>
+        <input type="password" id="fSenha" placeholder="nova senha" onkeydown="if(event.key==='Enter')salvarUser()">
+      </div>
+      <button class="btn btn-primary" onclick="salvarUser()">Salvar</button>
+    </div>
+    <div style="margin-top:10px">
+      <div class="fg" style="width:140px">
+        <label>Status</label>
+        <select id="fAtivo"><option value="true">Ativo</option><option value="false">Inativo</option></select>
+      </div>
+    </div>
+    <input type="hidden" id="fEditId">
+  </div>
+
+  <div class="panel">
+    <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center">
+      <span>Usuários cadastrados</span>
+      <button class="btn btn-success" onclick="carregarUsuarios()" style="padding:6px 14px;font-size:11px">🔄 Atualizar</button>
+    </div>
+    <div id="listaUsuarios"><p class="empty">Carregando...</p></div>
+  </div>
+</div>
+
+<!-- ══ ABA PERMISSÕES ══ -->
+<div class="main page" id="tab-permissoes">
+  <div class="panel">
+    <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center">
+      <span>Configurar permissões por cargo</span>
+      <button class="btn btn-primary" onclick="salvarPermissoes()" style="padding:8px 18px;font-size:12px">💾 Salvar permissões</button>
+    </div>
+    <p style="font-size:12px;color:rgba(255,255,255,.3);margin-bottom:20px">O Administrador sempre tem acesso total. Configure abaixo o que cada cargo pode fazer.</p>
+    <table class="perm-table">
+      <thead>
+        <tr>
+          <th>Ação</th>
+          <th class="center"><span class="cargo-tag cargo-d">Diretor</span></th>
+          <th class="center"><span class="cargo-tag cargo-r">Regional</span></th>
+          <th class="center"><span class="cargo-tag cargo-g">Ger. Vendas</span></th>
+        </tr>
+      </thead>
+      <tbody id="tbodyPerm"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbz1_ohqAABk-RhPb-i67e6eITzk9ve5hNnCI9qICtEuudSCl0Pu3pHtlV0cxMGUsZyKAg/exec';
+
+let usuarios = JSON.parse(localStorage.getItem('riva_admin_users')||'[]');
+let permissoes = [];
+
+// ── TABS ──────────────────────────────────────────────────
+function showTab(tab){
+  document.querySelectorAll('.tab').forEach(function(t,i){t.classList.toggle('active',['usuarios','permissoes'][i]===tab);});
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.getElementById('tab-'+tab).classList.add('active');
+  if(tab==='permissoes' && !permissoes.length) carregarPermissoes();
+}
+
+// ── TOAST ──────────────────────────────────────────────────
+function toast(msg,err){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.style.background=err?'#7f1d1d':'#0c2264';t.style.color=err?'#fca5a5':'#93c5fd';
+  t.style.display='block';setTimeout(function(){t.style.display='none';},3000);
+}
+
+// ══ USUÁRIOS ══════════════════════════════════════════════
+function carregarUsuarios(){
+  document.getElementById('listaUsuarios').innerHTML='<p class="empty">Carregando...</p>';
+  var tOut=setTimeout(function(){renderUsuarios();},6000);
+
+  // Buscar getData para pegar pessoas E usuarios juntos
+  window._uCB=function(j){
+    clearTimeout(tOut);
+    var sc=document.getElementById('_ut');if(sc)sc.parentNode.removeChild(sc);
+    if(j&&j.status==='ok'&&j.data){
+      // Atualizar NOMES e CARGOS com dados reais da planilha
+      if(j.data.pessoas){
+        j.data.pessoas.forEach(function(p){
+          NOMES[p.id]=p.nome;
+          CARGOS[p.id]=p.cargo;
+        });
+      }
+    }
+    // Agora buscar usuarios
+    window._u2CB=function(j2){
+      var sc2=document.getElementById('_ut2');if(sc2)sc2.parentNode.removeChild(sc2);
+      if(j2&&j2.status==='ok'&&j2.usuarios&&j2.usuarios.length){
+        j2.usuarios.forEach(function(u){
+          var idx=usuarios.findIndex(function(x){return x.pessoaId===u.pessoaId;});
+          if(idx>=0){
+            usuarios[idx].usuario=u.usuario;
+            usuarios[idx].cargo=u.cargo||CARGOS[u.pessoaId]||'';
+            usuarios[idx].ativo=u.ativo;
+          } else {
+            usuarios.push({pessoaId:u.pessoaId,usuario:u.usuario,cargo:u.cargo||CARGOS[u.pessoaId]||'',ativo:u.ativo});
+          }
+        });
+        localStorage.setItem('riva_admin_users',JSON.stringify(usuarios));
+      }
+      renderUsuarios();
+    };
+    var sc2=document.createElement('script');sc2.id='_ut2';
+    sc2.src=SHEETS_URL+'?action=getUsuarios&callback=_u2CB&t='+Date.now();
+    sc2.onerror=function(){renderUsuarios();};
+    document.head.appendChild(sc2);
+  };
+
+  var sc=document.createElement('script');sc.id='_ut';
+  sc.src=SHEETS_URL+'?action=getData&callback=_uCB&t='+Date.now();
+  sc.onerror=function(){clearTimeout(tOut);renderUsuarios();};
+  document.head.appendChild(sc);
+}
+
+const NOMES={
+  '9999999999999':'Igor Vivas','1784231642251':'Humberto','1784231674072':'Cahú',
+  '1784231712056':'Rene','1784231750469':'Sergio','1784231840482':'Mikaella',
+  '1784231874896':'Priscila','1784231885954':'Pereira','1784231893843':'Lima',
+  '1784231900951':'Claudio','1784231911005':'Aloisio','1784231933722':'Carol',
+  '1784557903848':'Daniel'
+};
+const CARGOS={
+  '9999999999999':'Administrador','1784231642251':'Diretor de Vendas',
+  '1784231674072':'Gerente Regional','1784231712056':'Gerente Regional',
+  '1784231750469':'Gerente de Vendas','1784231840482':'Gerente de Vendas',
+  '1784231874896':'Gerente de Vendas','1784231885954':'Gerente de Vendas',
+  '1784231893843':'Gerente de Vendas','1784231900951':'Gerente de Vendas',
+  '1784231911005':'Gerente de Vendas','1784231933722':'Gerente de Vendas',
+  '1784557903848':'Gerente de Vendas'
+};
+
+function renderUsuarios(){
+  var wrap=document.getElementById('listaUsuarios');
+  // Mostrar todos do Sheets + locais mesclados
+  var lista = usuarios.length ? usuarios : [];
+  if(!lista.length){
+    wrap.innerHTML='<p class="empty">Clique em Atualizar para carregar os usuários da planilha.</p>';
+    return;
+  }
+  var rows='';
+  lista.forEach(function(u,i){
+    var nome=NOMES[u.pessoaId]||u.pessoaId||u.usuario;
+    var cargo=u.cargo||CARGOS[u.pessoaId]||'—';
+    var ativo=u.ativo!==false&&u.ativo!=='false';
+    rows+='<tr>'
+      +'<td><strong>'+nome+'</strong></td>'
+      +'<td style="color:rgba(255,255,255,.4)">'+cargo+'</td>'
+      +'<td><code>'+( u.usuario||'—')+'</code></td>'
+      +'<td><span class="badge '+(ativo?'on':'off')+'">'+(ativo?'Ativo':'Inativo')+'</span></td>'
+      +'<td><div class="ab">'
+        +'<button class="edit" onclick="editarUser('+i+')">Editar</button>'
+        +'<button class="del" onclick="removerUser('+i+')">Remover</button>'
+      +'</div></td>'
+    +'</tr>';
+  });
+  wrap.innerHTML='<table><thead><tr><th>Pessoa</th><th>Cargo</th><th>Usuário</th><th>Status</th><th>Ações</th></tr></thead><tbody>'+rows+'</tbody></table>';
+}
+
+function editarUser(i){
+  var u=usuarios[i];
+  // Setar select pelo pessoaId
+  var sel=document.getElementById('fPessoa');
+  for(var j=0;j<sel.options.length;j++){
+    if(sel.options[j].value.startsWith(u.pessoaId+'|')){sel.selectedIndex=j;break;}
+  }
+  document.getElementById('fUsuario').value=u.usuario||'';
+  document.getElementById('fSenha').value='';
+  document.getElementById('fAtivo').value=u.ativo!==false&&u.ativo!=='false'?'true':'false';
+  document.getElementById('fEditId').value=i;
+}
+
+function removerUser(i){
+  if(!confirm('Remover acesso desta pessoa?'))return;
+  usuarios.splice(i,1);
+  localStorage.setItem('riva_admin_users',JSON.stringify(usuarios));
+  renderUsuarios();
+  toast('Acesso removido.');
+}
+
+function salvarUser(){
+  var sel=document.getElementById('fPessoa').value;
+  if(!sel){toast('Selecione uma pessoa.',true);return;}
+  var parts=sel.split('|');
+  var pessoaId=parts[0], sugerido=parts[1], cargo=parts.slice(2).join('|');
+  var usuario=document.getElementById('fUsuario').value.trim().toLowerCase()||sugerido;
+  var senha=document.getElementById('fSenha').value.trim();
+  var ativo=document.getElementById('fAtivo').value==='true';
+  var editIdx=document.getElementById('fEditId').value;
+  if(!usuario){toast('Digite o nome de usuário.',true);return;}
+  var idx=editIdx!==''?parseInt(editIdx):usuarios.findIndex(function(u){return u.pessoaId===pessoaId;});
+  var entry={pessoaId:pessoaId,usuario:usuario,cargo:cargo,ativo:ativo,senha:senha||undefined};
+  if(idx>=0)usuarios[idx]=Object.assign(usuarios[idx],entry);
+  else usuarios.push(entry);
+  localStorage.setItem('riva_admin_users',JSON.stringify(usuarios));
+  // Enviar para Sheets
+  fetch(SHEETS_URL,{method:'POST',body:JSON.stringify({usuario:{pessoaId:pessoaId,usuario:usuario,senha:senha||'',cargo:cargo,ativo:ativo}}),headers:{'Content-Type':'text/plain'},mode:'no-cors'}).catch(function(){});
+  renderUsuarios();
+  document.getElementById('fPessoa').value='';
+  document.getElementById('fUsuario').value='';
+  document.getElementById('fSenha').value='';
+  document.getElementById('fEditId').value='';
+  toast('✅ Usuário salvo!');
+}
+
+// ══ PERMISSÕES ════════════════════════════════════════════
+var PERM_DEFAULT=[
+  // ── Ações ─────────────────────────────────────────────────────
+  {acao:'lancar_leads',      label:'Lançar Leads',              diretor:true,  regional:false, gerente:false},
+  {acao:'editar_leads',      label:'Editar Leads',              diretor:true,  regional:false, gerente:false},
+  {acao:'excluir_leads',     label:'Excluir Leads',             diretor:true,  regional:false, gerente:false},
+  {acao:'ver_leads',         label:'Visualizar Leads',          diretor:true,  regional:true,  gerente:true},
+  {acao:'lancar_vendas',     label:'Lançar Vendas',             diretor:true,  regional:false, gerente:false},
+  {acao:'editar_vendas',     label:'Editar Vendas',             diretor:true,  regional:false, gerente:false},
+  {acao:'excluir_vendas',    label:'Excluir Vendas',            diretor:true,  regional:false, gerente:false},
+  {acao:'ver_vendas',        label:'Visualizar Vendas',         diretor:true,  regional:true,  gerente:true},
+  {acao:'exportar',          label:'Exportar Excel/PDF',        diretor:true,  regional:true,  gerente:false},
+  {acao:'ver_painel_diretor',label:'Ver Painel Diretor',        diretor:true,  regional:false, gerente:false},
+  {acao:'painel_diretor',    label:'Acessar Painel Diretor',    diretor:true,  regional:false, gerente:false},
+  {acao:'cadastrar_pessoas', label:'Cadastrar Pessoas',         diretor:false, regional:false, gerente:false},
+  {acao:'gerenciar_usuarios',label:'Gerenciar Usuários',        diretor:false, regional:false, gerente:false},
+  // ── Visibilidade de painéis ────────────────────────────────────
+  {acao:'ver_leads_online',  label:'🖥 Ver Leads Online',       diretor:true,  regional:true,  gerente:true},
+  {acao:'ver_dir_painel',    label:'📊 Ver Painel Diretor',     diretor:true,  regional:false, gerente:false},
+  {acao:'ver_gestao_vendas', label:'💼 Ver Gestão de Vendas',   diretor:true,  regional:true,  gerente:false},
+  {acao:'ver_performance',   label:'📈 Ver Análise Executiva', diretor:true, regional:true, gerente:false},
+  {acao:'ver_reunioes',      label:'📅 Ver Agenda Riva',        diretor:true,  regional:true,  gerente:false},
+];
+
+function mergePermissoes(loaded){
+  // Garantir que novas permissões do PERM_DEFAULT sempre apareçam
+  var result = loaded ? JSON.parse(JSON.stringify(loaded)) : [];
+  PERM_DEFAULT.forEach(function(def){
+    var exists = result.some(function(p){ return p.acao === def.acao; });
+    if(!exists) result.push(def);
+  });
+  return result;
+}
+
+function carregarPermissoes(){
+  var tOut=setTimeout(function(){permissoes=PERM_DEFAULT;renderPermissoes();},5000);
+  window._pCB=function(j){
+    clearTimeout(tOut);
+    var sc=document.getElementById('_pt');if(sc)sc.parentNode.removeChild(sc);
+    var loaded=(j&&j.status==='ok'&&j.permissoes&&j.permissoes.length)?j.permissoes:null;
+    permissoes=mergePermissoes(loaded);
+    renderPermissoes();
+  };
+  var sc=document.createElement('script');sc.id='_pt';
+  sc.src=SHEETS_URL+'?action=getPermissoes&callback=_pCB&t='+Date.now();
+  sc.onerror=function(){clearTimeout(tOut);permissoes=PERM_DEFAULT;renderPermissoes();};
+  document.head.appendChild(sc);
+}
+
+function renderPermissoes(){
+  var tbody=document.getElementById('tbodyPerm');
+  tbody.innerHTML=permissoes.map(function(p,i){
+    return `<tr>
+      <td style="font-weight:600">${p.label}</td>
+      <td class="perm-cell"><label class="toggle"><input type="checkbox" id="pd_${i}" ${p.diretor?'checked':''}><span class="slider"></span></label></td>
+      <td class="perm-cell"><label class="toggle"><input type="checkbox" id="pr_${i}" ${p.regional?'checked':''}><span class="slider"></span></label></td>
+      <td class="perm-cell"><label class="toggle"><input type="checkbox" id="pg_${i}" ${p.gerente?'checked':''}><span class="slider"></span></label></td>
+    </tr>`;
+  }).join('');
+}
+
+function salvarPermissoes(){
+  var novas=permissoes.map(function(p,i){
+    return {
+      acao:p.acao, label:p.label,
+      diretor: document.getElementById('pd_'+i).checked,
+      regional:document.getElementById('pr_'+i).checked,
+      gerente: document.getElementById('pg_'+i).checked,
+    };
+  });
+  permissoes=novas;
+  // Salvar no Sheets
+  fetch(SHEETS_URL,{method:'POST',body:JSON.stringify({permissoes:novas}),headers:{'Content-Type':'text/plain'},mode:'no-cors'})
+  .then(function(){toast('✅ Permissões salvas!');})
+  .catch(function(){toast('Erro ao salvar.',true);});
+  // Salvar local como cache
+  localStorage.setItem('riva_permissoes',JSON.stringify(novas));
+  toast('✅ Permissões salvas!');
+}
+
+// ── INIT ──────────────────────────────────────────────────
+usuarios = []; // Sempre buscar frescos do Sheets
+localStorage.removeItem('riva_admin_users');
+if(window.location.hash === '#permissoes'){
+  showTab('permissoes');
+} else {
+  carregarUsuarios();
+}
+</script>
+</body>
+</html>
