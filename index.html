@@ -1728,7 +1728,7 @@ tfoot td { color: #fff; border: 0; font-weight: 800; }
         <select id="scopeSel" onchange="onScopeChange()">
           <option value="all">Visão geral</option>
         </select>
-        <span class="selectChevron">⌄</span>
+        
       </label>
       <button class="syncPill loading" id="syncPill" onclick="sincSheets(true)" title="Sincronizar">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" id="syncIcon"><path d="M20 7v5h-5"/><path d="M4 17v-5h5"/><path d="M6.1 8a7 7 0 0 1 11.4-2L20 8M4 16l2.5 2A7 7 0 0 0 18 16"/></svg>
@@ -1778,11 +1778,7 @@ tfoot td { color: #fff; border: 0; font-weight: 800; }
             </select>
           </label>
           <label class="formField"><span>Ano</span>
-            <select id="leadAno">
-              <option value="2024">2024</option><option value="2025">2025</option>
-              <option value="2026" selected>2026</option><option value="2027">2027</option>
-              <option value="2028">2028</option>
-            </select>
+            <input type="number" id="leadAno" value="2026" min="2020" max="2099" step="1" onchange="onMesChange()" oninput="onMesChange()" style="position:static!important;opacity:1!important;width:68px;height:100%;border:0;background:transparent;color:inherit;font-size:12px;font-weight:720;font-family:inherit;outline:none;padding:0;-moz-appearance:textfield;-webkit-appearance:none">
           </label>
         </div>
         <div class="formGrid">
