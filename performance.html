@@ -690,166 +690,125 @@ function dadosHouse(){
 }
 
 function viewHouse(){
+  var gvSel = dadosHouseMeta();
+  var meses3 = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
   return ''
     + '<div class="perfHero">'
-    +   '<span class="eyebrow">MÉTRICAS HOUSE · '+S.ano+'</span>'
-    +   '<h1>Curva de Vendas '+S.ano+'</h1>'
-    +   '<p>Meta / Realizado / Pendente por gerente, regional e trimestre</p>'
+    +   '<span class="eyebrow">HOUSE · METAS · '+S.ano+'</span>'
+    +   '<h1>Acompanhamento de Meta Mensal</h1>'
+    +   '<p>Lançamento semanal por GV · Conversão das etapas · % da meta</p>'
     + '</div>'
+
+    // Top controls
     + '<div class="perfTop">'
+    +   '<select class="perfSel" id="houseMesSel"></select>'
     +   '<input class="perfSel yearIn" id="houseAno" type="number" min="2020" max="2099" step="1">'
-    +   '<div style="display:flex;gap:4px;padding:3px;background:#eef2ff;border-radius:9px" id="houseTabs">'
-    +     '<button class="hTab on" data-view="tri" onclick="setHouseView(\'tri\')">Por Trimestre</button>'
-    +     '<button class="hTab" data-view="mes" onclick="setHouseView(\'mes\')">Por Mês</button>'
+    +   '<select class="perfSel" id="houseGvSel" onchange="renderHouse()">'
+    +     '<option value="">Selecione GV...</option>'
+    +   '</select>'
+    +   '<div style="margin-left:auto;display:flex;gap:8px">'
+    +     '<button class="pSaveBtn" onclick="salvarHouse()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Salvar</button>'
     +   '</div>'
-    +   '<div style="display:flex;gap:4px;padding:3px;background:#fef2f2;border-radius:9px" id="houseSubTabs">'
-    +     '<button class="hTab on" data-sub="ativos" onclick="setHouseSub(\'ativos\')">Ativos</button>'
-    +     '<button class="hTab" data-sub="desligados" onclick="setHouseSub(\'desligados\')">Desligados</button>'
-    +   '</div>'
-    +   '<div style="margin-left:auto"><button class="pSaveBtn" onclick="salvarHouse()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>Salvar</button></div>'
     + '</div>'
 
-    + '<div class="pKpiRow" id="houseKpis"></div>'
+    // KPI row
+    + '<div class="pKpiRow" id="houseMetaKpis"></div>'
 
-    // Regionais (no topo, sempre mostra soma dos ativos)
+    // Lançamento Semanal
     + '<div class="pPanel">'
-    +   '<div class="pPanelHead"><div><span class="eyebrow">POR REGIONAL</span><h3>Rene · Cahú (só ativos)</h3></div></div>'
+    +   '<div class="pPanelHead">'
+    +     '<div><span class="eyebrow">LANÇAMENTO SEMANAL</span><h3>Volume por Semana</h3></div>'
+    +     '<small style="color:var(--muted);font-size:11px">Edite diretamente nas células</small>'
+    +   '</div>'
+    +   '<div class="pTable" id="houseLancWrap"><table>'
+    +     '<thead><tr>'
+    +       '<th>Semana</th>'
+    +       '<th class="center">Cadastro</th><th class="center">Agend.</th><th class="center">Visita</th>'
+    +       '<th class="center">Pasta Total</th><th class="center">Pasta Aprov.</th><th class="center">Venda</th>'
+    +       '<th class="right">VGV da Semana</th>'
+    +     '</tr></thead>'
+    +     '<tbody id="houseLancBody"></tbody>'
+    +     '<tfoot id="houseLancFoot"></tfoot>'
+    +   '</table></div>'
+    + '</div>'
+
+    // Conversão das Etapas
+    + '<div class="pPanel">'
+    +   '<div class="pPanelHead"><div><span class="eyebrow">CONVERSÃO DAS ETAPAS</span><h3>Taxa por Semana</h3></div></div>'
     +   '<div class="pTable"><table>'
-    +     '<thead><tr><th>Regional</th><th class="right">Meta Ano</th><th class="right">Realizado</th><th class="right">Pendente</th><th class="right">% Meta</th></tr></thead>'
-    +     '<tbody id="houseRegBody"></tbody>'
+    +     '<thead><tr>'
+    +       '<th>Semana</th>'
+    +       '<th class="center">Cad → Agend</th><th class="center">Agend → Visita</th>'
+    +       '<th class="center">Visita → Pasta</th><th class="center">Pasta → Aprov</th><th class="center">Aprov → Venda</th>'
+    +     '</tr></thead>'
+    +     '<tbody id="houseConvBody"></tbody>'
+    +     '<tfoot id="houseConvFoot"></tfoot>'
     +   '</table></div>'
     + '</div>'
 
-    // Tabela por Gerente (Ativos ou Desligados conforme sub-tab)
+    // Meta vs Acumulado
     + '<div class="pPanel">'
-    +   '<div class="pPanelHead"><div><span class="eyebrow" id="houseGvsEye">GERENTES ATIVOS · '+S.ano+'</span><h3 id="houseSubtitle">Meta vs Realizado por Trimestre</h3></div><small style="color:var(--muted);font-size:11px">Preencha os valores diretamente nas células</small></div>'
-    +   '<div class="pTable" id="houseTableWrap"><table>'
-    +     '<thead id="houseThead"></thead>'
-    +     '<tbody id="houseTbody"></tbody>'
+    +   '<div class="pPanelHead"><div><span class="eyebrow">META DO MÊS</span><h3>Acumulado vs Meta</h3></div></div>'
+    +   '<div class="pTable"><table>'
+    +     '<thead><tr><th>Indicador</th><th class="right">Meta</th><th class="right">Acumulado</th><th class="right">% Meta</th><th class="right">Falta</th></tr></thead>'
+    +     '<tbody id="houseMetaBody"></tbody>'
     +   '</table></div>'
+    + '</div>'
+
+    // Funil visual
+    + '<div class="pPanel">'
+    +   '<div class="pPanelHead"><div><span class="eyebrow">FUNIL DE CONVERSÃO</span><h3>Acumulado do Mês</h3></div></div>'
+    +   '<div style="padding:18px 20px" id="houseFunilWrap"></div>'
     + '</div>';
 }
 
-function viewHouse2(){
-  return ''
-    + '<div class="perfHero">'    +   '<span class="eyebrow">HOUSE · DESEMPENHO · '+S.ano+'</span>'    +   '<h1>Análise de Desempenho House</h1>'    +   '<p>Gerentes desligados · Comparativo histórico · Totais anuais</p>'    + '</div>'    + '<div class="perfTop">'    +   '<input class="perfSel yearIn" id="houseAno2" type="number" min="2020" max="2099" step="1">'    +   '<div style="margin-left:auto"><button class="pSaveBtn" onclick="salvarHouse()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>Salvar</button></div>'    + '</div>'    + '<div class="pKpiRow" id="house2Kpis"></div>'    + '<div class="pPanel">'    +   '<div class="pPanelHead"><div><span class="eyebrow">GERENTES DESLIGADOS</span><h3>Meta vs Realizado</h3></div><small style="color:var(--muted);font-size:11px">Histórico de gerentes que saíram da equipe</small></div>'    +   '<div class="pTable" id="house2TableWrap"><table>'    +     '<thead id="house2Thead"></thead>'    +     '<tbody id="house2Tbody"></tbody>'    +   '</table></div>'    + '</div>'    + '<div class="pPanel">'    +   '<div class="pPanelHead"><div><span class="eyebrow">TOTAIS ANUAIS</span><h3>Consolidado Geral</h3></div></div>'    +   '<div class="pTable"><table>'    +     '<thead><tr><th>Regional</th><th class="right">Meta Ano</th><th class="right">Realizado Total</th><th class="right">Pendente</th><th class="right">% Meta</th></tr></thead>'    +     '<tbody id="house2RegBody"></tbody>'    +   '</table></div>'    + '</div>';
+function dadosHouseMeta(){
+  // returns {gvs:[...], metas:{...}} from S.config
+  return S.config.house_meta || {};
 }
 
-function afterHouse2(){
-  var el = document.getElementById('houseAno2');
-  if(el){
-    el.value = S.ano;
-    el.addEventListener('change', function(){
+function getHouseMetaGV(gv, mes){
+  var key = 'hm:'+gv+':'+mes;
+  return S.config[key] || { s1:{},s2:{},s3:{},s4:{},s5:{}, meta:{} };
+}
+
+function setHouseMetaGV(gv, mes, data){
+  var key = 'hm:'+gv+':'+mes;
+  S.config[key] = data;
+}
+
+
+function afterHouse(){
+  // Year input
+  var yearEl = document.getElementById('houseAno');
+  if(yearEl){
+    yearEl.value = S.ano;
+    yearEl.addEventListener('change', function(){
       var v = parseInt(this.value)||S.ano;
       if(v<2020) v=2020; if(v>2099) v=2099;
-      S.ano = v; this.value = v;
-      renderPage();
+      S.ano = v; this.value = v; renderPage();
     });
   }
-  renderHouse2();
-}
-
-function renderHouse2(){
-  var d = dadosHouse();
-  var gvsDeslig = getGVsDesligados();
-  
-  // KPIs
-  var kpisEl = document.getElementById('house2Kpis');
-  var totalMeta = 0, totalReal = 0;
-  var allGvs = getAllGVs(false).concat(getGVsDesligados());
-  allGvs.forEach(function(gv){
-    var gvKey = typeof gv === 'object' ? gv.nome : gv;
-    for(var m=1; m<=12; m++){
-      var mk = String(S.ano)+'-'+String(m).padStart(2,'0');
-      var gd = (d.gvs && d.gvs[gvKey] && d.gvs[gvKey][mk]) || {};
-      totalMeta += parseFloat(gd.metaVGV||0);
-      totalReal += parseFloat(gd.realVGV||0);
-    }
-  });
-  var pct = totalMeta > 0 ? Math.round(totalReal/totalMeta*100) : 0;
-  if(kpisEl) kpisEl.innerHTML = '<div class="pKpi"><span>Meta Ano Total</span><strong>'+brlH(totalMeta)+'</strong></div>'
-    + '<div class="pKpi"><span>Realizado Total</span><strong>'+brlH(totalReal)+'</strong></div>'
-    + '<div class="pKpi"><span>% Atingimento</span><strong style="color:'+(pct>=100?'#15a46f':pct>=70?'#1e40af':'#dc2626')+'">'+pct+'%</strong></div>'
-    + '<div class="pKpi"><span>Gerentes Desligados</span><strong>'+gvsDeslig.length+'</strong></div>';
-
-  // Regionais
-  var regBody = document.getElementById('house2RegBody');
-  if(regBody){
-    var regs = ['rene','cahu'];
-    var regsNomes = {rene:'Rene', cahu:'Cahú'};
-    var html = '';
-    regs.forEach(function(reg){
-      var gvsReg = getAllGVs(false).filter(function(gv){ var n=typeof gv==='object'?gv.nome:gv; return (d.gvs&&d.gvs[n]&&d.gvs[n].regional)===reg || isGVofReg(n, reg); });
-      var rMeta=0, rReal=0;
-      gvsReg.forEach(function(gv){
-        var gvKey=typeof gv==='object'?gv.nome:gv;
-        for(var m=1;m<=12;m++){
-          var mk=String(S.ano)+'-'+String(m).padStart(2,'0');
-          var gd=(d.gvs&&d.gvs[gvKey]&&d.gvs[gvKey][mk])||{};
-          rMeta+=parseFloat(gd.metaVGV||0); rReal+=parseFloat(gd.realVGV||0);
-        }
-      });
-      var rPend = Math.max(0, rMeta-rReal);
-      var rPct = rMeta>0?Math.round(rReal/rMeta*100):0;
-      html += '<tr><td><strong>'+regsNomes[reg]+'</strong></td><td class="right">'+brlH(rMeta)+'</td><td class="right">'+brlH(rReal)+'</td><td class="right">'+brlH(rPend)+'</td><td class="right"><strong>'+rPct+'%</strong></td></tr>';
-    });
-    regBody.innerHTML = html;
+  // Month select
+  var mesEl = document.getElementById('houseMesSel');
+  if(mesEl){
+    var MS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+    var curM = String(new Date().getMonth()+1).padStart(2,'0');
+    mesEl.innerHTML = MS.map(function(m,i){ var v=String(i+1).padStart(2,'0'); return '<option value="'+v+'"'+(v===curM?' selected':'')+'>'+m+'</option>'; }).join('');
+    mesEl.addEventListener('change', renderHouse);
   }
-
-  // Desligados table
-  var thead = document.getElementById('house2Thead');
-  var tbody = document.getElementById('house2Tbody');
-  if(!thead||!tbody) return;
-  var MS3=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-  var hdr='<tr><th>GV</th>';
-  for(var m=0;m<12;m++) hdr+='<th class="center">'+MS3[m]+'</th>';
-  hdr+='<th class="right">Total</th></tr>';
-  thead.innerHTML=hdr;
-  
-  var rows='';
-  if(!gvsDeslig.length){ rows='<tr><td colspan="14" style="text-align:center;color:var(--muted);padding:28px">Nenhum gerente desligado cadastrado</td></tr>'; }
-  else {
-    gvsDeslig.forEach(function(gv){
-      var gvKey=typeof gv==='object'?gv.nome:gv;
-      var tot=0;
-      var row='<tr><td><strong style="font-size:11px">'+gvKey+'</strong></td>';
-      for(var m=1;m<=12;m++){
-        var mk=String(S.ano)+'-'+String(m).padStart(2,'0');
-        var gd=(d.gvs&&d.gvs[gvKey]&&d.gvs[gvKey][mk])||{};
-        var v=parseFloat(gd.realVGV||0);
-        tot+=v;
-        row+='<td class="center" style="font-size:10px">'+(v>0?brlH(v):'—')+'</td>';
-      }
-      row+='<td class="right"><strong>'+brlH(tot)+'</strong></td></tr>';
-      rows+=row;
-    });
+  // GV select
+  var gvEl = document.getElementById('houseGvSel');
+  if(gvEl){
+    var gvs = getAllGVs(false);
+    gvEl.innerHTML = '<option value="">Visão Geral</option>' + gvs.map(function(g){
+      var n = typeof g==='object'?g.nome:g;
+      return '<option value="'+n+'">'+n+'</option>';
+    }).join('');
   }
-  tbody.innerHTML=rows;
-}
-
-function isGVofReg(nome, reg){
-  var hier = { rene:['Lima','Aloisio','Pereira','Carol'], cahu:['Priscila','Mikaella','Daniel','Claudio'] };
-  return (hier[reg]||[]).indexOf(nome)>=0;
-}
-
-
-var HOUSE_SUB = 'ativos'; // 'ativos' ou 'desligados'
-function setHouseSub(s){
-  HOUSE_SUB = s;
-  document.querySelectorAll('.hTab[data-sub]').forEach(function(b){ b.classList.toggle('on', b.dataset.sub===s); });
-  document.getElementById('houseGvsEye').textContent = 'GERENTES '+(s==='ativos'?'ATIVOS':'DESLIGADOS')+' · '+S.ano;
   renderHouse();
 }
-function afterHouse(){
-  document.getElementById('houseAno').value = S.ano;
-  document.getElementById('houseAno').addEventListener('change', function(){
-    var v = parseInt(this.value)||S.ano;
-    if(v<2020) v=2020; if(v>2099) v=2099;
-    S.ano = v; this.value = v;
-    renderPage();
-  });
-  renderHouse();
-}
+
 
 function renderHouse(){
   var d = dadosHouse();
