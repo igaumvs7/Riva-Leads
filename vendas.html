@@ -204,6 +204,13 @@ tfoot td{padding:12px 14px;color:var(--royal-deep);font-weight:800;background:#e
   text-align: center !important;
   text-shadow: none !important;
 }
+/* Sidebar recolhida: ocultar fullBrand, mostrar brandMark */
+.sidebarCollapsed .fullBrand { display: none !important; }
+.sidebarCollapsed .brandMark { display: block !important; }
+@media (max-width: 760px) {
+  .sidebarCollapsed .fullBrand { display: flex !important; }
+  .sidebarCollapsed .brandMark { display: none !important; }
+}
 </style>
 </head>
 <body>
