@@ -1306,7 +1306,7 @@ tfoot td { color: #fff; border: 0; font-weight: 800; }
 @media (max-width: 760px) {
   .brandArea { height: 132px; padding: 13px 16px 11px; }
   .fullBrand,
-  .sidebarCollapsed .fullBrand { width: 194px; height: 106px; display: flex; }
+  
   .topSelect { padding: 0 8px; }
   .topSelect select { width: auto; margin-right: -21px; padding-right: 27px; font-size: 10px; }
   .selectChevron { display: block; right: 7px; top: 8px; }
@@ -1624,4 +1624,31 @@ tfoot td { color: #fff; border: 0; font-weight: 800; }
   .topbarTools .syncPill svg { display: block; margin: 0; }
   .topbarTools .syncPill > span,
   .topbarTools .syncPill > i { display: none !important; }
+}
+
+/* ══ SIDEBAR ESTADO CORRETO (definitivo) ══ */
+/* Desktop recolhida: mostrar só brandMark */
+.sidebarCollapsed .fullBrand {
+  display: none !important;
+  opacity: 0 !important;
+}
+.sidebarCollapsed .brandMark {
+  display: block !important;
+}
+/* Desktop aberta: mostrar fullBrand, esconder brandMark */
+.sidebar:not(.mobileOpen) .fullBrand {
+  display: flex;
+}
+.brandMark {
+  display: none;
+}
+/* Mobile: sidebar some - quando abre (mobileOpen) mostra fullBrand */
+@media (max-width: 760px) {
+  .sidebarCollapsed .fullBrand {
+    display: flex !important;
+    opacity: 1 !important;
+  }
+  .sidebarCollapsed .brandMark {
+    display: none !important;
+  }
 }
