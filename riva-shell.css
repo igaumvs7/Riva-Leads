@@ -1626,29 +1626,47 @@ tfoot td { color: #fff; border: 0; font-weight: 800; }
   .topbarTools .syncPill > i { display: none !important; }
 }
 
-/* ══ SIDEBAR ESTADO CORRETO (definitivo) ══ */
-/* Desktop recolhida: mostrar só brandMark */
+/* ══ SIDEBAR BRAND — ESTADO DEFINITIVO ══ */
+
+/* brandMark: hidden by default, shown only when collapsed (desktop) */
+.brandMark {
+  display: none !important;
+  width: 46px !important;
+  height: 46px !important;
+  padding: 5px !important;
+  background: #fff !important;
+  border-radius: 13px !important;
+  box-shadow: 0 8px 22px rgba(0,0,0,.2) !important;
+  object-fit: contain !important;
+}
+
+/* fullBrand: always shown when sidebar is open */
+.fullBrand {
+  display: flex !important;
+}
+
+/* Desktop collapsed: show brandMark, hide fullBrand */
 .sidebarCollapsed .fullBrand {
   display: none !important;
   opacity: 0 !important;
+  pointer-events: none !important;
 }
 .sidebarCollapsed .brandMark {
   display: block !important;
 }
-/* Desktop aberta: mostrar fullBrand, esconder brandMark */
-.sidebar:not(.mobileOpen) .fullBrand {
-  display: flex;
-}
-.brandMark {
-  display: none;
-}
-/* Mobile: sidebar some - quando abre (mobileOpen) mostra fullBrand */
+
+/* Mobile (max 760px): sidebar slides off-screen when sidebarCollapsed,
+   slides in as mobileOpen — always show fullBrand, never brandMark */
 @media (max-width: 760px) {
   .sidebarCollapsed .fullBrand {
     display: flex !important;
     opacity: 1 !important;
+    pointer-events: auto !important;
   }
   .sidebarCollapsed .brandMark {
+    display: none !important;
+  }
+  .brandMark {
     display: none !important;
   }
 }
