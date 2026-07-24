@@ -296,8 +296,27 @@ document.addEventListener('DOMContentLoaded', function(){
   document.getElementById('profileNome').textContent = nC;
   document.getElementById('profileCargo').textContent = S.user.cargo||'';
 
+  // Carregar cache local IMEDIATAMENTE (sem esperar Sheets)
+  var cached = localStorage.getItem('riva_agenda_cache');
+  if(cached){
+    try{
+      var cc = JSON.parse(cached);
+      S.config = cc.config || {};
+      S.reunioes = coletarReunioes();
+      // Update HIER from cached equipes
+      if(S.config.equipes){
+        var eq=S.config.equipes;
+        ['rene','cahu'].forEach(function(rr){
+          var arr=(eq[rr]||[]).filter(function(p){return p.ativo!==false;});
+          HIER[rr].gvs=arr.map(function(p){return p.nome;});
+          HIER[rr].emails={};arr.forEach(function(p){if(p.email)HIER[rr].emails[p.nome]=p.email;});
+        });
+      }
+    }catch(e){}
+  }
   navTo('cal');
-  setTimeout(loadRemote, 400);
+  // Sync remoto em background (não bloqueia UI)
+  setTimeout(loadRemote, 200);
 });
 
 function navTo(page){
@@ -377,6 +396,8 @@ async function loadRemote(){
       }
     }
     S.reunioes = coletarReunioes();
+    // Salvar cache local para carregamento rápido
+    localStorage.setItem('riva_agenda_cache', JSON.stringify({config: S.config, ts: Date.now()}));
     setSyn('ok'); renderPage();
   }catch(e){ setSyn('offline'); }
 }
@@ -535,19 +556,19 @@ function renderResumoContent(){
   var html = '';
   Object.keys(grupos).sort().forEach(function(ym){
     var d = new Date(ym+'-01T00:00');
-    html += '<h3 style="margin:20px 0 10px;font-size:13px;font-weight:850;color:var(--royal);letter-spacing:.06em;text-transform:uppercase">'+MS[d.getMonth()]+' '+d.getFullYear()+'</h3>';
+    html += '<h3 style="margin:20px 0 10px;font-size:13px;font-weight:850;color:#1648d8;letter-spacing:.06em;text-transform:uppercase">'+MS[d.getMonth()]+' '+d.getFullYear()+'</h3>';
     html += '<div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px">';
     grupos[ym].forEach(function(r){
       var cor = corPorEscopo(r.escopo);
       var dt = new Date(r.data+'T00:00');
       var isPast = r.data < hoje;
-      html += '<div onclick="editarReuniao(\''+r.id+'\')" style="display:flex;align-items:center;gap:14px;padding:12px 14px;background:#fff;border:1px solid var(--line);border-left:4px solid '+cor+';border-radius:10px;cursor:pointer;transition:.2s'+(isPast?';opacity:.55':'')+'" onmouseover="this.style.transform=\'translateX(2px)\'" onmouseout="this.style.transform=\'\'">'
+      html += '<div onclick="editarReuniao(\''+r.id+'\')" style="display:flex;align-items:center;gap:14px;padding:12px 14px;background:#fff;border:1px solid #dbe5f5;border-left:4px solid '+cor+';border-radius:10px;cursor:pointer;transition:.2s'+(isPast?';opacity:.55':'')+'" onmouseover="this.style.transform=\'translateX(2px)\'" onmouseout="this.style.transform=\'\'">'
         + '<div style="width:50px;text-align:center;flex-shrink:0">'
         + '<strong style="display:block;font-size:16px;font-weight:900;color:'+cor+';line-height:1">'+dt.getDate()+'</strong>'
         + '<small style="display:block;font-size:9px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-top:2px">'+DOW[dt.getDay()]+'</small>'
         + '</div>'
         + '<div style="flex:1;min-width:0">'
-        + '<strong style="display:block;font-size:13px;font-weight:750;color:var(--ink)">'+esc(r.titulo)+'</strong>'
+        + '<strong style="display:block;font-size:13px;font-weight:750;color:#0c1e48">'+esc(r.titulo)+'</strong>'
         + '<small style="display:block;font-size:11px;color:var(--muted);margin-top:2px">'+r.hora+' · '+(r.duracao||60)+'min'+(r.local?' · '+esc(r.local):'')+'</small>'
         + '</div>'
         + '<div style="padding:4px 10px;border-radius:6px;font-size:10px;font-weight:800;background:'+cor+'22;color:'+cor+';white-space:nowrap">'+labelEscopo(r)+'</div>'
