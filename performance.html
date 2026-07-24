@@ -1047,194 +1047,306 @@ function viewHouse(){
 
 function afterHouse(){
   var el=document.getElementById('houseAno');
-  if(el){ el.value=S.ano; el.addEventListener('change',function(){ var v=parseInt(this.value)||S.ano; if(v<2020)v=2020;if(v>2099)v=2099;S.ano=v;this.value=v;renderPage(); }); }
-  renderHouseCalc();
+  if(el){ el.value=S.ano; el.addEventListener('change',function(){ var v=parseInt(this.value)||S.ano; if(v<2020)v=2020;if(v>2099)v=2099; S.ano=v;this.value=v;renderPage(); }); }
+  window._hTab = window._hTab || 'gv';
+  hCalcKpis();
+  hSetTab(window._hTab);
 }
 
-function renderHouseCalc(){
-  var d = dadosHouse();
-  var metaRivaEl = document.getElementById('hMetaRiva');
-  var metaRiva = metaRivaEl ? parseNumBR(metaRivaEl.value) : (d.metaRiva||0);
+/* ── UTILS ─────────────────────────────────────────────────────── */
+function hNorm(el){
+  var raw=(el.value||'').replace(/R\$\s?/g,'').replace(/\./g,'').replace(',','.');
+  var v=parseFloat(raw)||0;
+  el.dataset.v=v;
+  el.value=v?fmtBRL(v):'';
+}
+function hVal(el){ return parseFloat(el.dataset.v||0)||parseNumBR(el.value); }
+function fmtM(v){ return fmtBRL(v)||'—'; }
+function pct(a,b){ return b>0?Math.round(a/b*100):0; }
+function pctStr(a,b){ var p=pct(a,b); return p+'%'; }
+function pctCor(p){ return p>=100?'#15a46f':p>=70?'#1e40af':'#dc2626'; }
+
+function hMetaRiva(){ return hVal(document.getElementById('hMetaRiva')||{dataset:{v:dadosHouse().metaRiva||0}}); }
+
+/* ── KPIs ────────────────────────────────────────────────────────── */
+function hCalcKpis(){
+  var d=dadosHouse();
+  var mRiva=hMetaRiva();
+  var gvs=getAllGVs(false).map(function(g){return typeof g==='object'?g.nome:g;}).concat(['Desligados']);
+  var totM=0,totR=0;
+  gvs.forEach(function(gv){ for(var m=1;m<=12;m++){ var mk=String(m).padStart(2,'0'); var gd=(d.gvs[gv]||{})[mk]||{}; totM+=gd.meta||0; totR+=gd.realizado||0; } });
+  var p=pct(totR,mRiva||totM);
+  var cor=pctCor(p);
+  var el=document.getElementById('hKpiGrid');
+  if(el) el.innerHTML=[
+    {l:'Realizado Total',v:fmtM(totR),s:pctStr(totR,mRiva)+(mRiva?' da meta RIVA':''), c:totR>=mRiva&&mRiva?'hKpiGreen':''},
+    {l:'Pendente',v:fmtM(Math.max(0,mRiva-totR)),s:'Para fechar o ano',c:mRiva&&mRiva>totR?'hKpiRed':'hKpiGreen'},
+    {l:'Soma Metas GVs',v:fmtM(totM),s:'Total das metas individuais',c:''},
+  ].map(function(k){ return '<div class="hKpi '+k.c+'"><div class="hKpiLabel">'+k.l+'</div><div class="hKpiVal">'+k.v+'</div><div class="hKpiSub" style="color:#9aa5b9">'+k.s+'</div></div>'; }).join('');
+  var calc=document.getElementById('hMetaCalcTxt');
+  if(calc&&mRiva) calc.innerHTML='<strong>'+fmtM(mRiva)+'</strong> — '+p+'% realizado';
+}
+
+/* ── TAB SYSTEM ───────────────────────────────────────────────── */
+function hSetTab(tab){
+  window._hTab=tab;
+  ['gv','tri','dir','reg'].forEach(function(t){
+    var btn=document.getElementById('htab-'+t);
+    if(btn) btn.className=t===tab?'active':'';
+  });
+  var el=document.getElementById('hTabContent');
+  if(!el) return;
+  if(tab==='gv')  el.innerHTML=hTabGV();
+  if(tab==='tri') el.innerHTML=hTabTri();
+  if(tab==='dir') el.innerHTML=hTabDir();
+  if(tab==='reg') el.innerHTML=hTabReg();
+}
+
+/* ── TAB: GERENTES ───────────────────────────────────────────── */
+function hTabGV(){
+  var d=dadosHouse();
   var MS3=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-  var gvAtivos = getAllGVs(false).map(function(g){return typeof g==='object'?g.nome:g;});
-  var allGVs = gvAtivos.concat(['Desligados']);
-  var dirNames = d.dirNames && d.dirNames.length ? d.dirNames : Object.keys(d.diretores||{}).length ? Object.keys(d.diretores) : ['Humberto','Diretor 02','Edvan','Mercado'];
+  var gvs=getAllGVs(false).map(function(g){return typeof g==='object'?g.nome:g;}).concat(['Desligados']);
+  var totM=new Array(12).fill(0), totR=new Array(12).fill(0);
 
-  // Meta RIVA calc display
-  var calcEl=document.getElementById('hMetaRivaCalc');
-  if(calcEl&&metaRiva) calcEl.innerHTML='Meta do ano: <strong>'+fmtBRL(metaRiva)+'</strong>';
-
-  var INP_STYLE_META='width:100%;min-width:88px;padding:6px 8px;border:1.5px solid #fecdd3;border-radius:7px;font-size:12px;text-align:right;background:#fff5f5;font-family:inherit;color:#0c1e48;font-weight:600';
-  var INP_STYLE_REAL='width:100%;min-width:88px;padding:6px 8px;border:1.5px solid #bbf7d0;border-radius:7px;font-size:12px;text-align:right;background:#f0fff8;font-family:inherit;color:#0c1e48;font-weight:600';
-  var INP_STYLE_DIR='width:100%;min-width:88px;padding:6px 8px;border:1.5px solid #dbe5f5;border-radius:7px;font-size:12px;text-align:right;background:#f8faff;font-family:inherit;color:#0c1e48;font-weight:600';
-
-  function cell(htype, nome, mes, field, val, style){
-    var v=val||0; var display=v?fmtBRL(v):'';
-    return '<td style="padding:4px 6px"><input data-htype="'+htype+'" data-nome="'+nome+'" data-mes="'+mes+'"'+(field?' data-field="'+field+'"':'')+' value="'+display+'" placeholder="" onfocus="this.select()" onblur="normalizarCampoHouse(this)" style="'+style+'"></td>';
-  }
-  function tdRead(v, bg, color){
-    return '<td style="text-align:right;padding:8px 10px;font-size:12px;font-weight:800;background:'+(bg||'transparent')+';color:'+(color||'inherit')+'">'+fmtBRL(v)+'</td>';
-  }
-  function pctColor(p){ return p>=100?'#15a46f':p>=70?'#1e40af':'#dc2626'; }
-
-  // ── KPIs ──
-  var kpiEl=document.getElementById('houseKpiRow');
-  if(kpiEl){
-    var totM=0,totR=0;
-    allGVs.forEach(function(gv){var gd=d.gvs[gv]||{};for(var im=1;im<=12;im++){var mk=String(im).padStart(2,'0');totM+=(gd[mk]||{}).meta||0;totR+=(gd[mk]||{}).realizado||0;}});
-    var p=metaRiva>0?Math.round(totR/metaRiva*100):0;var cor=pctColor(p);
-    kpiEl.innerHTML=[
-      {l:'Meta RIVA',v:fmtBRL(metaRiva),s:'Meta anual'},
-      {l:'Realizado Total',v:fmtBRL(totR),s:p+'% da meta RIVA'},
-      {l:'Pendente',v:fmtBRL(Math.max(0,metaRiva-totR)),s:'Para fechar'},
-      {l:'Soma Metas GVs',v:fmtBRL(totM),s:'Total metas individuais'},
-    ].map(function(k){return '<div class="pKpi"><span>'+k.l+'</span><strong>'+k.v+'</strong><small>'+k.s+'</small></div>';}).join('');
-  }
-
-  // ── GVs Mensal ──
-  var gvBody=document.getElementById('hGvBody'),gvFoot=document.getElementById('hGvFoot');
-  if(gvBody){
-    var totMM=new Array(12).fill(0),totRM=new Array(12).fill(0);
-    gvBody.innerHTML=allGVs.map(function(gv,gi){
-      var gd=d.gvs[gv]||{};
-      var isD=gv==='Desligados';
-      var rs=isD?'border-top:2px solid #dc2626;':'';
-      var bg=gi%2===0?'#fff':'#fafbfe';if(isD)bg='#fff9f9';
-      var anoM=0,anoR=0;
-      var rMeta='<tr style="background:'+bg+';'+rs+'"><td rowspan="3" style="padding:10px 14px;font-size:13px;font-weight:800;color:'+(isD?'#dc2626':'#0c1e48')+';white-space:nowrap;position:sticky;left:0;background:'+bg+'">'+gv+'</td><td style="padding:4px 8px;font-size:10px;font-weight:900;color:#dc2626;white-space:nowrap;width:70px">META</td>';
-      var rReal='<tr style="background:'+bg+'"><td style="padding:4px 8px;font-size:10px;font-weight:900;color:#15a46f;white-space:nowrap">REALIZADO</td>';
-      var rPend='<tr style="background:'+bg+';border-bottom:1px solid #eef1f7"><td style="padding:4px 8px;font-size:10px;font-weight:900;color:#687695;white-space:nowrap">PENDENTE</td>';
-      var rAnoM=0,rAnoR=0;
-      for(var im=0;im<12;im++){
-        var mk=String(im+1).padStart(2,'0');
-        var m=(gd[mk]||{}).meta||0, r=(gd[mk]||{}).realizado||0, p2=m-r;
-        totMM[im]+=m;totRM[im]+=r;anoM+=m;anoR+=r;rAnoM+=m;rAnoR+=r;
-        rMeta+=cell('gv',gv,mk,'meta',m,INP_STYLE_META);
-        rReal+=cell('gv',gv,mk,'realizado',r,INP_STYLE_REAL);
-        rPend+='<td style="padding:4px 6px;text-align:right;font-size:12px;font-weight:700;color:'+(p2>0?'#dc2626':p2<0?'#15a46f':'#aab')+'">'+fmtBRL(p2)+'</td>';
-      }
-      rMeta+=tdRead(anoM,'#eef3ff','#1648d8')+'</tr>';
-      rReal+=tdRead(anoR,'#eef3ff','#15a46f')+'</tr>';
-      var pAno=rAnoM-rAnoR;
-      rPend+=tdRead(pAno,'#eef3ff',pAno>0?'#dc2626':'#15a46f')+'</tr>';
-      return rMeta+rReal+rPend;
-    }).join('');
-    if(gvFoot){
-      var aTM=0,aTR=0;
-      gvFoot.innerHTML='<tr style="background:#eef3ff"><td style="padding:10px 14px;font-size:12px;font-weight:900;position:sticky;left:0;background:#eef3ff" colspan="2">TOTAL</td>'
-        +MS3.map(function(m,i){aTM+=totMM[i];aTR+=totRM[i];var p2=totMM[i]-totRM[i];
-          return '<td style="padding:8px 10px;text-align:right;font-size:11px"><div style="font-weight:800">'+fmtBRL(totMM[i])+'</div><div style="color:#15a46f;font-size:10px">'+fmtBRL(totRM[i])+'</div><div style="color:'+(p2>0?'#dc2626':'#15a46f')+';font-size:10px">'+fmtBRL(p2)+'</div></td>';
-        }).join('')
-        +'<td style="padding:8px 10px;text-align:right;background:#dce8ff;font-size:11px"><div style="font-weight:800">'+fmtBRL(aTM)+'</div><div style="color:#15a46f;font-size:10px">'+fmtBRL(aTR)+'</div><div style="color:'+(aTM-aTR>0?'#dc2626':'#15a46f')+';font-size:10px">'+fmtBRL(aTM-aTR)+'</div></td></tr>';
+  var rows=gvs.map(function(gv){
+    var gd=d.gvs[gv]||{};
+    var isD=gv==='Desligados';
+    var anoM=0,anoR=0;
+    var rMeta='', rReal='', rPend='';
+    for(var i=0;i<12;i++){
+      var mk=String(i+1).padStart(2,'0');
+      var md=(gd[mk]||{});
+      var m=md.meta||0, r=md.realizado||0, pd=m-r;
+      totM[i]+=m; totR[i]+=r; anoM+=m; anoR+=r;
+      rMeta+='<td><input class="hIn hInMeta" data-htype="gv" data-nome="'+gv+'" data-mes="'+mk+'" data-field="meta" value="'+fmtBRL(m)+'" onfocus="this.select()" onblur="hNorm(this)" placeholder=""></td>';
+      rReal+='<td><input class="hIn hInReal" data-htype="gv" data-nome="'+gv+'" data-mes="'+mk+'" data-field="realizado" value="'+fmtBRL(r)+'" onfocus="this.select()" onblur="hNorm(this)" placeholder=""></td>';
+      rPend+='<td><span class="hPendVal '+(m?pd>0?'neg':'pos':'zero')+'">'+fmtBRL(pd)+'</span></td>';
     }
-  }
+    var anoP=anoM-anoR; var pp=pct(anoR,anoM); var pc=pctCor(pp);
+    var prefix=isD?'hDesligRow':'hGvRow';
+    return '<tr class="'+prefix+'"><td rowspan="3" style="border-bottom:3px solid #edf1f7;vertical-align:middle;padding:10px 14px">'+
+      (isD?'<span style="color:#dc2626;font-size:12px;font-weight:800">'+gv+'</span>':'<span style="font-size:13px;font-weight:800">'+gv+'</span>')+
+      '</td><td class="hLabel lMeta" rowspan="1">META</td>'+rMeta+
+      '<td class="hAnoCol" style="padding:5px 10px;text-align:right"><span style="font-size:11px;font-weight:800;color:#1648d8">'+fmtM(anoM)+'</span></td></tr>'+
+      '<tr class="'+prefix+'"><td class="hLabel lReal">REAL</td>'+rReal+
+      '<td class="hAnoCol hAnoGreen" style="padding:5px 10px;text-align:right"><span style="font-size:11px;font-weight:800;color:#15a46f">'+fmtM(anoR)+'</span></td></tr>'+
+      '<tr class="'+prefix+'" style="border-bottom:2px solid #e8edf6"><td class="hLabel lPend">PEND</td>'+rPend+
+      '<td class="hAnoCol '+(anoP>0?'hAnoRed':'hAnoGreen')+'" style="padding:5px 10px;text-align:right">'+
+        '<span style="font-size:11px;font-weight:800;color:'+pc+'">'+pctStr(anoR,anoM)+'</span>'+
+        '<div class="hBar"><div class="hBarFill" style="width:'+Math.min(pp,100)+'%;background:'+pc+'"></div></div>'+
+      '</td></tr>';
+  }).join('');
 
-  // ── Trimestral ──
-  var tBody=document.getElementById('hTriBody'),tFoot=document.getElementById('hTriFoot');
-  if(tBody){
-    var tris=[[0,1,2],[3,4,5],[6,7,8],[9,10,11]];
-    var totTM=[0,0,0,0],totTR=[0,0,0,0];
-    tBody.innerHTML=allGVs.map(function(gv,gi){
-      var gd=d.gvs[gv]||{};var isD=gv==='Desligados';
-      var bg=gi%2===0?'#fff':'#fafbfe';if(isD)bg='#fff9f9';
-      var rs=isD?'border-top:2px solid #dc2626;':'';
-      var anoM=0,anoR=0;
-      var rM='<tr style="background:'+bg+';'+rs+'"><td rowspan="3" style="padding:10px 14px;font-size:13px;font-weight:800;color:'+(isD?'#dc2626':'#0c1e48')+';white-space:nowrap">'+gv+'</td><td style="padding:4px 8px;font-size:10px;font-weight:900;color:#dc2626">META</td>';
-      var rR='<tr style="background:'+bg+'"><td style="padding:4px 8px;font-size:10px;font-weight:900;color:#15a46f">REALIZADO</td>';
-      var rP='<tr style="background:'+bg+';border-bottom:1px solid #eef1f7"><td style="padding:4px 8px;font-size:10px;font-weight:900;color:#687695">PENDENTE</td>';
-      tris.forEach(function(t,ti){
-        var m=0,r=0;t.forEach(function(i){var mk=String(i+1).padStart(2,'0');m+=(gd[mk]||{}).meta||0;r+=(gd[mk]||{}).realizado||0;});
-        anoM+=m;anoR+=r;totTM[ti]+=m;totTR[ti]+=r;
-        rM+=tdRead(m,'','#0c1e48');rR+=tdRead(r,'','#15a46f');
-        var p2=m-r;rP+='<td style="text-align:right;padding:8px 10px;font-size:12px;font-weight:700;color:'+(p2>0?'#dc2626':p2<0?'#15a46f':'#aab')+'">'+fmtBRL(p2)+'</td>';
-      });
-      rM+=tdRead(anoM,'#eef3ff','#1648d8')+'</tr>';
-      rR+=tdRead(anoR,'#eef3ff','#15a46f')+'</tr>';
-      rP+=tdRead(anoM-anoR,'#eef3ff',anoM-anoR>0?'#dc2626':'#15a46f')+'</tr>';
-      return rM+rR+rP;
-    }).join('');
-    if(tFoot){
-      var aaTM=0,aaTR=0;
-      tFoot.innerHTML='<tr style="background:#eef3ff"><td style="padding:10px 14px;font-size:12px;font-weight:900" colspan="2">TOTAL</td>'
-        +tris.map(function(t,ti){aaTM+=totTM[ti];aaTR+=totTR[ti];var p2=totTM[ti]-totTR[ti];
-          return '<td style="padding:8px 12px;text-align:right;font-size:11px"><div style="font-weight:800">'+fmtBRL(totTM[ti])+'</div><div style="color:#15a46f;font-size:10px">'+fmtBRL(totTR[ti])+'</div><div style="color:'+(p2>0?'#dc2626':'#15a46f')+';font-size:10px">'+fmtBRL(p2)+'</div></td>';
-        }).join('')
-        +'<td style="padding:8px 12px;text-align:right;background:#dce8ff;font-size:11px"><div style="font-weight:800">'+fmtBRL(aaTM)+'</div><div style="color:#15a46f;font-size:10px">'+fmtBRL(aaTR)+'</div><div style="color:'+(aaTM-aaTR>0?'#dc2626':'#15a46f')+';font-size:10px">'+fmtBRL(aaTM-aaTR)+'</div></td></tr>';
-    }
-  }
+  // Total row
+  var aTM=0,aTR=0;
+  var tCells=MS3.map(function(m,i){ aTM+=totM[i];aTR+=totR[i]; var p2=totM[i]-totR[i]; return '<td style="padding:8px 12px;text-align:right"><div style="font-size:11px;font-weight:800">'+fmtM(totM[i])+'</div><div style="font-size:10px;color:#15a46f">'+fmtM(totR[i])+'</div><div style="font-size:10px;color:'+(p2>0?'#dc2626':'#15a46f')+'">'+fmtBRL(p2)+'</div></td>'; }).join('');
 
-  // ── Diretores ──
-  var dBody=document.getElementById('hDirBody'),dFoot=document.getElementById('hDirFoot');
-  if(dBody){
-    var totDM=new Array(12).fill(0);
-    dBody.innerHTML=dirNames.map(function(nome,gi){
-      var dd=d.diretores[nome]||{};var bg=gi%2===0?'#fff':'#fafbfe';var anoT=0;
-      var cells=MS3.map(function(m,i){var mk=String(i+1).padStart(2,'0');var v=dd[mk]||0;totDM[i]+=v;anoT+=v;return cell('dir',nome,mk,null,v,INP_STYLE_DIR);}).join('');
-      return '<tr style="background:'+bg+'"><td style="padding:10px 14px;position:sticky;left:0;background:'+bg+'">'
-        +'<input class="dirNameInput" data-nome="'+nome+'" value="'+nome+'" style="border:0;background:transparent;font-size:13px;font-weight:800;color:#0c1e48;width:140px;font-family:inherit" title="Clique para editar nome"></td>'
-        +cells+tdRead(anoT,'#eef3ff','#1648d8')
-        +'<td style="padding:4px 8px"><button onclick="removeDiretor(\''+nome+'\')" style="border:0;background:transparent;color:#dc2626;font-size:16px;cursor:pointer;padding:2px 6px">×</button></td></tr>';
-    }).join('');
-    if(dFoot){
-      var aaDT=0;
-      dFoot.innerHTML='<tr style="background:#eef3ff"><td style="padding:10px 14px;font-size:12px;font-weight:900;position:sticky;left:0;background:#eef3ff">TOTAL</td>'
-        +MS3.map(function(m,i){aaDT+=totDM[i];return tdRead(totDM[i],'',i===11?'#1648d8':'#0c1e48');}).join('')
-        +tdRead(aaDT,'#dce8ff','#1648d8')+'<td></td></tr>';
-    }
-  }
-
-  // ── Regionais ──
-  var rBody=document.getElementById('hRegBody'),rFoot=document.getElementById('hRegFoot');
-  if(rBody){
-    var regNomes={rene:'Regional Rene',cahu:'Regional Cahú'};
-    var totRM2=new Array(12).fill(0),totRR2=new Array(12).fill(0);
-    rBody.innerHTML=['rene','cahu'].map(function(reg,gi){
-      var rd=d.regionais[reg]||{};var bg=gi%2===0?'#fff':'#fafbfe';var anoM=0,anoR=0;
-      var rM='<tr style="background:'+bg+'"><td rowspan="3" style="padding:10px 14px;font-size:13px;font-weight:800;color:#0c1e48;white-space:nowrap;position:sticky;left:0;background:'+bg+'">'+regNomes[reg]+'</td><td style="padding:4px 8px;font-size:10px;font-weight:900;color:#dc2626">META</td>';
-      var rR='<tr style="background:'+bg+'"><td style="padding:4px 8px;font-size:10px;font-weight:900;color:#15a46f">REALIZADO</td>';
-      var rP='<tr style="background:'+bg+';border-bottom:2px solid #eef1f7"><td style="padding:4px 8px;font-size:10px;font-weight:900;color:#687695">PENDENTE</td>';
-      for(var im=0;im<12;im++){
-        var mk=String(im+1).padStart(2,'0');
-        var m=(rd[mk]||{}).meta||0,r=(rd[mk]||{}).realizado||0;
-        totRM2[im]+=m;totRR2[im]+=r;anoM+=m;anoR+=r;
-        rM+=cell('reg',reg,mk,'meta',m,INP_STYLE_META);
-        rR+=cell('reg',reg,mk,'realizado',r,INP_STYLE_REAL);
-        var p2=m-r;rP+='<td style="padding:4px 6px;text-align:right;font-size:12px;font-weight:700;color:'+(p2>0?'#dc2626':p2<0?'#15a46f':'#aab')+'">'+fmtBRL(p2)+'</td>';
-      }
-      rM+=tdRead(anoM,'#eef3ff','#1648d8')+'</tr>';
-      rR+=tdRead(anoR,'#eef3ff','#15a46f')+'</tr>';
-      rP+=tdRead(anoM-anoR,'#eef3ff',anoM-anoR>0?'#dc2626':'#15a46f')+'</tr>';
-      return rM+rR+rP;
-    }).join('');
-    if(rFoot){
-      var aaRM=0,aaRR=0;
-      rFoot.innerHTML='<tr style="background:#eef3ff"><td style="padding:10px 14px;font-size:12px;font-weight:900;position:sticky;left:0;background:#eef3ff" colspan="2">TOTAL</td>'
-        +MS3.map(function(m,i){aaRM+=totRM2[i];aaRR+=totRR2[i];var p2=totRM2[i]-totRR2[i];
-          return '<td style="padding:8px 10px;text-align:right;font-size:11px"><div style="font-weight:800">'+fmtBRL(totRM2[i])+'</div><div style="color:#15a46f;font-size:10px">'+fmtBRL(totRR2[i])+'</div><div style="color:'+(p2>0?'#dc2626':'#15a46f')+';font-size:10px">'+fmtBRL(p2)+'</div></td>';
-        }).join('')
-        +'<td style="padding:8px 10px;text-align:right;background:#dce8ff;font-size:11px"><div style="font-weight:800">'+fmtBRL(aaRM)+'</div><div style="color:#15a46f;font-size:10px">'+fmtBRL(aaRR)+'</div><div style="color:'+(aaRM-aaRR>0?'#dc2626':'#15a46f')+';font-size:10px">'+fmtBRL(aaRM-aaRR)+'</div></td></tr>';
-    }
-  }
+  return '<div class="hCard">'+
+    '<div class="hCardHead"><div><div class="hCardTitle">Gerentes de Vendas · Meta vs Realizado</div><div class="hCardSub">Meta em vermelho · Realizado em verde · Pendente calculado</div></div>'+
+    '<span class="hCardBadge">'+gvs.length+' gerentes</span></div>'+
+    '<div class="hTable"><table>'+
+    '<thead><tr><th style="min-width:130px">Gerente</th><th style="min-width:60px"></th>'+
+    MS3.map(function(m){ return '<th style="min-width:100px;text-align:right">'+m+'</th>'; }).join('')+
+    '<th style="min-width:100px;text-align:right;background:#eef3ff;border-left:2px solid #c7d8ff">Ano</th></tr></thead>'+
+    '<tbody>'+rows+'</tbody>'+
+    '<tfoot><tr class="hTotalRow"><td colspan="2">TOTAL</td>'+tCells+
+    '<td class="hAnoCol" style="padding:8px 12px;text-align:right"><div style="font-size:12px;font-weight:800;color:#1648d8">'+fmtM(aTM)+'</div><div style="font-size:11px;color:#15a46f">'+fmtM(aTR)+'</div></td></tr></tfoot>'+
+    '</table></div></div>';
 }
 
-function renderHouse(){ renderHouseCalc(); }
+/* ── TAB: TRIMESTRAL ─────────────────────────────────────────── */
+function hTabTri(){
+  var d=dadosHouse();
+  var gvs=getAllGVs(false).map(function(g){return typeof g==='object'?g.nome:g;}).concat(['Desligados']);
+  var tris=[[0,1,2],[3,4,5],[6,7,8],[9,10,11]];
+  var triLabel=['1° Tri','2° Tri','3° Tri','4° Tri'];
+  var totTM=[0,0,0,0],totTR=[0,0,0,0];
 
+  var rows=gvs.map(function(gv){
+    var gd=d.gvs[gv]||{};
+    var isD=gv==='Desligados';
+    var anoM=0,anoR=0;
+    var rMeta='',rReal='',rPend='';
+    tris.forEach(function(t,ti){
+      var m=0,r=0;
+      t.forEach(function(i){ var mk=String(i+1).padStart(2,'0'); var md=(gd[mk]||{}); m+=md.meta||0; r+=md.realizado||0; });
+      totTM[ti]+=m; totTR[ti]+=r; anoM+=m; anoR+=r;
+      var pd=m-r; var pp=pct(r,m);
+      rMeta+='<td style="text-align:right;padding:8px 12px;font-size:12px;font-weight:800;color:#0c1e48">'+fmtM(m)+'</td>';
+      rReal+='<td style="text-align:right;padding:8px 12px;font-size:12px;font-weight:800;color:#15a46f">'+fmtM(r)+'</td>';
+      rPend+='<td style="text-align:right;padding:8px 12px;font-size:12px;font-weight:800;color:'+(m?pd>0?'#dc2626':'#15a46f':'#c0c8d6')+'">'+fmtM(pd)+'</td>';
+    });
+    var pp2=pct(anoR,anoM);var pc=pctCor(pp2);
+    var prefix=isD?'hDesligRow':'hGvRow';
+    return '<tr class="'+prefix+'"><td rowspan="3" style="border-bottom:3px solid #edf1f7;vertical-align:middle;padding:10px 14px">'+
+      '<span style="font-size:13px;font-weight:800;color:'+(isD?'#dc2626':'#0c1e48')+'">'+gv+'</span></td>'+
+      '<td class="hLabel lMeta">META</td>'+rMeta+
+      '<td class="hAnoCol" style="padding:8px 12px;text-align:right;font-size:12px;font-weight:800;color:#1648d8">'+fmtM(anoM)+'</td></tr>'+
+      '<tr class="'+prefix+'"><td class="hLabel lReal">REAL</td>'+rReal+
+      '<td class="hAnoCol hAnoGreen" style="padding:8px 12px;text-align:right;font-size:12px;font-weight:800;color:#15a46f">'+fmtM(anoR)+'</td></tr>'+
+      '<tr class="'+prefix+'" style="border-bottom:2px solid #e8edf6"><td class="hLabel lPend">PEND</td>'+rPend+
+      '<td class="hAnoCol '+(anoM-anoR>0?'hAnoRed':'hAnoGreen')+'" style="padding:8px 12px;text-align:right">'+
+        '<span style="font-size:12px;font-weight:800;color:'+pc+'">'+pctStr(anoR,anoM)+'</span>'+
+        '<div class="hBar" style="margin-top:4px"><div class="hBarFill" style="width:'+Math.min(pp2,100)+'%;background:'+pc+'"></div></div>'+
+      '</td></tr>';
+  }).join('');
+
+  var aTM=0,aTR=0;
+  var tCells=tris.map(function(t,ti){ aTM+=totTM[ti];aTR+=totTR[ti]; var p2=totTM[ti]-totTR[ti]; return '<td style="padding:10px 12px;text-align:right"><div style="font-size:12px;font-weight:800">'+fmtM(totTM[ti])+'</div><div style="font-size:11px;color:#15a46f">'+fmtM(totTR[ti])+'</div><div style="font-size:11px;color:'+(p2>0?'#dc2626':'#15a46f')+'">'+fmtBRL(p2)+'</div></td>'; }).join('');
+
+  return '<div class="hCard">'+
+    '<div class="hCardHead"><div><div class="hCardTitle">Trimestral · Meta vs Realizado</div><div class="hCardSub">Calculado automaticamente dos dados mensais</div></div></div>'+
+    '<div class="hTable"><table>'+
+    '<thead><tr><th style="min-width:130px">Gerente</th><th style="min-width:60px"></th>'+
+    triLabel.map(function(l){ return '<th style="text-align:right;min-width:120px">'+l+'</th>'; }).join('')+
+    '<th style="text-align:right;min-width:110px;background:#eef3ff;border-left:2px solid #c7d8ff">Ano</th></tr></thead>'+
+    '<tbody>'+rows+'</tbody>'+
+    '<tfoot><tr class="hTotalRow"><td colspan="2">TOTAL</td>'+tCells+
+    '<td class="hAnoCol" style="padding:10px 12px;text-align:right"><div style="font-size:12px;font-weight:800;color:#1648d8">'+fmtM(aTM)+'</div><div style="font-size:11px;color:#15a46f">'+fmtM(aTR)+'</div></td></tr></tfoot>'+
+    '</table></div></div>';
+}
+
+/* ── TAB: DIRETORES ──────────────────────────────────────────── */
+function hTabDir(){
+  var d=dadosHouse();
+  var MS3=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  var dirNames=(d.dirNames&&d.dirNames.length)?d.dirNames:Object.keys(d.diretores||{}).length?Object.keys(d.diretores):['Humberto','Diretor 02','Edvan','Mercado'];
+  var totD=new Array(12).fill(0);
+
+  var rows=dirNames.map(function(nome){
+    var dd=d.diretores[nome]||{};
+    var anoT=0;
+    var cells=MS3.map(function(m,i){
+      var mk=String(i+1).padStart(2,'0'); var v=dd[mk]||0; totD[i]+=v; anoT+=v;
+      return '<td><input class="hIn hInDir" data-htype="dir" data-nome="'+nome+'" data-mes="'+mk+'" value="'+fmtBRL(v)+'" onfocus="this.select()" onblur="hNorm(this)" placeholder=""></td>';
+    }).join('');
+    return '<tr><td style="padding:8px 14px;vertical-align:middle">'+
+      '<input class="hDirName dirNameInput" data-nome="'+nome+'" value="'+nome+'" title="Clique para editar nome"></td>'+
+      cells+
+      '<td class="hAnoCol" style="padding:8px 12px;text-align:right;font-size:12px;font-weight:800;color:#1648d8">'+fmtM(anoT)+'</td>'+
+      '<td style="padding:4px 8px"><button onclick="removeDiretor(\''+nome+'\')" style="border:0;background:transparent;color:#dc2626;font-size:18px;cursor:pointer;line-height:1;padding:0 4px" title="Remover">×</button></td></tr>';
+  }).join('');
+
+  var aTD=0;
+  var tCells=MS3.map(function(m,i){ aTD+=totD[i]; return '<td style="padding:10px 12px;text-align:right;font-size:12px;font-weight:800;color:#0c1e48">'+fmtM(totD[i])+'</td>'; }).join('');
+
+  return '<div class="hCard">'+
+    '<div class="hCardHead"><div><div class="hCardTitle">Diretores · Realizado Mensal</div><div class="hCardSub">Clique no nome para editar · × para remover</div></div>'+
+    '<button class="pSaveBtn" onclick="addDiretor()" style="font-size:11px">+ Diretoria</button></div>'+
+    '<div class="hTable"><table>'+
+    '<thead><tr><th style="min-width:160px">Diretoria</th>'+
+    MS3.map(function(m){ return '<th style="text-align:right;min-width:100px">'+m+'</th>'; }).join('')+
+    '<th style="text-align:right;min-width:100px;background:#eef3ff;border-left:2px solid #c7d8ff">Total</th><th></th></tr></thead>'+
+    '<tbody>'+rows+'</tbody>'+
+    '<tfoot><tr class="hTotalRow"><td>TOTAL</td>'+tCells+
+    '<td class="hAnoCol" style="padding:10px 12px;text-align:right;font-size:12px;font-weight:800;color:#1648d8">'+fmtM(aTD)+'</td><td></td></tr></tfoot>'+
+    '</table></div></div>';
+}
+
+/* ── TAB: REGIONAIS ──────────────────────────────────────────── */
+function hTabReg(){
+  var d=dadosHouse();
+  var MS3=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  var regList=[{k:'rene',l:'Regional Rene'},{k:'cahu',l:'Regional Cahú'}];
+  var totM=new Array(12).fill(0),totR=new Array(12).fill(0);
+
+  var rows=regList.map(function(reg){
+    var rd=d.regionais[reg.k]||{};
+    var anoM=0,anoR=0;
+    var rMeta='',rReal='',rPend='';
+    for(var i=0;i<12;i++){
+      var mk=String(i+1).padStart(2,'0'); var md=rd[mk]||{};
+      var m=md.meta||0, r=md.realizado||0, pd=m-r;
+      totM[i]+=m; totR[i]+=r; anoM+=m; anoR+=r;
+      rMeta+='<td><input class="hIn hInMeta" data-htype="reg" data-nome="'+reg.k+'" data-mes="'+mk+'" data-field="meta" value="'+fmtBRL(m)+'" onfocus="this.select()" onblur="hNorm(this)" placeholder=""></td>';
+      rReal+='<td><input class="hIn hInReal" data-htype="reg" data-nome="'+reg.k+'" data-mes="'+mk+'" data-field="realizado" value="'+fmtBRL(r)+'" onfocus="this.select()" onblur="hNorm(this)" placeholder=""></td>';
+      rPend+='<td><span class="hPendVal '+(m?pd>0?'neg':'pos':'zero')+'">'+fmtBRL(pd)+'</span></td>';
+    }
+    var pp=pct(anoR,anoM); var pc=pctCor(pp);
+    return '<tr><td rowspan="3" style="border-bottom:3px solid #edf1f7;vertical-align:middle;padding:10px 14px;font-size:13px;font-weight:800">'+reg.l+'</td>'+
+      '<td class="hLabel lMeta">META</td>'+rMeta+
+      '<td class="hAnoCol" style="padding:5px 10px;text-align:right;font-size:12px;font-weight:800;color:#1648d8">'+fmtM(anoM)+'</td></tr>'+
+      '<tr><td class="hLabel lReal">REAL</td>'+rReal+
+      '<td class="hAnoCol hAnoGreen" style="padding:5px 10px;text-align:right;font-size:12px;font-weight:800;color:#15a46f">'+fmtM(anoR)+'</td></tr>'+
+      '<tr style="border-bottom:2px solid #e8edf6"><td class="hLabel lPend">PEND</td>'+rPend+
+      '<td class="hAnoCol '+(anoM-anoR>0?'hAnoRed':'hAnoGreen')+'" style="padding:5px 10px;text-align:right">'+
+        '<span style="font-size:12px;font-weight:800;color:'+pc+'">'+pctStr(anoR,anoM)+'</span>'+
+        '<div class="hBar" style="margin-top:4px"><div class="hBarFill" style="width:'+Math.min(pp,100)+'%;background:'+pc+'"></div></div>'+
+      '</td></tr>';
+  }).join('');
+
+  var aTM=0,aTR=0;
+  var tCells=MS3.map(function(m,i){ aTM+=totM[i];aTR+=totR[i]; var p2=totM[i]-totR[i]; return '<td style="padding:8px 12px;text-align:right"><div style="font-size:11px;font-weight:800">'+fmtM(totM[i])+'</div><div style="font-size:10px;color:#15a46f">'+fmtM(totR[i])+'</div><div style="font-size:10px;color:'+(p2>0?'#dc2626':'#15a46f')+'">'+fmtBRL(p2)+'</div></td>'; }).join('');
+
+  return '<div class="hCard">'+
+    '<div class="hCardHead"><div><div class="hCardTitle">Regionais · Meta vs Realizado</div><div class="hCardSub">Meta em vermelho · Realizado em verde</div></div></div>'+
+    '<div class="hTable"><table>'+
+    '<thead><tr><th style="min-width:150px">Regional</th><th style="min-width:60px"></th>'+
+    MS3.map(function(m){ return '<th style="text-align:right;min-width:100px">'+m+'</th>'; }).join('')+
+    '<th style="text-align:right;min-width:100px;background:#eef3ff;border-left:2px solid #c7d8ff">Ano</th></tr></thead>'+
+    '<tbody>'+rows+'</tbody>'+
+    '<tfoot><tr class="hTotalRow"><td colspan="2">TOTAL</td>'+tCells+
+    '<td class="hAnoCol" style="padding:8px 12px;text-align:right"><div style="font-size:12px;font-weight:800;color:#1648d8">'+fmtM(aTM)+'</div><div style="font-size:11px;color:#15a46f">'+fmtM(aTR)+'</div></td></tr></tfoot>'+
+    '</table></div></div>';
+}
+
+/* ── SAVE ─────────────────────────────────────────────────────── */
+function hSalvar(){
+  var dirRenames={};
+  document.querySelectorAll('.dirNameInput').forEach(function(el){
+    var o=el.dataset.nome,n=(el.value||'').trim();
+    if(n&&n!==o) dirRenames[o]=n;
+  });
+  var metaRiva=hVal(document.getElementById('hMetaRiva')||{dataset:{v:0}});
+  var gvs={};
+  document.querySelectorAll('[data-htype="gv"]').forEach(function(el){
+    var nome=el.dataset.nome,mes=el.dataset.mes,field=el.dataset.field;
+    if(!gvs[nome]) gvs[nome]={};
+    if(!gvs[nome][mes]) gvs[nome][mes]={meta:0,realizado:0};
+    gvs[nome][mes][field]=hVal(el);
+  });
+  var dirs={},dirNames=[];
+  document.querySelectorAll('[data-htype="dir"]').forEach(function(el){
+    var nome=el.dataset.nome,mes=el.dataset.mes;
+    var dn=dirRenames[nome]||nome;
+    if(!dirs[dn]) dirs[dn]={};
+    dirs[dn][mes]=hVal(el);
+    if(dirNames.indexOf(dn)<0) dirNames.push(dn);
+  });
+  var regs={};
+  document.querySelectorAll('[data-htype="reg"]').forEach(function(el){
+    var nome=el.dataset.nome,mes=el.dataset.mes,field=el.dataset.field;
+    if(!regs[nome]) regs[nome]={};
+    if(!regs[nome][mes]) regs[nome][mes]={meta:0,realizado:0};
+    regs[nome][mes][field]=hVal(el);
+  });
+  var nd={metaRiva:metaRiva,metaRV:0,gvs:gvs,diretores:dirs,dirNames:dirNames,regionais:regs};
+  S.config[chaveHouse()]=nd;
+  saveConfig(chaveHouse(),nd).then(function(ok){
+    if(ok) toast('✅ Dados salvos!');
+    else toast('Salvo local. Sem conexão.',true);
+  });
+}
 
 function addDiretor(){
-  var nome = prompt('Nome da Diretoria:');
-  if(!nome || !nome.trim()) return;
-  var d = dadosHouse();
-  if(!d.diretores[nome.trim()]) d.diretores[nome.trim()] = {};
-  S.config[chaveHouse()] = d;
-  renderPage();
+  var nome=prompt('Nome da Diretoria:');
+  if(!nome||!nome.trim()) return;
+  var d=dadosHouse();
+  if(!d.dirNames) d.dirNames=Object.keys(d.diretores||{});
+  if(d.dirNames.indexOf(nome.trim())<0) d.dirNames.push(nome.trim());
+  if(!d.diretores[nome.trim()]) d.diretores[nome.trim()]={};
+  S.config[chaveHouse()]=d;
+  hSetTab('dir');
 }
 
 function removeDiretor(nome){
   if(!confirm('Remover "'+nome+'"?')) return;
-  var d = dadosHouse();
+  var d=dadosHouse();
   delete d.diretores[nome];
-  S.config[chaveHouse()] = d;
-  renderPage();
+  if(d.dirNames) d.dirNames=d.dirNames.filter(function(n){return n!==nome;});
+  S.config[chaveHouse()]=d;
+  hSetTab('dir');
 }
 
 
