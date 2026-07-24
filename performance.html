@@ -190,6 +190,126 @@
   .sidebarCollapsed .fullBrand { display: flex !important; }
   .sidebarCollapsed .brandMark { display: none !important; }
 }
+
+/* ═══ HOUSE METAS / DESEMPENHO — Design System ════════════════════ */
+.hPage { display:flex; flex-direction:column; gap:20px; }
+
+/* ── Topo com meta e KPIs ── */
+.hTopRow { display:grid; grid-template-columns:340px 1fr; gap:16px; align-items:stretch; }
+@media(max-width:900px){ .hTopRow{ grid-template-columns:1fr; } }
+
+.hMetaCard {
+  background: linear-gradient(135deg,#1648d8 0%,#0d2fa3 100%);
+  border-radius:16px; padding:24px 24px 20px; color:#fff;
+  box-shadow:0 12px 32px rgba(22,72,216,.28);
+  display:flex; flex-direction:column; gap:10px;
+}
+.hMetaCard label { font-size:10px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; opacity:.7; }
+.hMetaCard input {
+  background:rgba(255,255,255,.14); border:1.5px solid rgba(255,255,255,.3);
+  border-radius:10px; color:#fff; font-size:22px; font-weight:900;
+  font-family:inherit; padding:10px 14px; width:100%; outline:none; letter-spacing:-.02em;
+}
+.hMetaCard input::placeholder { color:rgba(255,255,255,.4); font-size:16px; }
+.hMetaCard input:focus { background:rgba(255,255,255,.22); border-color:rgba(255,255,255,.6); }
+.hMetaCalc { font-size:13px; opacity:.8; margin-top:2px; }
+.hMetaCalc strong { color:#fff; font-weight:800; }
+
+/* ── KPI grid ── */
+.hKpiGrid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+@media(max-width:700px){ .hKpiGrid{ grid-template-columns:repeat(2,1fr); } }
+.hKpi {
+  background:#fff; border:1px solid var(--line); border-radius:14px;
+  padding:16px 18px; box-shadow:0 4px 14px rgba(17,42,101,.06);
+}
+.hKpi .hKpiLabel { font-size:10px; font-weight:800; color:#9aa5b9; letter-spacing:.06em; text-transform:uppercase; margin-bottom:6px; }
+.hKpi .hKpiVal  { font-size:22px; font-weight:900; color:#0c1e48; letter-spacing:-.03em; line-height:1; }
+.hKpi .hKpiSub  { font-size:11px; font-weight:700; margin-top:5px; }
+.hKpi.hKpiGreen .hKpiVal { color:#15a46f; }
+.hKpi.hKpiRed   .hKpiVal { color:#dc2626; }
+
+/* ── Tab selector ── */
+.hTabBar { display:flex; gap:4px; background:#f0f3f9; border-radius:12px; padding:4px; margin-bottom:4px; }
+.hTabBar button {
+  flex:1; padding:9px 0; border:0; background:transparent; border-radius:9px;
+  font-size:12px; font-weight:750; color:#687695; cursor:pointer; font-family:inherit;
+  transition:all .18s;
+}
+.hTabBar button.active { background:#fff; color:#1648d8; box-shadow:0 2px 10px rgba(17,42,101,.1); }
+
+/* ── Section card ── */
+.hCard { background:#fff; border:1px solid var(--line); border-radius:16px; overflow:hidden; margin-bottom:16px; box-shadow:0 4px 16px rgba(17,42,101,.05); }
+.hCardHead { padding:16px 20px; border-bottom:1px solid #edf1f7; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+.hCardTitle { font-size:14px; font-weight:800; color:#0c1e48; letter-spacing:-.01em; }
+.hCardSub   { font-size:11px; color:#9aa5b9; margin-top:2px; font-weight:600; }
+.hCardBadge { background:#eef3ff; color:#1648d8; border-radius:8px; padding:4px 10px; font-size:11px; font-weight:800; }
+.hCardBadgeRed { background:#fef2f2; color:#dc2626; }
+.hCardBadgeGreen { background:#f0fff8; color:#15a46f; }
+
+/* ── Table ── */
+.hTable { width:100%; overflow-x:auto; }
+.hTable table { width:100%; border-collapse:collapse; }
+.hTable th {
+  padding:11px 14px; font-size:10px; font-weight:850; color:#9aa5b9;
+  letter-spacing:.06em; text-transform:uppercase; background:#f7f9fd;
+  border-bottom:2px solid #edf1f7; white-space:nowrap; text-align:right;
+}
+.hTable th:first-child,.hTable th:nth-child(2) { text-align:left; }
+.hTable td { padding:0 6px; border-bottom:1px solid #f0f3f9; }
+.hTable td:first-child { padding:8px 14px; font-size:12px; font-weight:800; color:#0c1e48; white-space:nowrap; }
+.hTable td.hLabel { padding:3px 8px; font-size:9px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; width:72px; white-space:nowrap; }
+.hTable td.hLabel.lMeta { color:#dc2626; }
+.hTable td.hLabel.lReal { color:#15a46f; }
+.hTable td.hLabel.lPend { color:#9aa5b9; }
+.hTable .hGvRow { background:#fff; }
+.hTable .hGvRow:nth-child(6n+4),.hTable .hGvRow:nth-child(6n+5),.hTable .hGvRow:nth-child(6n+6) { background:#fafbff; }
+.hTable .hDesligRow td:first-child { color:#dc2626; border-left:3px solid #dc2626; }
+.hTable .hTotalRow { background:#eef3ff !important; }
+.hTable .hTotalRow td { font-size:11px; font-weight:800; padding:10px 14px; }
+
+/* ── Input in table ── */
+.hIn {
+  width:100%; min-width:90px; padding:6px 9px; margin:3px 0;
+  border:1.5px solid #e5eaf2; border-radius:7px; font-size:12px; font-weight:700;
+  font-family:inherit; text-align:right; color:#0c1e48; background:#fff;
+  transition:border .15s, box-shadow .15s; outline:none;
+}
+.hIn:focus { border-color:#1648d8; box-shadow:0 0 0 3px rgba(22,72,216,.12); background:#f8faff; }
+.hIn.hInMeta { border-color:#fecdd3; background:#fff5f5; }
+.hIn.hInMeta:focus { border-color:#dc2626; box-shadow:0 0 0 3px rgba(220,38,38,.1); }
+.hIn.hInReal { border-color:#bbf7d0; background:#f0fff8; }
+.hIn.hInReal:focus { border-color:#15a46f; box-shadow:0 0 0 3px rgba(21,164,111,.1); }
+.hIn.hInDir { border-color:#dbe5f5; background:#f8faff; }
+.hPendVal { font-size:12px; font-weight:800; text-align:right; padding:6px 9px; display:block; }
+.hPendVal.neg { color:#dc2626; }
+.hPendVal.pos { color:#15a46f; }
+.hPendVal.zero{ color:#c0c8d6; }
+
+/* ── Progress bar in table ── */
+.hBar { height:5px; background:#edf1f7; border-radius:5px; margin-top:4px; overflow:hidden; }
+.hBarFill { height:100%; border-radius:5px; transition:width .5s; }
+
+/* ── Director name input ── */
+.hDirName {
+  border:0; background:transparent; font-size:13px; font-weight:800; color:#0c1e48;
+  font-family:inherit; width:150px; outline:none; padding:0;
+}
+.hDirName:focus { border-bottom:2px solid #1648d8; color:#1648d8; }
+
+/* ── Ano col highlight ── */
+.hAnoCol { background:#eef3ff !important; border-left:2px solid #c7d8ff !important; }
+.hAnoCol.hAnoGreen { background:#f0fff8 !important; border-left-color:#a7f3d0 !important; }
+.hAnoCol.hAnoRed   { background:#fef2f2 !important; border-left-color:#fecdd3 !important; }
+
+/* ── Save bar ── */
+.hSaveBar { position:sticky; bottom:0; background:rgba(255,255,255,.95); backdrop-filter:blur(8px); border-top:1px solid var(--line); padding:12px 20px; display:flex; justify-content:flex-end; gap:10px; z-index:10; }
+.hSaveBtn { height:40px; padding:0 24px; border-radius:10px; background:linear-gradient(135deg,#1648d8,#0d2fa3); color:#fff; font-size:13px; font-weight:800; border:0; cursor:pointer; font-family:inherit; box-shadow:0 6px 18px rgba(22,72,216,.3); transition:transform .12s,box-shadow .12s; }
+.hSaveBtn:hover { transform:translateY(-1px); box-shadow:0 8px 24px rgba(22,72,216,.4); }
+.hSaveBtn:active { transform:translateY(0); }
+
+/* ── Tri badges ── */
+.hTriBadge { display:inline-block; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:800; background:#eef3ff; color:#1648d8; }
+
 </style>
 </head>
 <body>
@@ -887,112 +1007,43 @@ function parseNumBR(s){
 function viewHouse(){
   var d = dadosHouse();
   var MS3=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-  var MS=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-  // GV list: ativos + Desligados
   var gvAtivos = getAllGVs(false).map(function(g){return typeof g==='object'?g.nome:g;});
-  var allGVs = gvAtivos.concat(['Desligados']);
-  
-  // Diretores list (from data or default)
-  var dirList = Object.keys(d.diretores).length ? Object.keys(d.diretores) : ['Humberto','Diretor 02','Edvan','Mercado'];
-  // Ensure all are in diretores
-  dirList.forEach(function(n){ if(!d.diretores[n]) d.diretores[n]={}; });
-  
-  // Regionais
-  var regList = ['rene','cahu'];
-  var regNomes = {rene:'Rene', cahu:'Cahú'};
-  regList.forEach(function(r){ if(!d.regionais[r]) d.regionais[r]={}; });
-  
-  // ── Helper: input cell ──
-  function inp(htype, nome, mes, field, val, brl){
-    var v = val || 0;
-    var display = brl ? fmtBRL(v) : (v||'');
-    return '<input data-htype="'+htype+'" data-nome="'+nome+'" data-mes="'+mes+'"'+(field?' data-field="'+field+'"':'')+
-      ' value="'+(display||'')+'" onchange="renderHouseCalc()" '+
-      'style="width:100%;padding:3px 5px;border:1px solid var(--line);border-radius:5px;font-size:10px;text-align:right;background:#f9fbfe;font-family:inherit"'+
-      ' placeholder="'+(brl?'R$ 0':'0')+'">';
-  }
-  
-  // ── Helper: calc row (meta, realizado, pendente) ──
-  function calcRow(meta, real){
-    var pend = meta - real;
-    var pct  = meta > 0 ? Math.round(real/meta*100) : 0;
-    var cor  = pct>=100?'#15a46f':pct>=70?'#1e40af':'#dc2626';
-    return { pend:pend, pct:pct, cor:cor };
-  }
-  
-  // ── Build month columns (Jan–Dez) ──
-  function monthCols(){ return MS3.map(function(m){ return '<th class="center" style="font-size:9px;min-width:72px">'+m+'</th>'; }).join(''); }
-  function trimCols(){
-    return ['1º Tri','2º Tri','3º Tri','4º Tri'].map(function(t){ return '<th class="center" style="font-size:9px;min-width:64px">'+t+'</th>'; }).join('')
-      + '<th class="center" style="font-size:9px;min-width:72px;background:#eef3ff">ANO</th>';
-  }
-  
-  // ── Section: Meta anual RIVA ──
-  var secMeta = '<div class="pPanel">'
-    +'<div class="pPanelHead"><div><span class="eyebrow">META ANUAL</span><h3>Configuração da Meta Global</h3></div>'
-    +'<small style="color:var(--muted);font-size:11px">Preencha as metas e clique em Salvar</small></div>'
-    +'<div style="padding:16px 20px;display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end">'
-    +'<div><label style="display:block;font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">Meta RIVA (Ano)</label>'
-    +'<input id="hMetaRiva" value="'+fmtBRL(d.metaRiva)+'" onchange="renderHouseCalc()" style="width:180px;height:38px;padding:0 12px;border:1.5px solid var(--line);border-radius:9px;font-size:13px;font-weight:700;background:#f9fbfe;font-family:inherit" placeholder="R$ 0"></div>'
-    +'<div><label style="display:block;font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">Meta RV (Ano)</label>'
-    +'<input id="hMetaRV" value="'+fmtBRL(d.metaRV)+'" onchange="renderHouseCalc()" style="width:180px;height:38px;padding:0 12px;border:1.5px solid var(--line);border-radius:9px;font-size:13px;font-weight:700;background:#f9fbfe;font-family:inherit" placeholder="R$ 0"></div>'
-    +'<div id="hMetaCalc" style="padding:10px 14px;background:#eef3ff;border-radius:9px;font-size:12px;color:#1648d8;font-weight:700"></div>'
-    +'</div></div>';
-  
-  // ── Section: KPIs calculados ──
-  var secKpis = '<div class="pKpiRow" id="houseKpiRow"></div>';
-  
-  // ── Section: Gerentes — MENSAL ──
-  var gvsMensal = '<div class="pPanel">'
-    +'<div class="pPanelHead"><div><span class="eyebrow">GERENTES · MENSAL</span><h3>Meta vs Realizado vs Pendente — Por Mês</h3></div></div>'
-    +'<div class="pTable" style="overflow-x:auto"><table>'
-    +'<thead><tr><th style="min-width:110px">Gerente</th>'+ monthCols()+'<th class="center" style="font-size:9px;min-width:72px;background:#eef3ff">ANO</th>'
-    +'<th class="center" style="font-size:9px">Campo</th></tr></thead><tbody id="hGvMensalBody"></tbody>'
-    +'<tfoot id="hGvMensalFoot"></tfoot>'
-    +'</table></div></div>';
+  var allGVs   = gvAtivos.concat(['Desligados']);
+  var dirNames = (d.dirNames && d.dirNames.length) ? d.dirNames : Object.keys(d.diretores||{}).length ? Object.keys(d.diretores) : ['Humberto','Diretor 02','Edvan','Mercado'];
 
-  // ── Section: Gerentes — TRIMESTRAL ──
-  var gvsTri = '<div class="pPanel">'
-    +'<div class="pPanelHead"><div><span class="eyebrow">GERENTES · TRIMESTRAL</span><h3>Meta vs Realizado vs Pendente — Por Trimestre</h3></div></div>'
-    +'<div class="pTable" style="overflow-x:auto"><table>'
-    +'<thead><tr><th style="min-width:110px">Gerente</th><th>Campo</th>'+trimCols()+'</tr></thead>'
-    +'<tbody id="hGvTriBody"></tbody>'
-    +'<tfoot id="hGvTriFoot"></tfoot>'
-    +'</table></div></div>';
+  return [
+    // ── Topo: Meta RIVA + KPIs ──────────────────────────────────
+    '<div class="hPage">',
+    '<div class="hTopRow">',
+      '<div class="hMetaCard">',
+        '<label>Meta RIVA — Ano '+S.ano+'</label>',
+        '<input id="hMetaRiva" type="text" inputmode="numeric" placeholder="R$ 0" ',
+               'value="'+fmtBRL(d.metaRiva)+'" ',
+               'onfocus="this.select()" onblur="hNorm(this);hCalcKpis()" ',
+               'onkeydown="if(event.key==='Enter'){this.blur()}">',
+        '<div class="hMetaCalc" id="hMetaCalcTxt"></div>',
+      '</div>',
+      '<div class="hKpiGrid" id="hKpiGrid"></div>',
+    '</div>',
 
-  // ── Section: Diretores ──
-  var secDir = '<div class="pPanel">'
-    +'<div class="pPanelHead"><div><span class="eyebrow">DIRETORES</span><h3>Realizado por Diretoria — Mensal</h3></div>'
-    +'<button class="pSaveBtn" onclick="addDiretor()" style="font-size:10px">+ Adicionar</button></div>'
-    +'<div class="pTable" style="overflow-x:auto"><table>'
-    +'<thead><tr><th style="min-width:110px">Diretoria</th>'+monthCols()+'<th class="center" style="font-size:9px;min-width:72px;background:#eef3ff">TOTAL</th><th></th></tr></thead>'
-    +'<tbody id="hDirBody"></tbody>'
-    +'<tfoot id="hDirFoot"></tfoot>'
-    +'</table></div></div>';
+    // ── Abas de conteúdo ─────────────────────────────────────────
+    '<div class="hTabBar">',
+      '<button onclick="hSetTab('gv')"    id="htab-gv"    class="active">👥 Gerentes</button>',
+      '<button onclick="hSetTab('tri')"   id="htab-tri"           >📊 Trimestral</button>',
+      '<button onclick="hSetTab('dir')"   id="htab-dir"           >🏢 Diretores</button>',
+      '<button onclick="hSetTab('reg')"   id="htab-reg"           >🗺️ Regionais</button>',
+    '</div>',
 
-  // ── Section: Regionais ──
-  var secReg = '<div class="pPanel">'
-    +'<div class="pPanelHead"><div><span class="eyebrow">REGIONAIS</span><h3>Meta vs Realizado — Por Mês e Trimestre</h3></div></div>'
-    +'<div class="pTable" style="overflow-x:auto"><table>'
-    +'<thead><tr><th style="min-width:90px">Regional</th><th style="font-size:9px">Campo</th>'+monthCols()+'<th class="center" style="font-size:9px;background:#eef3ff">ANO</th></tr></thead>'
-    +'<tbody id="hRegBody"></tbody>'
-    +'<tfoot id="hRegFoot"></tfoot>'
-    +'</table></div></div>';
-  
-  return ''
-    +'<div class="perfHero">'
-    +'<span class="eyebrow">HOUSE · METAS · '+S.ano+'</span>'
-    +'<h1>Curva de Vendas '+S.ano+'</h1>'
-    +'<p>Gerentes · Diretores · Regionais · Meta RIVA — preencha os dados e salve</p>'
-    +'</div>'
-    +'<div class="perfTop">'
-    +'<input class="perfSel yearIn" id="houseAno" type="number" min="2020" max="2099" step="1">'
-    +'<div style="margin-left:auto"><button class="pSaveBtn" onclick="salvarHouse()">💾 Salvar tudo</button></div>'
-    +'</div>'
-    + secMeta + secKpis + gvsMensal + gvsTri + secDir + secReg;
+    // ── Tab content ──────────────────────────────────────────────
+    '<div id="hTabContent"></div>',
+
+    // ── Save bar ─────────────────────────────────────────────────
+    '<div class="hSaveBar">',
+      '<button class="hSaveBtn" onclick="hSalvar()">💾 Salvar tudo</button>',
+    '</div>',
+    '</div>'
+  ].join('');
 }
-
-function fmtBRL(v){ v=parseFloat(v)||0; if(!v) return ''; return 'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:0}); }
 
 function afterHouse(){
   var el=document.getElementById('houseAno');
