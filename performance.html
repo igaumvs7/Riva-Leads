@@ -861,148 +861,6 @@ function salvarRegional(reg){
   });
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  MÉTRICAS HOUSE — Curva de Vendas 2026
-// ═══════════════════════════════════════════════════════════════
-function chaveHouse(){ return 'perf_house_'+S.ano; }
-function dadosHouse(){
-  var d = S.config[chaveHouse()] || {};
-  var pad = { gvs:{}, regionais:{rene:{},cahu:{}}, diretores:{humberto:{},diret2:{},edvan:{},mercado:{}} };
-  gvsExibir.forEach(function(g){
-    pad.gvs[g] = pad.gvs[g] || {};
-    for(var m=1;m<=12;m++){
-      var mk = String(m).padStart(2,'0');
-      pad.gvs[g][mk] = pad.gvs[g][mk] || {meta:0, realizado:0};
-    }
-  });
-  ['rene','cahu'].forEach(function(r){
-    for(var m=1;m<=12;m++){
-      var mk = String(m).padStart(2,'0');
-      pad.regionais[r][mk] = pad.regionais[r][mk] || {meta:0, realizado:0};
-    }
-  });
-  return Object.assign(pad, d);
-}
-
-
-// ╔══════════════════════════════════════════════════════════════╗
-// ║  HOUSE — METAS  (aba house)                                 ║
-// ╚══════════════════════════════════════════════════════════════╝
-
-// Data model key: 'house_YYYY'
-// { metaRiva, metaRV, gvs:{nome:{mm:{meta,realizado}}}, 
-//   diretores:{nome:{mm:realizado}}, regionais:{reg:{mm:{meta,realizado}}} }
-function chaveHouse(){ return 'house_'+S.ano; }
-
-function dadosHouse(){
-  var d = S.config[chaveHouse()] || {};
-  return {
-    metaRiva: d.metaRiva || 0,
-    metaRV:   d.metaRV   || 0,
-    gvs:       d.gvs       || {},
-    diretores: d.diretores || {},
-    regionais: d.regionais || {},
-  };
-}
-
-
-function salvarHouseTudo(){
-  // Save director name changes first
-  var dirRenames = {};
-  document.querySelectorAll('.dirNameInput').forEach(function(el){
-    var oldNome = el.dataset.nome, newNome = (el.value||'').trim();
-    if(newNome && newNome !== oldNome) dirRenames[oldNome] = newNome;
-  });
-
-  var metaRiva = parseNumBR(document.getElementById('hMetaRiva') ? document.getElementById('hMetaRiva').value : '0');
-
-  var gvs = {};
-  document.querySelectorAll('[data-htype="gv"]').forEach(function(el){
-    var nome=el.dataset.nome, mes=el.dataset.mes, field=el.dataset.field;
-    if(!gvs[nome]) gvs[nome]={};
-    if(!gvs[nome][mes]) gvs[nome][mes]={meta:0,realizado:0};
-    gvs[nome][mes][field] = parseNumBR(el.dataset.rawValue !== undefined ? el.dataset.rawValue : el.value);
-  });
-
-  var dirs = {};
-  var dirNames = [];
-  document.querySelectorAll('[data-htype="dir"]').forEach(function(el){
-    var nome=el.dataset.nome, mes=el.dataset.mes;
-    var displayNome = dirRenames[nome] || nome;
-    if(!dirs[displayNome]) dirs[displayNome]={};
-    dirs[displayNome][mes] = parseNumBR(el.dataset.rawValue !== undefined ? el.dataset.rawValue : el.value);
-    if(dirNames.indexOf(displayNome)<0) dirNames.push(displayNome);
-  });
-  // Preserve order from dirNames in data
-  var existingDirNames = (dadosHouse().dirNames || []);
-  if(!dirNames.length) dirNames = existingDirNames.map(function(n){ return dirRenames[n]||n; });
-
-  var regs = {};
-  document.querySelectorAll('[data-htype="reg"]').forEach(function(el){
-    var nome=el.dataset.nome, mes=el.dataset.mes, field=el.dataset.field;
-    if(!regs[nome]) regs[nome]={};
-    if(!regs[nome][mes]) regs[nome][mes]={meta:0,realizado:0};
-    regs[nome][mes][field] = parseNumBR(el.dataset.rawValue !== undefined ? el.dataset.rawValue : el.value);
-  });
-
-  var newData = { metaRiva:metaRiva, metaRV:0, gvs:gvs, diretores:dirs, dirNames:dirNames, regionais:regs };
-  var key = chaveHouse();
-  S.config[key] = newData;
-
-  saveConfig(key, newData).then(function(ok){
-    if(ok) toast('✅ Dados salvos com sucesso!');
-    else   toast('Salvo localmente. Sem conexão.', true);
-  });
-}
-
-function salvarHouse(){
-  var d = coletarHouse();
-  var key = chaveHouse();
-  S.config[key] = d;
-  saveConfig(key, d).then(function(ok){
-    if(ok) toast('✅ Dados House salvos!');
-    else   toast('Salvo local. Sem conexão.', true);
-  });
-}
-
-function coletarHouse(){
-  var metaRiva = parseNumBR(document.getElementById('hMetaRiva') ? document.getElementById('hMetaRiva').value : '0');
-  var metaRV   = parseNumBR(document.getElementById('hMetaRV')   ? document.getElementById('hMetaRV').value   : '0');
-
-  // Collect GVs (mensal)
-  var gvs = {};
-  document.querySelectorAll('[data-htype="gv"]').forEach(function(el){
-    var nome = el.dataset.nome, mes = el.dataset.mes, field = el.dataset.field;
-    if(!gvs[nome]) gvs[nome] = {};
-    if(!gvs[nome][mes]) gvs[nome][mes] = {meta:0, realizado:0};
-    gvs[nome][mes][field] = parseNumBR(el.value);
-  });
-
-  // Diretores
-  var dirs = {};
-  document.querySelectorAll('[data-htype="dir"]').forEach(function(el){
-    var nome=el.dataset.nome, mes=el.dataset.mes;
-    if(!dirs[nome]) dirs[nome]={};
-    dirs[nome][mes] = parseNumBR(el.value);
-  });
-
-  // Regionais
-  var regs = {};
-  document.querySelectorAll('[data-htype="reg"]').forEach(function(el){
-    var nome=el.dataset.nome, mes=el.dataset.mes, field=el.dataset.field;
-    if(!regs[nome]) regs[nome]={};
-    if(!regs[nome][mes]) regs[nome][mes]={meta:0,realizado:0};
-    regs[nome][mes][field] = parseNumBR(el.value);
-  });
-
-  return { metaRiva:metaRiva, metaRV:metaRV, gvs:gvs, diretores:dirs, regionais:regs };
-}
-
-function parseNumBR(s){
-  if(typeof s === 'number') return s;
-  var str = String(s||'0').replace(/R\$\s?/g,'').replace(/\./g,'').replace(',','.');
-  return parseFloat(str)||0;
-}
 
 function viewHouse(){
   var d = dadosHouse();
@@ -1062,9 +920,9 @@ function hNorm(el){
 }
 function hVal(el){ return parseFloat(el.dataset.v||0)||parseNumBR(el.value); }
 function fmtM(v){ return fmtBRL(v)||'—'; }
-function pct(a,b){ return b>0?Math.round(a/b*100):0; }
-function pctStr(a,b){ var p=pct(a,b); return p+'%'; }
-function pctCor(p){ return p>=100?'#15a46f':p>=70?'#1e40af':'#dc2626'; }
+function hPct(a,b){ return b>0?Math.round(a/b*100):0; }
+function pctStr(a,b){ var p=hPct(a,b); return p+'%'; }
+function hPctCor(p){ return p>=100?'#15a46f':p>=70?'#1e40af':'#dc2626'; }
 
 function hMetaRiva(){ return hVal(document.getElementById('hMetaRiva')||{dataset:{v:dadosHouse().metaRiva||0}}); }
 
@@ -1075,8 +933,8 @@ function hCalcKpis(){
   var gvs=getAllGVs(false).map(function(g){return typeof g==='object'?g.nome:g;}).concat(['Desligados']);
   var totM=0,totR=0;
   gvs.forEach(function(gv){ for(var m=1;m<=12;m++){ var mk=String(m).padStart(2,'0'); var gd=(d.gvs[gv]||{})[mk]||{}; totM+=gd.meta||0; totR+=gd.realizado||0; } });
-  var p=pct(totR,mRiva||totM);
-  var cor=pctCor(p);
+  var p=hPct(totR,mRiva||totM);
+  var cor=hPctCor(p);
   var el=document.getElementById('hKpiGrid');
   if(el) el.innerHTML=[
     {l:'Realizado Total',v:fmtM(totR),s:pctStr(totR,mRiva)+(mRiva?' da meta RIVA':''), c:totR>=mRiva&&mRiva?'hKpiGreen':''},
@@ -1123,7 +981,7 @@ function hTabGV(){
       rReal+='<td><input class="hIn hInReal" data-htype="gv" data-nome="'+gv+'" data-mes="'+mk+'" data-field="realizado" value="'+fmtBRL(r)+'" onfocus="this.select()" onblur="hNorm(this)" placeholder=""></td>';
       rPend+='<td><span class="hPendVal '+(m?pd>0?'neg':'pos':'zero')+'">'+fmtBRL(pd)+'</span></td>';
     }
-    var anoP=anoM-anoR; var pp=pct(anoR,anoM); var pc=pctCor(pp);
+    var anoP=anoM-anoR; var pp=hPct(anoR,anoM); var pc=hPctCor(pp);
     var prefix=isD?'hDesligRow':'hGvRow';
     return '<tr class="'+prefix+'"><td rowspan="3" style="border-bottom:3px solid #edf1f7;vertical-align:middle;padding:10px 14px">'+
       (isD?'<span style="color:#dc2626;font-size:12px;font-weight:800">'+gv+'</span>':'<span style="font-size:13px;font-weight:800">'+gv+'</span>')+
@@ -1172,12 +1030,12 @@ function hTabTri(){
       var m=0,r=0;
       t.forEach(function(i){ var mk=String(i+1).padStart(2,'0'); var md=(gd[mk]||{}); m+=md.meta||0; r+=md.realizado||0; });
       totTM[ti]+=m; totTR[ti]+=r; anoM+=m; anoR+=r;
-      var pd=m-r; var pp=pct(r,m);
+      var pd=m-r; var pp=hPct(r,m);
       rMeta+='<td style="text-align:right;padding:8px 12px;font-size:12px;font-weight:800;color:#0c1e48">'+fmtM(m)+'</td>';
       rReal+='<td style="text-align:right;padding:8px 12px;font-size:12px;font-weight:800;color:#15a46f">'+fmtM(r)+'</td>';
       rPend+='<td style="text-align:right;padding:8px 12px;font-size:12px;font-weight:800;color:'+(m?pd>0?'#dc2626':'#15a46f':'#c0c8d6')+'">'+fmtM(pd)+'</td>';
     });
-    var pp2=pct(anoR,anoM);var pc=pctCor(pp2);
+    var pp2=hPct(anoR,anoM);var pc=hPctCor(pp2);
     var prefix=isD?'hDesligRow':'hGvRow';
     return '<tr class="'+prefix+'"><td rowspan="3" style="border-bottom:3px solid #edf1f7;vertical-align:middle;padding:10px 14px">'+
       '<span style="font-size:13px;font-weight:800;color:'+(isD?'#dc2626':'#0c1e48')+'">'+gv+'</span></td>'+
@@ -1263,7 +1121,7 @@ function hTabReg(){
       rReal+='<td><input class="hIn hInReal" data-htype="reg" data-nome="'+reg.k+'" data-mes="'+mk+'" data-field="realizado" value="'+fmtBRL(r)+'" onfocus="this.select()" onblur="hNorm(this)" placeholder=""></td>';
       rPend+='<td><span class="hPendVal '+(m?pd>0?'neg':'pos':'zero')+'">'+fmtBRL(pd)+'</span></td>';
     }
-    var pp=pct(anoR,anoM); var pc=pctCor(pp);
+    var pp=hPct(anoR,anoM); var pc=hPctCor(pp);
     return '<tr><td rowspan="3" style="border-bottom:3px solid #edf1f7;vertical-align:middle;padding:10px 14px;font-size:13px;font-weight:800">'+reg.l+'</td>'+
       '<td class="hLabel lMeta">META</td>'+rMeta+
       '<td class="hAnoCol" style="padding:5px 10px;text-align:right;font-size:12px;font-weight:800;color:#1648d8">'+fmtM(anoM)+'</td></tr>'+
@@ -1380,7 +1238,7 @@ function h2BuildKpis(){
   var gvs=getAllGVs(false).map(function(g){return typeof g==='object'?g.nome:g;}).concat(['Desligados']);
   var mRiva=d.metaRiva||0, totM=0, totR=0;
   gvs.forEach(function(gv){ for(var m=1;m<=12;m++){ var mk=String(m).padStart(2,'0'); var md=(d.gvs[gv]||{})[mk]||{}; totM+=md.meta||0; totR+=md.realizado||0; } });
-  var p=pct(totR,mRiva||totM); var pc=pctCor(p);
+  var p=hPct(totR,mRiva||totM); var pc=hPctCor(p);
   var el=document.getElementById('h2KpiRow');
   if(el) el.innerHTML=[
     {l:'Meta RIVA',v:fmtM(mRiva),s:'Meta anual',c:''},
@@ -1418,10 +1276,10 @@ function h2Mensal(){
       totM[i]+=m; totR[i]+=r; anoM+=m; anoR+=r;
       rM+='<td style="text-align:right;padding:7px 10px;font-size:12px;font-weight:700;color:#0c1e48">'+fmtM(m)+'</td>';
       rR+='<td style="text-align:right;padding:7px 10px;font-size:12px;font-weight:700;color:#15a46f">'+fmtM(r)+'</td>';
-      var pc2=pctCor(pct(r,m));
+      var pc2=hPctCor(hPct(r,m));
       rP+='<td style="text-align:right;padding:7px 10px;font-size:12px;font-weight:700;color:'+(m?pc2:'#c0c8d6')+'">'+fmtBRL(pd)+'</td>';
     }
-    var pp=pct(anoR,anoM); var pc3=pctCor(pp);
+    var pp=hPct(anoR,anoM); var pc3=hPctCor(pp);
     var cls=isD?'hDesligRow':'hGvRow';
     return '<tr class="'+cls+'"><td rowspan="3" style="vertical-align:middle;padding:10px 14px;border-bottom:3px solid #edf1f7">'+
       '<span style="font-size:13px;font-weight:800;color:'+(isD?'#dc2626':'#0c1e48')+'">'+gv+'</span></td>'+
@@ -1464,7 +1322,7 @@ function h2Trimestral(){
     tris.forEach(function(t,ti){
       var m=0,r=0; t.forEach(function(i){ var mk=String(i+1).padStart(2,'0'); var md=gd[mk]||{}; m+=md.meta||0; r+=md.realizado||0; });
       anoM+=m; anoR+=r; totTM[ti]+=m; totTR[ti]+=r;
-      var pp=pct(r,m); var pc2=pctCor(pp);
+      var pp=hPct(r,m); var pc2=hPctCor(pp);
       rM+='<td style="text-align:right;padding:10px 14px;font-size:13px;font-weight:800;color:#0c1e48">'+fmtM(m)+'</td>';
       rR+='<td style="text-align:right;padding:10px 14px;font-size:13px;font-weight:800;color:#15a46f">'+fmtM(r)+'</td>';
       rP+='<td style="text-align:right;padding:10px 14px">'+
@@ -1473,7 +1331,7 @@ function h2Trimestral(){
         '<small style="font-size:10px;color:#9aa5b9;font-weight:700">'+fmtBRL(m-r)+' pend.</small>'+
       '</td>';
     });
-    var pp3=pct(anoR,anoM); var pc4=pctCor(pp3);
+    var pp3=hPct(anoR,anoM); var pc4=hPctCor(pp3);
     var cls=isD?'hDesligRow':'hGvRow';
     return '<tr class="'+cls+'"><td rowspan="3" style="vertical-align:middle;padding:12px 16px;border-bottom:3px solid #edf1f7;font-size:13px;font-weight:800;color:'+(isD?'#dc2626':'#0c1e48')+'">'+gv+'</td>'+
       '<td class="hLabel lMeta">META</td>'+rM+'<td class="hAnoCol" style="padding:10px 14px;text-align:right;font-size:13px;font-weight:800;color:#1648d8">'+fmtM(anoM)+'</td></tr>'+
@@ -1486,7 +1344,7 @@ function h2Trimestral(){
   }).join('');
 
   var aTM=0,aTR=0;
-  var tc=tris.map(function(t,ti){ aTM+=totTM[ti];aTR+=totTR[ti]; var p2=totTM[ti]-totTR[ti]; var pp=pct(totTR[ti],totTM[ti]); return '<td style="padding:12px 16px;text-align:right"><div style="font-size:13px;font-weight:800">'+fmtM(totTM[ti])+'</div><div style="font-size:12px;color:#15a46f">'+fmtM(totTR[ti])+'</div><div class="hBar" style="margin-top:4px"><div class="hBarFill" style="width:'+Math.min(pp,100)+'%;background:'+pctCor(pp)+'"></div></div></td>'; }).join('');
+  var tc=tris.map(function(t,ti){ aTM+=totTM[ti];aTR+=totTR[ti]; var p2=totTM[ti]-totTR[ti]; var pp=hPct(totTR[ti],totTM[ti]); return '<td style="padding:12px 16px;text-align:right"><div style="font-size:13px;font-weight:800">'+fmtM(totTM[ti])+'</div><div style="font-size:12px;color:#15a46f">'+fmtM(totTR[ti])+'</div><div class="hBar" style="margin-top:4px"><div class="hBarFill" style="width:'+Math.min(pp,100)+'%;background:'+hPctCor(pp)+'"></div></div></td>'; }).join('');
 
   return '<div class="hCard">'+
     '<div class="hCardHead"><div><div class="hCardTitle">Visão Trimestral · Consolidado</div><div class="hCardSub">Calculado automaticamente dos dados mensais em House › Metas</div></div></div>'+
@@ -1515,10 +1373,10 @@ function h2Regionais(){
       totM[i]+=m; totR[i]+=r; anoM+=m; anoR+=r;
       rM+='<td style="text-align:right;padding:8px 10px;font-size:12px;font-weight:700">'+fmtM(m)+'</td>';
       rR+='<td style="text-align:right;padding:8px 10px;font-size:12px;font-weight:700;color:#15a46f">'+fmtM(r)+'</td>';
-      var pc2=pctCor(pct(r,m));
+      var pc2=hPctCor(hPct(r,m));
       rP+='<td style="text-align:right;padding:8px 10px;font-size:12px;font-weight:700;color:'+(m?pc2:'#c0c8d6')+'">'+fmtBRL(pd)+'</td>';
     }
-    var pp=pct(anoR,anoM); var pc3=pctCor(pp);
+    var pp=hPct(anoR,anoM); var pc3=hPctCor(pp);
     return '<tr><td rowspan="3" style="vertical-align:middle;padding:10px 14px;border-bottom:3px solid #edf1f7;font-size:13px;font-weight:800">'+reg.l+'</td>'+
       '<td class="hLabel lMeta">META</td>'+rM+'<td class="hAnoCol" style="padding:8px 12px;text-align:right;font-size:12px;font-weight:800;color:#1648d8">'+fmtM(anoM)+'</td></tr>'+
       '<tr><td class="hLabel lReal">REAL</td>'+rR+'<td class="hAnoCol hAnoGreen" style="padding:8px 12px;text-align:right;font-size:12px;font-weight:800;color:#15a46f">'+fmtM(anoR)+'</td></tr>'+
