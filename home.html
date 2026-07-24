@@ -259,6 +259,10 @@ body{color:#e8ecf5;background:#050817;overflow-x:hidden}
 .profileMenu button.danger{color:#fca5a5}
 .profileMenu button.danger:hover{background:rgba(220,38,38,.15)}
 .profileMenu .pmSep{height:1px;background:rgba(126,163,255,.15);margin:4px 0}
+
+/* Notificação Agenda Riva */
+.agendaNotif{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:#dc2626;color:#fff;font-size:9px;font-weight:900;margin-left:6px;vertical-align:middle;animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.4)}50%{box-shadow:0 0 0 6px rgba(220,38,38,0)}}
 </style>
 </head>
 <body>
@@ -819,6 +823,24 @@ function fazerLogin(){
 }
 
 // ═══ PORTAL ═══
+
+// Notificação Agenda Riva
+function agendaNotifBadge(){
+  try {
+    var updated = localStorage.getItem('riva_agenda_updated');
+    var lastSeen = localStorage.getItem('riva_agenda_seen');
+    if(updated && (!lastSeen || updated > lastSeen)){
+      return '<span class="agendaNotif" title="Novo evento na Agenda Riva">!</span>';
+    }
+  } catch(e){}
+  return '';
+}
+
+// Marcar notificação como vista quando clica em Agenda Riva
+function marcarAgendaVista(){
+  localStorage.setItem('riva_agenda_seen', new Date().toISOString());
+}
+
 function mostrarPortal(pessoaId,cargo){
   const isAdmin   = cargo==='Administrador';
   const isDiretor = cargo==='Diretor de Vendas'||isAdmin;
@@ -872,7 +894,7 @@ function mostrarPortal(pessoaId,cargo){
     +     '<span class="cardBadge '+m.badgeCls+'">'+m.badge+'</span>'
     +   '</div>'
     +   '<div class="cardBody">'
-    +     '<div class="cardTitle">'+m.titulo+'</div>'
+    +     '<div class="cardTitle">'+m.titulo+(m.href==='reunioes.html' ? agendaNotifBadge() : '')+'</div>'
     +     '<div class="cardDesc">'+m.desc+'</div>'
     +   '</div>'
     +   '<div class="cardFoot">'
