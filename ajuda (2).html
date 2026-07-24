@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<script src="riva-config.js"></script>
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ajuda — Riva Vendas CE</title>
+<link rel="icon" type="image/png" sizes="64x64" href="data:image/png;base64,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">
+<meta name="theme-color" content="#0d1f6d">
+<link rel="stylesheet" href="riva-shell.css">
+<style>
+.hHero{background:linear-gradient(135deg,#1648d8,#0d33a8);padding:28px 32px;border-radius:16px;color:#fff;margin-bottom:22px;box-shadow:0 12px 32px rgba(22,72,216,.2)}
+.hHero .eyebrow{font-size:10px;font-weight:850;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+.hHero h1{font-size:28px;font-weight:900;letter-spacing:-.02em;margin:6px 0 8px;line-height:1}
+.hHero p{font-size:14px;opacity:.85;max-width:640px;line-height:1.55}
+
+.hSection{background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px 28px;margin-bottom:16px;box-shadow:0 6px 18px rgba(17,42,101,.04)}
+[data-theme="dark"] .hSection{background:#12151f;border-color:#292f3e}
+.hSectHead{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.hSectHead .icn{width:44px;height:44px;border-radius:11px;background:linear-gradient(135deg,rgba(22,72,216,.14),rgba(22,72,216,.04));display:grid;place-items:center;color:var(--royal);font-size:22px}
+[data-theme="dark"] .hSectHead .icn{background:rgba(126,163,255,.15);color:#7ea3ff}
+.hSectHead h2{font-size:20px;font-weight:900;letter-spacing:-.02em;line-height:1;margin-bottom:4px}
+.hSectHead p{font-size:12px;color:var(--muted)}
+
+.hStep{padding:14px 0;border-top:1px solid #eef1f7;display:flex;gap:14px}
+.hStep:first-child{border-top:0}
+[data-theme="dark"] .hStep{border-color:#242b3b}
+.hStepNum{width:28px;height:28px;flex-shrink:0;border-radius:8px;background:var(--royal);color:#fff;font-weight:800;display:grid;place-items:center;font-size:12px}
+.hStepBody h4{font-size:14px;font-weight:750;color:var(--ink);margin-bottom:5px;letter-spacing:-.01em}
+[data-theme="dark"] .hStepBody h4{color:#eef2fb}
+.hStepBody p{font-size:13px;color:#5a6780;line-height:1.6}
+[data-theme="dark"] .hStepBody p{color:#b5bdcd}
+.hStepBody strong{color:var(--royal-deep);font-weight:750}
+[data-theme="dark"] .hStepBody strong{color:#7ea3ff}
+.hStepBody ul{margin:8px 0 0 18px;padding:0}
+.hStepBody li{font-size:13px;color:#5a6780;line-height:1.7;margin-bottom:4px}
+[data-theme="dark"] .hStepBody li{color:#b5bdcd}
+
+.hTip{margin-top:16px;padding:14px 16px;background:rgba(255,183,0,.08);border-left:3px solid #eab308;border-radius:8px;font-size:12px;color:#78350f;line-height:1.55}
+.hTip strong{color:#78350f}
+[data-theme="dark"] .hTip{background:rgba(234,179,8,.08);color:#fde68a}
+[data-theme="dark"] .hTip strong{color:#fde68a}
+
+.hInfo{margin-top:16px;padding:14px 16px;background:rgba(22,72,216,.06);border-left:3px solid var(--royal);border-radius:8px;font-size:12px;color:var(--royal-deep);line-height:1.55}
+[data-theme="dark"] .hInfo{background:rgba(126,163,255,.08);color:#c9d8ff}
+
+.hFeatures{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:14px}
+.hFeature{padding:14px 16px;background:#f4f7fb;border-radius:10px}
+[data-theme="dark"] .hFeature{background:#0d1018}
+.hFeature strong{display:block;font-size:12px;font-weight:750;color:var(--royal-deep);margin-bottom:4px}
+[data-theme="dark"] .hFeature strong{color:#7ea3ff}
+.hFeature small{font-size:11px;color:var(--muted);line-height:1.5;display:block}
+
+@media(max-width:600px){.hHero{padding:22px 24px}.hHero h1{font-size:22px}.hSection{padding:20px}}
+
+/* Profile Dropdown */
+.profileWrap{position:relative}
+.profileMenu{position:absolute;top:calc(100% + 8px);right:0;min-width:200px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 20px 50px rgba(4,12,40,.25);padding:6px;z-index:50;display:none;animation:pmIn .18s ease-out}
+.profileMenu.open{display:block}
+@keyframes pmIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+[data-theme="dark"] .profileMenu{background:#181d2a;border-color:#292f3e}
+.profileMenu button{width:100%;padding:10px 14px;background:transparent;border:0;border-radius:8px;text-align:left;font-size:13px;font-weight:650;color:var(--ink);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:10px;transition:.15s}
+.profileMenu button:hover{background:#f4f7fb}
+[data-theme="dark"] .profileMenu button{color:#eef2fb}
+[data-theme="dark"] .profileMenu button:hover{background:#0d1018}
+.profileMenu button.danger{color:#dc2626}
+.profileMenu button.danger:hover{background:rgba(220,38,38,.08)}
+.profileMenu .pmSep{height:1px;background:#eef1f7;margin:4px 0}
+[data-theme="dark"] .profileMenu .pmSep{background:#242b3b}
+</style>
+</head>
+<body>
+<div class="app sidebarExpanded" id="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brandArea">
+      <div class="fullBrand">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTMiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMTQgOHY0OGg5VjM1aDEwbDExIDIwaDEwTDQyIDMyYzYtMyA5LTkgOS0xNSAwLTctNS0xMC0xMy0xMEgxNHptOSA5aDEzYzQgMCA2IDIgNiA2cy0yIDYtNiA2SDIzVjE3eiIgZmlsbD0iIzBkMWY2ZCIvPjxwYXRoIGQ9Ik0yNSAzMHYxNmwxMy04LTEzLTh6IiBmaWxsPSIjZmYxZTFlIi8+PC9zdmc+" alt="Riva">
+        <strong>AJUDA</strong>
+      </div>
+      <img class="brandMark" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTMiIGZpbGw9IiNmZmYiLz48L3N2Zz4=" alt="R">
+    </div>
+    <nav class="sideNav">
+      <a href="home.html" class="navItem" style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;margin-bottom:6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.8);font-size:13px;font-weight:700;text-decoration:none">
+        <span class="navIcon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21V12h6v9"/></svg></span>
+        <span class="navLabel">Painel Inicial</span>
+      </a>
+      <button class="navItem active" data-page="inicio" onclick="secTo('inicio')"><span class="navIcon">👋</span><span class="navLabel">Bem-vindo</span><span class="activeRail"></span></button>
+      <button class="navItem" data-page="entrar" onclick="secTo('entrar')"><span class="navIcon">🔑</span><span class="navLabel">Como entrar</span></button>
+      <button class="navItem" data-page="presenca" onclick="secTo('presenca')"><span class="navIcon">📍</span><span class="navLabel">Presença nos Stands</span></button>
+      <button class="navItem" data-page="leads" onclick="secTo('leads')"><span class="navIcon">📄</span><span class="navLabel">Leads Online</span></button>
+      <button class="navItem" data-page="vendas" onclick="secTo('vendas')"><span class="navIcon">💰</span><span class="navLabel">Gestão de Vendas</span></button>
+      <button class="navItem" data-page="reunioes" onclick="secTo('reunioes')"><span class="navIcon">📅</span><span class="navLabel">Agenda Riva</span></button>
+      <button class="navItem" data-page="config" onclick="secTo('config')"><span class="navIcon">⚙️</span><span class="navLabel">Configurações</span></button>
+      <button class="navItem" data-page="problemas" onclick="secTo('problemas')"><span class="navIcon">🆘</span><span class="navLabel">Problemas comuns</span></button>
+    </nav>
+    <div class="sidebarFooter">
+      <div class="miniStatus"><span class="pulseDot"></span><div>
+        <strong style="font-size:12px">Riva Vendas CE</strong>
+        <small style="color:rgba(255,255,255,.58);font-size:9px;display:block;margin-top:2px">Precisa de mais ajuda? Fale com o Igor.</small>
+      </div></div>
+      <div class="sidebarDecoration"><i></i><i></i><i></i></div>
+    </div>
+  </aside>
+  <button class="sidebarBackdrop" id="sidebarBackdrop" onclick="closeMobileMenu()"></button>
+
+  <header class="topbar">
+    <button class="menuToggle isOpen" id="menuToggle" onclick="toggleSidebar()"><span></span><span></span><span></span></button>
+    <div class="topbarTitle"><span>AJUDA</span><strong id="pageTitle">Bem-vindo</strong></div>
+    <div class="topbarTools">
+      <div class="profileWrap"><button class="profileButton" onclick="toggleProfileMenu(event)"><span>←</span><div><strong>Voltar</strong><small>painel inicial</small></div></button><div class="profileMenu" id="profileMenu"><button onclick="location.href='home.html'">🏠 Painel Inicial</button><button onclick="location.href='configuracoes.html'">⚙️ Configurações</button><div class="pmSep"></div><button class="danger" onclick="doLogout()">🚪 Sair da conta</button></div></div>
+    </div>
+  
+      <div id="userMenu" style="display:none;position:fixed;z-index:200;min-width:220px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 20px 40px rgba(4,12,40,.25);overflow:hidden;top:56px;right:20px">
+        <div style="padding:14px 16px;border-bottom:1px solid var(--line);background:#f4f7fb">
+          <strong id="umNome" style="display:block;font-size:13px;color:var(--ink)">—</strong>
+          <small id="umCargo" style="font-size:11px;color:var(--muted)">—</small>
+        </div>
+        <button onclick="location.href='home.html'" style="width:100%;padding:11px 16px;border:0;background:transparent;text-align:left;font-size:13px;color:var(--ink);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:10px" onmouseover="this.style.background='#eef2ff'" onmouseout="this.style.background=''">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21V12h6v9"/></svg>
+          Painel Inicial
+        </button>
+        <button onclick="location.href='ajuda.html'" style="width:100%;padding:11px 16px;border:0;background:transparent;text-align:left;font-size:13px;color:var(--ink);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:10px" onmouseover="this.style.background='#eef2ff'" onmouseout="this.style.background=''">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="0.6" fill="currentColor"/></svg>
+          Ajuda
+        </button>
+        <button onclick="doLogout()" style="width:100%;padding:11px 16px;border:0;border-top:1px solid var(--line);background:transparent;text-align:left;font-size:13px;color:#dc2626;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:10px;font-weight:700" onmouseover="this.style.background='rgba(220,38,38,.06)'" onmouseout="this.style.background=''">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sair da conta
+        </button>
+      </div>
+
+  </header>
+
+  <main class="mainContent"><div class="pageTransition" id="pageContent"></div></main>
+</div>
+<script>
+var S = { sec:'inicio' };
+document.addEventListener('DOMContentLoaded', function(){
+  if(window.RivaConfig){ var c=window.RivaConfig.get(); if(c.tema) window.RivaConfig.aplicarTema(c.tema); }
+  secTo('inicio');
+});
+function secTo(sec){
+  S.sec = sec;
+  document.querySelectorAll('.navItem').forEach(function(b){ b.classList.remove('active'); var r=b.querySelector('.activeRail'); if(r) r.remove(); });
+  var btn = document.querySelector('.navItem[data-page="'+sec+'"]');
+  if(btn){ btn.classList.add('active'); var r=document.createElement('span'); r.className='activeRail'; btn.appendChild(r); }
+  var titles = { inicio:'Bem-vindo', entrar:'Como entrar', presenca:'Presença nos Stands', leads:'Leads Online', vendas:'Gestão de Vendas', reunioes:'Agenda Riva', config:'Configurações', problemas:'Problemas comuns' };
+  document.getElementById('pageTitle').textContent = titles[sec] || 'Ajuda';
+  if(window.innerWidth<=760) closeMobileMenu();
+  document.getElementById('pageContent').innerHTML = CONTENT[sec] || CONTENT.inicio;
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function toggleSidebar(){
+  if(window.innerWidth<=760){
+    var sb=document.getElementById('sidebar'), bd=document.getElementById('sidebarBackdrop');
+    var open=sb.classList.contains('mobileOpen');
+    if(open){ sb.classList.remove('mobileOpen'); bd.style.display='none'; }
+    else{ sb.classList.add('mobileOpen'); bd.style.display='block'; }
+  } else {
+    document.getElementById('app').classList.toggle('sidebarExpanded');
+    document.getElementById('app').classList.toggle('sidebarCollapsed');
+  }
+}
+function closeMobileMenu(){ document.getElementById('sidebar').classList.remove('mobileOpen'); document.getElementById('sidebarBackdrop').style.display='none'; }
+
+var CONTENT = {
+
+inicio: `
+<div class="hHero">
+  <span class="eyebrow">CENTRAL DE AJUDA</span>
+  <h1>Olá! Vamos te ajudar 👋</h1>
+  <p>Esse guia explica como usar o sistema no dia a dia. Se você tem dúvida sobre alguma coisa, clique nos itens do menu ao lado esquerdo.</p>
+</div>
+
+<div class="hSection">
+  <div class="hSectHead"><div class="icn">🎯</div><div><h2>O que você vai encontrar aqui</h2><p>Um resumo do que dá pra fazer no sistema</p></div></div>
+  <div class="hFeatures">
+    <div class="hFeature"><strong>📍 Presença nos Stands</strong><small>Marque presença automaticamente quando estiver no stand. Você e o time inteiro veem quem está ativo agora.</small></div>
+    <div class="hFeature"><strong>📄 Leads Online</strong><small>Consulte todos os leads do Núcleo Digital: agendamentos, visitas, pastas e vendas.</small></div>
+    <div class="hFeature"><strong>💰 Gestão de Vendas</strong><small>Veja o desempenho do time, ranking de corretores, empreendimentos com mais vendas.</small></div>
+    <div class="hFeature"><strong>📅 Agenda Riva</strong><small>Confira as reuniões marcadas para você. Se for Regional, também pode marcar com sua equipe.</small></div>
+    <div class="hFeature"><strong>⚙️ Configurações</strong><small>Escolha o tema claro ou escuro. Se ajuste do jeito que você prefere.</small></div>
+  </div>
+  <div class="hInfo"><strong>💬 Dúvida ou problema?</strong> Fale direto com o Igor (Administrador). Ele resolve tudo relacionado ao sistema — senha, acesso, bugs, sugestões.</div>
+</div>
+
+<div class="hSection">
+  <div class="hSectHead"><div class="icn">📱</div><div><h2>Funciona no celular?</h2><p>Sim, e é otimizado pra isso</p></div></div>
+  <p style="font-size:13px;color:#5a6780;line-height:1.6">Todo o sistema funciona no celular (Android ou iPhone). Use o navegador Chrome ou Safari. Você pode adicionar o site à tela inicial pra ficar como se fosse um aplicativo.</p>
+  <div class="hTip"><strong>💡 Dica:</strong> No iPhone, abra o site no Safari, clique no botão de compartilhar e depois em "Adicionar à Tela de Início". No Android é parecido, no menu do Chrome tem "Adicionar à tela inicial".</div>
+</div>
+`,
+
+entrar: `
+<div class="hHero">
+  <span class="eyebrow">PRIMEIRO PASSO</span>
+  <h1>Como entrar no sistema</h1>
+  <p>Você recebe um usuário e senha do Igor. Guarde esses dados — são pessoais e não devem ser compartilhados.</p>
+</div>
+
+<div class="hSection">
+  <div class="hSectHead"><div class="icn">🔑</div><div><h2>Fazendo o login</h2><p>Passo a passo</p></div></div>
+  <div class="hStep"><div class="hStepNum">1</div><div class="hStepBody"><h4>Abra o site</h4><p>Endereço: <a href="https://gestãorivavendas.com.br/home.html" target="_blank" style="color:#7ea3ff;text-decoration:underline;font-weight:750">gestãorivavendas.com.br</a>. Se você já adicionou à tela inicial, é só clicar no ícone.</p></div></div>
+  <div class="hStep"><div class="hStepNum">2</div><div class="hStepBody"><h4>Digite usuário e senha</h4><p>Use o usuário e a senha que o Igor te passou. Se você errar a senha 3 vezes, aguarde um minuto antes de tentar de novo.</p></div></div>
+  <div class="hStep"><div class="hStepNum">3</div><div class="hStepBody"><h4>Pronto!</h4><p>Você vai cair na página inicial. Aparece "Boa tarde, [seu nome]" e os módulos que você pode acessar.</p></div></div>
+  <div class="hTip"><strong>🔒 Segurança:</strong> nunca compartilhe sua senha. Se desconfiar que alguém sabe, fale com o Igor pra trocar.</div>
+</div>
+
+<div class="hSection">
+  <div class="hSectHead"><div class="icn">🚪</div><div><h2>Como sair (logout)</h2><p>Encerrar a sessão</p></div></div>
+  <div class="hStep"><div class="hStepNum">1</div><div class="hStepBody"><h4>Botão no topo direito</h4><p>Clique no seu nome no canto superior direito. Confirma que quer sair.</p></div></div>
+  <div class="hStep"><div class="hStepNum">2</div><div class="hStepBody"><h4>Ou no menu de Configurações</h4><p>Também tem a opção "Sair do sistema" dentro de Configurações.</p></div></div>
+  <div class="hInfo"><strong>ℹ️ Sessão:</strong> se você não sair manualmente, o sistema continua conectado no seu celular/computador por 30 dias.</div>
+</div>
+`,
+
+presenca: `
+<div class="hHero">
+  <span class="eyebrow">PRESENÇA GPS</span>
+  <h1>Como marcar presença no stand</h1>
+  <p>O sistema usa a localização do seu celular pra confirmar automaticamente que você está trabalhando no stand. Você não precisa fazer nada manualmente.</p>
+</div>
+
+<div class="hSection">
+  <div class="hSectHead"><div class="icn">📍</div><div><h2>Ativando a localização</h2><p>Passo a passo</p></div></div>
+  <div class="hStep"><div class="hStepNum">1</div><div class="hStepBody"><h4>Chegou no stand?</h4><p>Abra o sistema no seu celular. Vai aparecer um botão <strong>"Localizar"</strong> na página inicial.</p></div></div>
+  <div class="hStep"><div class="hStepNum">2</div><div class="hStepBody"><h4>Autorize a localização</h4><p>O navegador vai perguntar se pode usar sua localização. Clique em <strong>"Permitir"</strong>.</p></div></div>
+  <div class="hStep"><div class="hStepNum">3</div><div class="hStepBody"><h4>Confirmação</h4><p>Se você estiver dentro do stand, aparece uma bolinha <strong>verde "Online"</strong> com o nome do stand (ex.: "Ativo em Cocó").</p></div></div>
+  <div class="hStep"><div class="hStepNum">4</div><div class="hStepBody"><h4>Fique tranquilo</h4><p>O sistema fica renovando o seu check-in automaticamente a cada 5 minutos enquanto você estiver com o site aberto.</p></div></div>
+</div>
+
+<div class="hSection">
+  <div class="hSectHead"><div class="icn">🏢</div><div><h2>Quais stands o sistema reconhece?</h2><p>Locais monitorados</p></div></div>
+  <div class="hFeatures">
+    <div class="hFeature"><strong>Cocó</strong><small>Aldeota / Meireles</small></div>
+    <div class="hFeature"><strong>Bernardo</strong><small>Zona Oeste</small></div>
+    <div class="hFeature"><strong>Silas</strong><small>Zona Oeste</small></div>
+    <div class="hFeature"><strong>North</strong><small>North Shopping</small></div>
+    <div class="hFeature"><strong>Damas</strong><small>Damas / Fátima</small></div>
+    <div class="hFeature"><strong>Messejana</strong><small>Messejana</small></div>
+  </div>
+  <div class="hInfo"><strong>ℹ️ Alcance:</strong> o sistema considera você "no stand" se estiver a menos de 250 a 300 metros do local. Não precisa estar exatamente na porta.</div>
+</div>
+
+<div class="hSection">
+  <div class="hSectHead"><div class="icn">👥</div><div><h2>Ver quem está ativo agora</h2><p>Painel de presença do time</p></div></div>
+  <div class="hStep"><div class="hStepNum">1</div><div class="hStepBody"><h4>Clique em "Ver todos"</h4><p>Na página inicial, abaixo do seu status, tem o link <strong>"Ver todos →"</strong>.</p></div></div>
+  <div class="hStep"><div class="hStepNum">2</div><div class="hStepBody"><h4>Modal aparece</h4><p>Uma tela mostrando: quem está ativo agora (verde), quem está fora (vermelho), o stand de cada um, que horas chegou e o último check-in.</p></div></div>
+  <div class="hStep"><div class="hStepNum">3</div><div class="hStepBody"><h4>Filtros</h4><p>Você pode filtrar por: <strong>Todos</strong>, <strong>Equipe Rene</strong> ou <strong>Equipe Cahú</strong>.</p></div></div>
+</div>
+
+<div class="hTip"><strong>⚠️ Importante:</strong> se você não autorizar a localização, o sistema não sabe que você está no stand — e você aparece como "fora" pra todo mundo. Sempre autorize quando chegar.</div>
+`,
+
+leads: `
+<div class="hHero">
+  <span class="eyebrow">LEADS ONLINE</span>
+  <h1>Como acompanhar os Leads</h1>
+  <p>Consulte os leads do Núcleo Digital: quem foi cadastrado, agendado, fez visita, tem pasta e quem virou venda.</p>
+</div>
+
+<div class="hSection">
+  <div class="hSectHead"><div class="icn">📄</div><div><h2>Página principal</h2><p>Como navegar</p></div></div>
+  <div class="hStep"><div class="hStepNum">1</div><div class="hStepBody"><h4>Filtros no topo</h4><p>Escolha o <strong>mês</strong> e o <strong>ano</strong> que você quer ver. Você também pode filtrar por <strong>gerente</strong> ou <strong>corretor</strong>.</p></div></div>
+  <div class="hStep"><div class="hStepNum">2</div><div class="hStepBody"><h4>KPIs</h4><p>Cards no topo mostram os números: total de leads, agendamentos, visitas, pastas, vendas.</p></div></div>
+  <div class="hStep"><div class="hStepNum">3</div><div class="hStepBody"><h4>Lista</h4><p>Cada linha é um lead. Você vê: nome do cliente, corretor responsável, empreendimento de interesse, status atual, data de cadastro.</p></div></div>
+  <div class="hStep"><div class="hStepNum">4</div><div class="hStepBody"><h4>Busca rápida</h4><p>Use o campo de busca pra achar um lead específico pelo nome do cliente ou do corretor.</p></div></div>
+</div>
+
+<div class="hSection">
+  <div class="hSectHead"><div class="icn">📊</div><div><h2>Status dos leads</h2><p>O que cada etapa significa</p></div></div>
+  <div class="hStep"><div class="hStepNum">📝</div><div class="hStepBody"><h4>Cadastro</h4><p>O lead entrou pelo Núcleo Digital, mas ainda não teve agendamento marcado.</p></div></div>
+  <div class="hStep"><div class="hStepNum">📞</div><div class="hStepBody"><h4>Agendamento</h4><p>Corretor marcou horário pra visita ou reunião com o cliente.</p></div></div>
+  <div class="hStep"><div class="hStepNum">👥</div><div class="hStepBody"><h4>Visita</h4><p>Cliente compareceu ao stand ou visitou o empreendimento.</p></div></div>
+  <div class="hStep"><div class="hStepNum">📁</div><div class="hStepBody"><h4>Pasta</h4><p>Documentação do cliente foi montada. Pode ser <strong>Pasta Total</strong> (documentação parcial) ou <strong>Pasta Aprovada</strong> (documentação completa e aprovada pelo banco).</p></div></div>
+  <div class="hStep"><div class="hStepNum">💰</div><div class="hStepBody"><h4>Venda</h4><p>Cliente fechou o contrato. VGV registrado.</p></div></div>
+</div>
+`,
+
+vendas: `
+<div class="hHero">
+  <span class="eyebrow">GESTÃO DE VENDAS</span>
+  <h1>Como acompanhar as vendas do time</h1>
+  <p>Veja o desempenho geral, meta do mês, ranking de corretores e distribuição por empreendimento.</p>
+</div>
+
+<div class="hSection">
+  <div class="hSectHead"><div class="icn">📊</div><div><h2>Aba: Visão Geral</h2><p>Dashboard principal</p></div></div>
+  <div class="hStep"><div class="hStepNum">1</div><div class="hStepBody"><h4>Escolher mês e ano</h4><p>No topo da tela: dropdown de mês e campo pra digitar o ano.</p></div></div>
+  <div class="hStep"><div class="hStepNum">2</div><div class="hStepBody"><h4>KPIs no topo</h4><p>4 cartões grandes: <strong>total de vendas</strong>, <strong>VGV realizado</strong>, <strong>ticket médio</strong> e <strong>% da meta</strong>.</p></div></div>
+  <div class="hStep"><div class="hStepNum">3</div><div class="hStepBody"><h4>Gráficos</h4><p><strong>Distribuição VGV:</strong> donut mostrando quais empreendimentos venderam mais.</p><p><strong>Realizado vs Meta:</strong> barras comparando cada mês.</p></div></div>
+  <div class="hStep"><div class="hStepNum">4</div><div class="hStepBody"><h4>Ranking</h4><p>Top corretores do mês em ordem decrescente de VGV.</p></div></div>
+  <div class="hStep"><div class="hStepNum">5</div><div class="hStepBody"><h4>Meta do Mês</h4><p>Painel mostrando: valor da meta, quanto já foi realizado, quanto falta.</p></div></div>
+</div>
+
+<div class="hSection">
+  <div class="hSectHead"><div class="icn">🛒</div><div><h2>Aba: Lançar Vendas</h2><p>Consulta das vendas do mês</p></div></div>
+  <div class="hStep"><div class="hStepNum">1</div><div class="hStepBody"><h4>Filtros</h4><p>Chips no topo pra ver: <strong>Todas</strong>, <strong>Comissionadas</strong>, <strong>Só do mês</strong>, etc.</p></div></div>
+  <div class="hStep"><div class="hStepNum">2</div><div class="hStepBody"><h4>Lista</h4><p>Cada linha é uma venda: corretor, empreendimento, VGV, data, se tem comissão.</p></div></div>
+  <div class="hInfo"><strong>ℹ️ Você pode ver</strong>, mas o lançamento de novas vendas é feito pelo Diretor ou pelo Igor. Se identificou um erro em alguma venda, avise eles.</div>
+</div>
+
+<div class="hSection">
+  <div class="hSectHead"><div class="icn">🌳</div><div><h2>Aba: Hierarquia</h2><p>Organograma comercial</p></div></div>
+  <div class="hStep"><div class="hStepNum">1</div><div class="hStepBody"><h4>Cards regionais</h4><p>Dois cards grandes: <strong>Rene</strong> e <strong>Cahú</strong>. Clique num deles pra ver os gerentes de vendas e corretores da equipe.</p></div></div>
+  <div class="hStep"><div class="hStepNum">2</div><div class="hStepBody"><h4>Drill-down</h4><p>Ao clicar num gerente, você vê os corretores vinculados a ele.</p></div></div>
+</div>
+`,
+
+reunioes: `
+<div class="hHero">
+  <span class="eyebrow">REUNIÕES</span>
+  <h1>Como acompanhar suas reuniões</h1>
+  <p>Veja em calendário todas as reuniões marcadas pra você ou pra sua equipe.</p>
+</div>
+
+<div class="hSection">
+  <div class="hSectHead"><div class="icn">📅</div><div><h2>Aba: Calendário</h2><p>Visualização mensal</p></div></div>
+  <div class="hStep"><div class="hStepNum">1</div><div class="hStepBody"><h4>Navegar por mês</h4><p>Use as setas <strong>← →</strong> no topo pra mudar de mês. O botão <strong>"Hoje"</strong> volta pro mês atual.</p></div></div>
+  <div class="hStep"><div class="hStepNum">2</div><div class="hStepBody"><h4>Ver reunião</h4><p>Cada dia que tem reunião mostra uma tarja colorida. Clique nela pra ver: título, horário, duração, local e descrição.</p></div></div>
+  <div class="hStep"><div class="hStepNum">3</div><div class="hStepBody"><h4>Dia de hoje</h4><p>O dia atual fica destacado em azul, fácil de identificar.</p></div></div>
+</div>
+
+<div class="hSection">
+  <div class="hSectHead"><div class="icn">🕐</div><div><h2>Aba: Próximas</h2><p>Lista organizada</p></div></div>
+  <div class="hStep"><div class="hStepNum">1</div><div class="hStepBody"><h4>Ordem cronológica</h4><p>Lista as próximas reuniões da mais próxima pra mais distante.</p></div></div>
+  <div class="hStep"><div class="hStepNum">2</div><div class="hStepBody"><h4>Passadas</h4><p>Rolando pra baixo, você vê as reuniões que já aconteceram.</p></div></div>
+</div>
+
+<div class="hSection">
+  <div class="hSectHead"><div class="icn">📢</div><div><h2>Marcar reunião (só Regionais)</h2><p>Se você é Gerente Regional (Rene ou Cahú)</p></div></div>
+  <div class="hStep"><div class="hStepNum">1</div><div class="hStepBody"><h4>Botão "Nova Reunião"</h4><p>Aparece no topo. Clique nele ou clique direto num dia do calendário.</p></div></div>
+  <div class="hStep"><div class="hStepNum">2</div><div class="hStepBody"><h4>Preencha os dados</h4><p>Título, data, horário, duração. Local e descrição são opcionais.</p></div></div>
+  <div class="hStep"><div class="hStepNum">3</div><div class="hStepBody"><h4>Escolha o escopo</h4><p>Como Regional, você só pode convocar <strong>sua equipe</strong> (os GVs do seu regional).</p></div></div>
+  <div class="hStep"><div class="hStepNum">4</div><div class="hStepBody"><h4>Salvar</h4><p>Clica em Salvar e pronto. A reunião aparece no calendário do seu time e também no calendário do Igor e do Humberto.</p></div></div>
+  <div class="hTip"><strong>💡 Dica:</strong> se precisar cancelar, clica na reunião no calendário e depois em "Excluir". Só quem criou (ou o Admin/Diretor) pode excluir.</div>
+</div>
+
+<div class="hInfo"><strong>ℹ️ Se você não é Regional</strong>, você só visualiza as reuniões que foram marcadas pra você. Não aparece botão de criar.</div>
+`,
+
+config: `
+<div class="hHero">
+  <span class="eyebrow">CONFIGURAÇÕES</span>
+  <h1>Como ajustar o visual do sistema</h1>
+  <p>Escolha se prefere o tema claro (fundo branco) ou escuro (fundo preto).</p>
+</div>
+
+<div class="hSection">
+  <div class="hSectHead"><div class="icn">🎨</div><div><h2>Trocando o tema</h2><p>Claro ou escuro</p></div></div>
+  <div class="hStep"><div class="hStepNum">1</div><div class="hStepBody"><h4>Abra o painel Configurações</h4><p>Na página inicial, clique no card <strong>Configurações</strong>.</p></div></div>
+  <div class="hStep"><div class="hStepNum">2</div><div class="hStepBody"><h4>Escolha o tema</h4><p>Aparecem dois cards: <strong>Tema claro</strong> (fundo branco, letras escuras) e <strong>Tema escuro</strong> (fundo preto, letras claras). Clique no que preferir.</p></div></div>
+  <div class="hStep"><div class="hStepNum">3</div><div class="hStepBody"><h4>Aplicado na hora</h4><p>Muda instantaneamente. Sua escolha fica salva mesmo se você sair e voltar depois.</p></div></div>
+  <div class="hTip"><strong>💡 Dica:</strong> use tema escuro à noite (cansa menos os olhos) e tema claro de dia (mais legível na luz forte).</div>
+</div>
+
+<div class="hSection">
+  <div class="hSectHead"><div class="icn">🚪</div><div><h2>Sair do sistema</h2><p>Logout</p></div></div>
+  <p style="font-size:13px;color:#5a6780;line-height:1.6">Dentro de Configurações também tem o botão <strong>"Sair do sistema"</strong>. Clica nele, confirma, e você volta pra tela de login.</p>
+</div>
+`,
+
+problemas: `
+<div class="hHero">
+  <span class="eyebrow">SUPORTE</span>
+  <h1>Problemas comuns</h1>
+  <p>Se aconteceu algo estranho, veja aqui antes de chamar o Igor. Muita coisa se resolve rápido.</p>
+</div>
+
+<div class="hSection">
+  <div class="hSectHead"><div class="icn">🔑</div><div><h2>Esqueci minha senha</h2><p>O que fazer</p></div></div>
+  <p style="font-size:13px;color:#5a6780;line-height:1.6">Não tem como recuperar sozinho. Fale com o <strong>Igor</strong> — ele redefine sua senha na hora. Depois é só entrar de novo com a nova senha.</p>
+</div>
+
+<div class="hSection">
+  <div class="hSectHead"><div class="icn">📍</div><div><h2>Meu check-in não está registrando</h2><p>Sistema não me reconhece no stand</p></div></div>
+  <div class="hStep"><div class="hStepNum">1</div><div class="hStepBody"><h4>Autorize a localização</h4><p>Quando o navegador pergunta se pode usar sua localização, sempre clique em <strong>"Permitir"</strong>. Se você bloqueou por engano, tem que ir nas configurações do navegador pra desbloquear.</p></div></div>
+  <div class="hStep"><div class="hStepNum">2</div><div class="hStepBody"><h4>Ative o GPS do celular</h4><p>Verifique se a localização do celular está ligada nas configurações do sistema.</p></div></div>
+  <div class="hStep"><div class="hStepNum">3</div><div class="hStepBody"><h4>Recarregue a página</h4><p>Puxa a tela pra baixo pra recarregar (no celular). Isso força um novo check-in.</p></div></div>
+  <div class="hStep"><div class="hStepNum">4</div><div class="hStepBody"><h4>Você está mesmo no raio?</h4><p>O sistema considera "no stand" a até 250-300 metros. Se você está muito longe (num restaurante, por exemplo), não conta.</p></div></div>
+</div>
+
+<div class="hSection">
+  <div class="hSectHead"><div class="icn">🔴</div><div><h2>Aparece "Offline" no topo</h2><p>Bolinha vermelha</p></div></div>
+  <p style="font-size:13px;color:#5a6780;line-height:1.6">O sistema perdeu conexão com a nuvem. Isso geralmente é problema de internet:</p>
+  <div class="hStep"><div class="hStepNum">1</div><div class="hStepBody"><h4>Verifique sua internet</h4><p>Confira se o Wi-Fi ou 4G está funcionando.</p></div></div>
+  <div class="hStep"><div class="hStepNum">2</div><div class="hStepBody"><h4>Clique na bolinha</h4><p>Ao clicar no ícone de sincronização, o sistema tenta reconectar.</p></div></div>
+  <div class="hStep"><div class="hStepNum">3</div><div class="hStepBody"><h4>Recarregue a página</h4><p>Se não voltar, feche e abra o navegador de novo.</p></div></div>
+</div>
+
+<div class="hSection">
+  <div class="hSectHead"><div class="icn">👁️</div><div><h2>Não vejo um painel que outros têm</h2><p>Card não aparece pra mim</p></div></div>
+  <p style="font-size:13px;color:#5a6780;line-height:1.6">Cada cargo tem acesso a painéis diferentes. Alguns painéis são exclusivos do <strong>Diretor</strong> ou <strong>Administrador</strong>. Se você acha que precisa de acesso a algum painel, fale com o Igor.</p>
+</div>
+
+<div class="hSection">
+  <div class="hSectHead"><div class="icn">🐢</div><div><h2>Sistema travando ou lento</h2><p>Não carrega ou fica devagar</p></div></div>
+  <div class="hStep"><div class="hStepNum">1</div><div class="hStepBody"><h4>Recarregue a página</h4><p>Muitas vezes resolve. Puxa pra baixo (mobile) ou aperta F5 (desktop).</p></div></div>
+  <div class="hStep"><div class="hStepNum">2</div><div class="hStepBody"><h4>Feche outras abas</h4><p>Se seu navegador está com muitas abas abertas, pode ficar lento.</p></div></div>
+  <div class="hStep"><div class="hStepNum">3</div><div class="hStepBody"><h4>Atualize o navegador</h4><p>Use sempre a versão mais nova do Chrome ou Safari.</p></div></div>
+</div>
+
+<div class="hSection" style="background:linear-gradient(135deg,#1648d8,#0d33a8);color:#fff;border:0">
+  <div class="hSectHead"><div class="icn" style="background:rgba(255,255,255,.15);color:#fff">💬</div><div><h2 style="color:#fff">Nada disso resolveu?</h2><p style="color:rgba(255,255,255,.75)">Fale direto com o Igor</p></div></div>
+  <p style="font-size:14px;color:rgba(255,255,255,.9);line-height:1.6">Se você tentou o que está aqui e nada resolveu, chama o <strong style="color:#fff">Igor</strong> no WhatsApp. Descreva o que estava fazendo, o que aconteceu e, se possível, tire uma foto da tela.</p>
+</div>
+`
+
+};
+</script>
+</body>
+</html>
