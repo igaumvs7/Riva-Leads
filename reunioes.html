@@ -346,14 +346,45 @@ function emailsDoEscopo(escopo){
   var out = [];
   if(escopo==='todos'){
     ['rene','cahu'].forEach(function(r){
-      Object.values(HIER[r].emails||{}).forEach(function(e){ if(e) out.push(e); });
+      var emails = HIER[r].emails || {};
+      Object.keys(emails).forEach(function(k){ if(emails[k]) out.push(emails[k]); });
+    });
+    // Also add regionais emails
+    REGIONAIS.forEach(function(rn){
+      var key = rn.toLowerCase();
+      if(HIER[key] && HIER[key].emailRegional) out.push(HIER[key].emailRegional);
+    });
+  } else if(escopo==='regionais'){
+    REGIONAIS.forEach(function(rn){
+      var key = rn.toLowerCase();
+      if(HIER[key] && HIER[key].emailRegional) out.push(HIER[key].emailRegional);
     });
   } else if(escopo==='rene' || escopo==='cahu'){
-    Object.values(HIER[escopo].emails||{}).forEach(function(e){ if(e) out.push(e); });
-  } else if(escopo==='regionais'){
-    // regionais são cargos, não estão na lista de GVs — deixe pro usuário
+    var emails = HIER[escopo].emails || {};
+    Object.keys(emails).forEach(function(k){ if(emails[k]) out.push(emails[k]); });
+    if(HIER[escopo].emailRegional) out.push(HIER[escopo].emailRegional);
+  } else if(escopo && escopo.startsWith('gv:')){
+    // Individual GV: "gv:Nome:reg"
+    var parts = escopo.split(':');
+    var gvNome = parts[1];
+    var reg = parts[2];
+    if(reg && HIER[reg]){
+      var email = (HIER[reg].emails||{})[gvNome];
+      if(email) out.push(email);
+    }
+  } else if(escopo === 'select'){
+    // Get from select element
+    var sel = document.getElementById('rGvEspecifico');
+    if(sel && sel.value && sel.value.startsWith('gv:')){
+      var parts = sel.value.split(':');
+      var gvNome = parts[1], reg = parts[2];
+      if(reg && HIER[reg]){
+        var email = (HIER[reg].emails||{})[gvNome];
+        if(email) out.push(email);
+      }
+    }
   }
-  return out.filter(function(v,i,a){ return a.indexOf(v)===i; });
+  return out.filter(function(e){ return e && e.indexOf('@') > 0; });
 }
 function coletarReunioes(){
   // Lê todas as chaves reunioes_YYYY-MM da config
@@ -367,7 +398,6 @@ function coletarReunioes(){
   return out.sort(function(a,b){ return (a.data+a.hora) < (b.data+b.hora) ? -1 : 1; });
 }
 function saveReunioes(){
-  // Otimistic UI: aplica local IMEDIATAMENTE, sincroniza em background
   var porMes = {};
   S.reunioes.forEach(function(r){
     var ym = r.data.slice(0,7);
@@ -375,6 +405,8 @@ function saveReunioes(){
     porMes['reunioes_'+ym].push(r);
   });
   Object.assign(S.config, porMes);
+  // Notificação: salva timestamp da última atualização
+  localStorage.setItem('riva_agenda_updated', new Date().toISOString());
   setSyn('loading');
   fetch(SU,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({config:porMes})})
     .then(function(){ setSyn('ok'); })
@@ -668,27 +700,47 @@ function editarReuniao(id){
   document.body.style.overflow='hidden';
 }
 
-function enviarEmail(){
-  if(!S.editing) return;
-  var r = S.editing;
+function enviarEmail(r){
+  if(!r && S.editing) r = S.editing;
+  if(!r) return;
   var emails = emailsDoEscopo(r.escopo);
   if(!emails.length){
-    toast('Nenhum email cadastrado para esse escopo. Cadastre em Performance › Gestão de Equipes.', true);
+    toast('Nenhum email cadastrado. Cadastre em Performance › Gestão de Equipes.', true);
     return;
   }
   var dt = new Date(r.data+'T'+r.hora);
   var dtStr = dt.toLocaleDateString('pt-BR',{weekday:'long', day:'numeric', month:'long', year:'numeric'});
-  var subject = encodeURIComponent('Reunião: '+r.titulo);
-  var body = encodeURIComponent(
-    'Olá!\n\nVocê está sendo convocado(a) para uma reunião:\n\n'
-    + '📅 Data: '+dtStr+'\n'
-    + '🕐 Horário: '+r.hora+' ('+r.duracao+' min)\n'
-    + (r.local?'📍 Local: '+r.local+'\n':'')
-    + (r.descricao?'\n📝 Pauta:\n'+r.descricao+'\n':'')
-    + '\n---\nEnviado pelo BI Riva Vendas CE'
-  );
-  var mailto = 'mailto:'+emails.join(',')+'?subject='+subject+'&body='+body;
-  window.location.href = mailto;
+  var corpo = 'Olá!\n\nVocê está sendo convocado(a) para uma reunião:\n\n'
+    + 'Título: '+r.titulo+'\n'
+    + 'Data: '+dtStr+'\n'
+    + 'Horário: '+r.hora+(r.duracao?' ('+r.duracao+' min)':'')+'\n'
+    + (r.local ? 'Local: '+r.local+'\n' : '')
+    + (r.descricao ? '\nDetalhes: '+r.descricao+'\n' : '')
+    + '\nConvocado por: '+r.convocadoPor+'\n\nAtenciosamente,\nSistema Riva Vendas CE';
+  
+  toast('Enviando email para '+emails.length+' pessoa(s)...');
+  
+  fetch(SU, {
+    method: 'POST',
+    headers: {'Content-Type': 'text/plain;charset=utf-8'},
+    body: JSON.stringify({
+      action: 'enviarEmailReuniao',
+      emails: emails,
+      assunto: 'Convocação: '+r.titulo,
+      corpo: corpo,
+      reuniao: {titulo:r.titulo, data:r.data, hora:r.hora, duracao:r.duracao, local:r.local, descricao:r.descricao}
+    })
+  }).then(function(res){ return res.json(); })
+    .then(function(j){
+      if(j && j.status==='ok'){
+        toast('✅ Email enviado para '+emails.length+' pessoa(s)!');
+      } else {
+        toast('Email enviado (sem confirmação do servidor).', false);
+      }
+    })
+    .catch(function(){
+      toast('Erro ao enviar email. Verifique a conexão.', true);
+    });
 }
 function fecharModal(){
   document.getElementById('rModal').classList.remove('open');
@@ -714,6 +766,32 @@ function renderEscopo(atual){
   }).join('');
   document.getElementById('rEscopo').innerHTML = html;
 }
+function onEscopoChange(){
+  var esc = (document.querySelector('input[name="esc"]:checked') || {}).value || 'todos';
+  var wrap = document.getElementById('gvSelectWrap');
+  var sel = document.getElementById('rGvEspecifico');
+  if(!wrap || !sel) return;
+  
+  if(esc === 'select'){
+    wrap.style.display = '';
+    // Populate with GVs
+    var gvs = [];
+    if(S.canConvokeAll){
+      ['rene','cahu'].forEach(function(r){ HIER[r].gvs.forEach(function(g){ gvs.push({nome:g, reg:r}); }); });
+      REGIONAIS.forEach(function(r){ gvs.unshift({nome:r, reg:'regional'}); });
+    } else {
+      // Regional: only their GVs
+      var myReg = (S.user.usuario||'').toLowerCase();
+      if(HIER[myReg]) HIER[myReg].gvs.forEach(function(g){ gvs.push({nome:g, reg:myReg}); });
+    }
+    sel.innerHTML = '<option value="">Selecione...</option>' + gvs.map(function(g){
+      return '<option value="gv:'+g.nome+':'+g.reg+'">'+g.nome+(g.reg==='regional'?' (Regional)':' ('+HIER[g.reg]?.nome+' )')+'</option>';
+    }).join('');
+  } else {
+    wrap.style.display = 'none';
+  }
+}
+
 function salvarReuniao(){
   var titulo = document.getElementById('rTit').value.trim();
   var data = document.getElementById('rData').value;
@@ -721,6 +799,12 @@ function salvarReuniao(){
   if(!titulo || !data || !hora){ toast('Preencha título, data e horário', true); return; }
   var escopoEl = document.querySelector('input[name="esc"]:checked');
   var escopo = escopoEl ? escopoEl.value : 'todos';
+  // Handle individual GV selection
+  if(escopo === 'select'){
+    var gvSel = document.getElementById('rGvEspecifico');
+    if(gvSel && gvSel.value) escopo = gvSel.value; // e.g. "gv:Aloisio:rene"
+    else { toast('Selecione um gerente específico', true); return; }
+  }
 
   var reu = {
     id: S.editing ? S.editing.id : uid(),
@@ -750,9 +834,10 @@ function salvarReuniao(){
   // Salva no background (não bloqueia)
   saveReunioes().then(function(ok){
     if(ok){
-      toast('Reunião sincronizada!');
-      if(!wasEditing && emails.length && confirm('Enviar por email para '+emails.length+' pessoa(s)?')){
-        S.editing = reu; enviarEmail();
+      toast('Reunião salva!');
+      // Envio automático de email para todos do escopo
+      if(!wasEditing && emails.length){
+        setTimeout(function(){ enviarEmail(reu); }, 500);
       }
     } else {
       toast('Salvo local. Sem conexão.', true);
