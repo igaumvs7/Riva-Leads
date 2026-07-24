@@ -1355,152 +1355,195 @@ function removeDiretor(nome){
 // ╚══════════════════════════════════════════════════════════════╝
 
 function viewHouse2(){
-  var d = dadosHouse();
-  var MS3=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-  var gvAtivos = getAllGVs(false).map(function(g){return typeof g==='object'?g.nome:g;});
-  var allGVs = gvAtivos.concat(['Desligados']);
-  var tris=[[0,1,2],[3,4,5],[6,7,8],[9,10,11]];
-  
-  function monthCols(){ return MS3.map(function(m){ return '<th class="center" style="font-size:9px;min-width:72px">'+m+'</th>'; }).join(''); }
-  
-  // Trimestral summary panel (read-only, calculated from Metas tab)
-  var secTri = '<div class="pPanel">'
-    +'<div class="pPanelHead"><div><span class="eyebrow">VISÃO TRIMESTRAL</span><h3>Desempenho por Trimestre</h3></div>'
-    +'<small style="color:var(--muted);font-size:11px">Calculado automaticamente dos dados mensais</small></div>'
-    +'<div class="pTable" style="overflow-x:auto"><table>'
-    +'<thead><tr><th>Gerente</th><th>Campo</th>'
-    +'<th class="center" style="font-size:9px;min-width:64px">1º Tri</th>'
-    +'<th class="center" style="font-size:9px;min-width:64px">2º Tri</th>'
-    +'<th class="center" style="font-size:9px;min-width:64px">3º Tri</th>'
-    +'<th class="center" style="font-size:9px;min-width:64px">4º Tri</th>'
-    +'<th class="center" style="font-size:9px;min-width:72px;background:#eef3ff">ANO</th>'
-    +'</tr></thead><tbody id="h2TriBody"></tbody><tfoot id="h2TriFoot"></tfoot>'
-    +'</table></div></div>';
-  
-  // Mensal read-only panel  
-  var secMensal = '<div class="pPanel">'
-    +'<div class="pPanelHead"><div><span class="eyebrow">DESEMPENHO MENSAL</span><h3>Realizado vs Meta por Gerente</h3></div></div>'
-    +'<div class="pTable" style="overflow-x:auto"><table>'
-    +'<thead><tr><th style="min-width:110px">Gerente</th><th style="font-size:9px">Campo</th>'+monthCols()+'<th class="center" style="font-size:9px;min-width:72px;background:#eef3ff">ANO</th></tr></thead>'
-    +'<tbody id="h2MensalBody"></tbody><tfoot id="h2MensalFoot"></tfoot>'
-    +'</table></div></div>';
-  
-  // Regional mensal
-  var secRegMensal = '<div class="pPanel">'
-    +'<div class="pPanelHead"><div><span class="eyebrow">REGIONAIS · MENSAL</span><h3>Meta vs Realizado por Regional</h3></div></div>'
-    +'<div class="pTable" style="overflow-x:auto"><table>'
-    +'<thead><tr><th>Regional</th><th style="font-size:9px">Campo</th>'+monthCols()+'<th class="center" style="font-size:9px;background:#eef3ff">ANO</th></tr></thead>'
-    +'<tbody id="h2RegBody"></tbody><tfoot id="h2RegFoot"></tfoot>'
-    +'</table></div></div>';
-  
-  return ''
-    +'<div class="perfHero">'
-    +'<span class="eyebrow">HOUSE · DESEMPENHO · '+S.ano+'</span>'
-    +'<h1>Análise de Desempenho House</h1>'
-    +'<p>Resumo trimestral · Desempenho mensal · Regionais — dados calculados das metas</p>'
-    +'</div>'
-    +'<div class="perfTop">'
-    +'<input class="perfSel yearIn" id="houseAno2" type="number" min="2020" max="2099" step="1">'
-    +'</div>'
-    +'<div class="pKpiRow" id="h2KpiRow"></div>'
-    + secTri + secMensal + secRegMensal;
+  return '<div class="hPage" id="h2Page">'+
+    '<div class="perfTop" style="margin-bottom:8px"><input class="perfSel yearIn" id="houseAno2" type="number" min="2020" max="2099" step="1"></div>'+
+    '<div class="pKpiRow" id="h2KpiRow"></div>'+
+    '<div class="hTabBar">'+
+      '<button onclick="h2SetTab(\'mensal\')"   id="h2tab-mensal"  class="active">📅 Mensal</button>'+
+      '<button onclick="h2SetTab(\'trimestral\')" id="h2tab-trimestral"            >📊 Trimestral</button>'+
+      '<button onclick="h2SetTab(\'regionais\')" id="h2tab-regionais"              >🗺️ Regionais</button>'+
+    '</div>'+
+    '<div id="h2TabContent"></div>'+
+  '</div>';
 }
 
 function afterHouse2(){
   var el=document.getElementById('houseAno2');
-  if(el){ el.value=S.ano; el.addEventListener('change',function(){var v=parseInt(this.value)||S.ano;if(v<2020)v=2020;if(v>2099)v=2099;S.ano=v;this.value=v;renderPage();}); }
-  renderHouse2();
+  if(el){ el.value=S.ano; el.addEventListener('change',function(){ var v=parseInt(this.value)||S.ano; if(v<2020)v=2020;if(v>2099)v=2099; S.ano=v;this.value=v;renderPage(); }); }
+  h2BuildKpis();
+  window._h2Tab = window._h2Tab || 'mensal';
+  h2SetTab(window._h2Tab);
 }
 
-function renderHouse2(){
+function h2BuildKpis(){
+  var d=dadosHouse();
+  var gvs=getAllGVs(false).map(function(g){return typeof g==='object'?g.nome:g;}).concat(['Desligados']);
+  var mRiva=d.metaRiva||0, totM=0, totR=0;
+  gvs.forEach(function(gv){ for(var m=1;m<=12;m++){ var mk=String(m).padStart(2,'0'); var md=(d.gvs[gv]||{})[mk]||{}; totM+=md.meta||0; totR+=md.realizado||0; } });
+  var p=pct(totR,mRiva||totM); var pc=pctCor(p);
+  var el=document.getElementById('h2KpiRow');
+  if(el) el.innerHTML=[
+    {l:'Meta RIVA',v:fmtM(mRiva),s:'Meta anual',c:''},
+    {l:'Realizado',v:fmtM(totR),s:pctStr(totR,mRiva)+(mRiva?' da meta RIVA':''),c:totR>=mRiva&&mRiva?'hKpiGreen':''},
+    {l:'Pendente',v:fmtM(Math.max(0,mRiva-totR)),s:'Para fechar o ano',c:mRiva&&mRiva>totR?'hKpiRed':'hKpiGreen'},
+    {l:'Soma Metas GVs',v:fmtM(totM),s:'Total das metas individuais',c:''},
+  ].map(function(k){ return '<div class="pKpi '+k.c+'"><span>'+k.l+'</span><strong>'+k.v+'</strong><small>'+k.s+'</small></div>'; }).join('');
+}
+
+function h2SetTab(tab){
+  window._h2Tab=tab;
+  ['mensal','trimestral','regionais'].forEach(function(t){
+    var btn=document.getElementById('h2tab-'+t);
+    if(btn) btn.className=t===tab?'active':'';
+  });
+  var el=document.getElementById('h2TabContent');
+  if(!el) return;
+  if(tab==='mensal')      el.innerHTML=h2Mensal();
+  if(tab==='trimestral')  el.innerHTML=h2Trimestral();
+  if(tab==='regionais')   el.innerHTML=h2Regionais();
+}
+
+function h2Mensal(){
   var d=dadosHouse();
   var MS3=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-  var gvAtivos=getAllGVs(false).map(function(g){return typeof g==='object'?g.nome:g;});
-  var allGVs=gvAtivos.concat(['Desligados']);
-  var tris=[[0,1,2],[3,4,5],[6,7,8],[9,10,11]];
-  
-  function triTotal(gv,months){var m=0,r=0;months.forEach(function(i){var mk=String(i+1).padStart(2,'0');m+=(d.gvs[gv]||{})[mk]&&(d.gvs[gv][mk].meta||0)||0;r+=(d.gvs[gv]||{})[mk]&&(d.gvs[gv][mk].realizado||0)||0;});return{meta:m,real:r};}
-  
-  // ── KPIs ──
-  var kEl=document.getElementById('h2KpiRow');
-  if(kEl){
-    var totM=0,totR=0;
-    allGVs.forEach(function(gv){for(var im=1;im<=12;im++){var mk=String(im).padStart(2,'0');totM+=(d.gvs[gv]||{})[mk]?((d.gvs[gv][mk].meta)||0):0;totR+=(d.gvs[gv]||{})[mk]?((d.gvs[gv][mk].realizado)||0):0;}});
-    var mRiva=d.metaRiva||0;
-    var pctG=mRiva>0?Math.round(totR/mRiva*100):0;
-    kEl.innerHTML=[
-      {l:'Realizado Total',v:fmtBRL(totR),sub:pctG+'% da meta RIVA'},
-      {l:'Pendente',v:fmtBRL(Math.max(0,mRiva-totR)),sub:'Para fechar o ano'},
-      {l:'Total Meta GVs',v:fmtBRL(totM),sub:'Soma das metas por GV'},
-    ].map(function(k){return '<div class="pKpi"><span>'+k.l+'</span><strong>'+k.v+'</strong><small>'+k.sub+'</small></div>';}).join('');
-  }
-  
-  // ── Trimestral ──
-  var tBody=document.getElementById('h2TriBody'),tFoot=document.getElementById('h2TriFoot');
-  if(tBody){
-    var totTM=[0,0,0,0],totTR=[0,0,0,0];
-    tBody.innerHTML=allGVs.map(function(gv){
-      var isD=gv==='Desligados';
-      var rs=isD?'style="background:rgba(239,68,68,.04);border-top:2px solid #dc2626"':'';
-      var anoM=0,anoR=0;
-      var mCells=tris.map(function(t,ti){var tr=triTotal(gv,t);totTM[ti]+=tr.meta;anoM+=tr.meta;return '<td style="font-size:10px;text-align:right;font-weight:700">'+fmtBRL(tr.meta)+'</td>';}).join('');
-      var rCells=tris.map(function(t,ti){var tr=triTotal(gv,t);totTR[ti]+=tr.real;anoR+=tr.real;return '<td style="font-size:10px;text-align:right;font-weight:700;color:#15a46f">'+fmtBRL(tr.real)+'</td>';}).join('');
-      var pCells=tris.map(function(t){var tr=triTotal(gv,t);var p=tr.meta-tr.real;return '<td style="font-size:10px;text-align:right;color:'+(p>0?'#dc2626':p<0?'#15a46f':'#9aa5b9')+'">'+fmtBRL(p)+'</td>';}).join('');
-      // recalc anoM anoR
-      anoM=0;anoR=0;for(var im=1;im<=12;im++){var mk=String(im).padStart(2,'0');anoM+=(d.gvs[gv]||{})[mk]?d.gvs[gv][mk].meta||0:0;anoR+=(d.gvs[gv]||{})[mk]?d.gvs[gv][mk].realizado||0:0;}
-      return '<tr '+rs+'><td rowspan="3"><strong style="font-size:11px'+(isD?';color:#dc2626':'')+'">'+gv+'</strong></td>'
-        +'<td style="font-size:9px;font-weight:800;color:#dc2626">Meta</td>'+mCells+'<td style="font-size:10px;text-align:right;font-weight:800;background:#eef3ff">'+fmtBRL(anoM)+'</td></tr>'
-        +'<tr '+rs+'><td style="font-size:9px;font-weight:800;color:#15a46f">Realizado</td>'+rCells+'<td style="font-size:10px;text-align:right;font-weight:800;background:#eef3ff;color:#15a46f">'+fmtBRL(anoR)+'</td></tr>'
-        +'<tr '+rs+'><td style="font-size:9px;font-weight:800;color:#687695">Pendente</td>'+pCells+'<td style="font-size:10px;text-align:right;font-weight:800;background:#eef3ff;color:'+(anoM-anoR>0?'#dc2626':'#15a46f')+'">'+fmtBRL(anoM-anoR)+'</td></tr>';
-    }).join('');
-    if(tFoot){
-      var anoTM=0,anoTR=0;
-      tFoot.innerHTML='<tr style="background:#eef3ff"><td colspan="2"><strong>TOTAL</strong></td>'+tris.map(function(t,ti){anoTM+=totTM[ti];anoTR+=totTR[ti];var p=totTM[ti]-totTR[ti];return '<td style="font-size:9px;text-align:right;padding:4px 6px"><div style="font-weight:800">'+fmtBRL(totTM[ti])+'</div><div style="color:#15a46f">'+fmtBRL(totTR[ti])+'</div><div style="color:'+(p>0?'#dc2626':'#15a46f')+'">'+fmtBRL(p)+'</div></td>';}).join('')+'<td style="text-align:right;padding:4px 6px;background:#e8efff"><div style="font-weight:800">'+fmtBRL(anoTM)+'</div><div style="color:#15a46f">'+fmtBRL(anoTR)+'</div><div style="color:'+(anoTM-anoTR>0?'#dc2626':'#15a46f')+'">'+fmtBRL(anoTM-anoTR)+'</div></td></tr>';
+  var gvs=getAllGVs(false).map(function(g){return typeof g==='object'?g.nome:g;}).concat(['Desligados']);
+  var totM=new Array(12).fill(0),totR=new Array(12).fill(0);
+
+  var rows=gvs.map(function(gv){
+    var gd=d.gvs[gv]||{}; var isD=gv==='Desligados'; var anoM=0,anoR=0;
+    var rM='',rR='',rP='';
+    for(var i=0;i<12;i++){
+      var mk=String(i+1).padStart(2,'0'); var md=gd[mk]||{};
+      var m=md.meta||0, r=md.realizado||0, pd=m-r;
+      totM[i]+=m; totR[i]+=r; anoM+=m; anoR+=r;
+      rM+='<td style="text-align:right;padding:7px 10px;font-size:12px;font-weight:700;color:#0c1e48">'+fmtM(m)+'</td>';
+      rR+='<td style="text-align:right;padding:7px 10px;font-size:12px;font-weight:700;color:#15a46f">'+fmtM(r)+'</td>';
+      var pc2=pctCor(pct(r,m));
+      rP+='<td style="text-align:right;padding:7px 10px;font-size:12px;font-weight:700;color:'+(m?pc2:'#c0c8d6')+'">'+fmtBRL(pd)+'</td>';
     }
-  }
+    var pp=pct(anoR,anoM); var pc3=pctCor(pp);
+    var cls=isD?'hDesligRow':'hGvRow';
+    return '<tr class="'+cls+'"><td rowspan="3" style="vertical-align:middle;padding:10px 14px;border-bottom:3px solid #edf1f7">'+
+      '<span style="font-size:13px;font-weight:800;color:'+(isD?'#dc2626':'#0c1e48')+'">'+gv+'</span></td>'+
+      '<td class="hLabel lMeta">META</td>'+rM+
+      '<td class="hAnoCol" style="text-align:right;padding:8px 12px;font-size:12px;font-weight:800;color:#1648d8">'+fmtM(anoM)+'</td></tr>'+
+      '<tr class="'+cls+'"><td class="hLabel lReal">REAL</td>'+rR+
+      '<td class="hAnoCol hAnoGreen" style="text-align:right;padding:8px 12px;font-size:12px;font-weight:800;color:#15a46f">'+fmtM(anoR)+'</td></tr>'+
+      '<tr class="'+cls+'" style="border-bottom:2px solid #e8edf6"><td class="hLabel lPend">PEND</td>'+rP+
+      '<td class="hAnoCol '+(anoM-anoR>0?'hAnoRed':'hAnoGreen')+'" style="text-align:right;padding:8px 12px">'+
+        '<span style="font-size:12px;font-weight:800;color:'+pc3+'">'+pctStr(anoR,anoM)+'</span>'+
+        '<div class="hBar" style="margin-top:4px"><div class="hBarFill" style="width:'+Math.min(pp,100)+'%;background:'+pc3+'"></div></div>'+
+      '</td></tr>';
+  }).join('');
+
+  var aTM=0,aTR=0;
+  var tc=MS3.map(function(m,i){ aTM+=totM[i];aTR+=totR[i]; var p2=totM[i]-totR[i]; return '<td style="padding:8px 12px;text-align:right"><div style="font-size:11px;font-weight:800">'+fmtM(totM[i])+'</div><div style="font-size:10px;color:#15a46f">'+fmtM(totR[i])+'</div><div style="font-size:10px;color:'+(p2>0?'#dc2626':'#15a46f')+'">'+fmtBRL(p2)+'</div></td>'; }).join('');
   
-  // ── Mensal ──
-  var mBody=document.getElementById('h2MensalBody'),mFoot=document.getElementById('h2MensalFoot');
-  if(mBody){
-    var totM2=new Array(12).fill(0),totR2=new Array(12).fill(0);
-    mBody.innerHTML=allGVs.map(function(gv){
-      var isD=gv==='Desligados';
-      var rs=isD?'style="background:rgba(239,68,68,.04);border-top:2px solid #dc2626"':'';
-      var gD=d.gvs[gv]||{},anoM=0,anoR=0;
-      var mCells=MS3.map(function(m,i){var mk=String(i+1).padStart(2,'0');var v=(gD[mk]||{}).meta||0;totM2[i]+=v;anoM+=v;return '<td style="font-size:10px;text-align:right;font-weight:700">'+fmtBRL(v)+'</td>';}).join('');
-      var rCells=MS3.map(function(m,i){var mk=String(i+1).padStart(2,'0');var v=(gD[mk]||{}).realizado||0;totR2[i]+=v;anoR+=v;return '<td style="font-size:10px;text-align:right;font-weight:700;color:#15a46f">'+fmtBRL(v)+'</td>';}).join('');
-      var pCells=MS3.map(function(m,i){var mk=String(i+1).padStart(2,'0');var meta=(gD[mk]||{}).meta||0,real=(gD[mk]||{}).realizado||0;var p=meta-real;return '<td style="font-size:10px;text-align:right;color:'+(p>0?'#dc2626':p<0?'#15a46f':'#9aa5b9')+'">'+(meta?fmtBRL(p):'')+'</td>';}).join('');
-      return '<tr '+rs+'><td rowspan="3"><strong style="font-size:11px'+(isD?';color:#dc2626':'')+'">'+gv+'</strong></td>'
-        +'<td style="font-size:9px;font-weight:800;color:#dc2626">Meta</td>'+mCells+'<td style="font-size:10px;text-align:right;font-weight:800;background:#eef3ff">'+fmtBRL(anoM)+'</td></tr>'
-        +'<tr '+rs+'><td style="font-size:9px;font-weight:800;color:#15a46f">Realizado</td>'+rCells+'<td style="font-size:10px;text-align:right;font-weight:800;background:#eef3ff;color:#15a46f">'+fmtBRL(anoR)+'</td></tr>'
-        +'<tr '+rs+'><td style="font-size:9px;font-weight:800;color:#687695">Pendente</td>'+pCells+'<td style="font-size:10px;text-align:right;font-weight:800;background:#eef3ff;color:'+(anoM-anoR>0?'#dc2626':'#15a46f')+'">'+fmtBRL(anoM-anoR)+'</td></tr>';
-    }).join('');
-    if(mFoot){
-      var anoTM2=0,anoTR2=0;
-      mFoot.innerHTML='<tr style="background:#eef3ff"><td colspan="2"><strong>TOTAL</strong></td>'+MS3.map(function(m,i){anoTM2+=totM2[i];anoTR2+=totR2[i];var p=totM2[i]-totR2[i];return '<td style="font-size:9px;text-align:right;padding:4px 6px"><div style="font-weight:800">'+fmtBRL(totM2[i])+'</div><div style="color:#15a46f">'+fmtBRL(totR2[i])+'</div><div style="color:'+(p>0?'#dc2626':'#15a46f')+'">'+fmtBRL(p)+'</div></td>';}).join('')+'<td style="text-align:right;padding:4px 6px;background:#e8efff"><div style="font-weight:800">'+fmtBRL(anoTM2)+'</div><div style="color:#15a46f">'+fmtBRL(anoTR2)+'</div><div style="color:'+(anoTM2-anoTR2>0?'#dc2626':'#15a46f')+'">'+fmtBRL(anoTM2-anoTR2)+'</div></td></tr>';
-    }
-  }
-  
-  // ── Regionais ──
-  var rBody2=document.getElementById('h2RegBody'),rFoot2=document.getElementById('h2RegFoot');
-  if(rBody2){
-    var regNomes2={rene:'Regional Rene',cahu:'Regional Cahú'};
-    var totRM=new Array(12).fill(0),totRR=new Array(12).fill(0);
-    rBody2.innerHTML=['rene','cahu'].map(function(reg){
-      var rd=d.regionais[reg]||{};var anoM=0,anoR=0;
-      var mCells=MS3.map(function(m,i){var mk=String(i+1).padStart(2,'0');var v=(rd[mk]||{}).meta||0;totRM[i]+=v;anoM+=v;return '<td style="font-size:10px;text-align:right;font-weight:700">'+fmtBRL(v)+'</td>';}).join('');
-      var rCells=MS3.map(function(m,i){var mk=String(i+1).padStart(2,'0');var v=(rd[mk]||{}).realizado||0;totRR[i]+=v;anoR+=v;return '<td style="font-size:10px;text-align:right;font-weight:700;color:#15a46f">'+fmtBRL(v)+'</td>';}).join('');
-      var pCells=MS3.map(function(m,i){var mk=String(i+1).padStart(2,'0');var meta=(rd[mk]||{}).meta||0,real=(rd[mk]||{}).realizado||0;var p=meta-real;return '<td style="font-size:10px;text-align:right;color:'+(p>0?'#dc2626':p<0?'#15a46f':'#9aa5b9')+'">'+(meta?fmtBRL(p):'')+'</td>';}).join('');
-      return '<tr><td rowspan="3"><strong style="font-size:11px">'+regNomes2[reg]+'</strong></td><td style="font-size:9px;font-weight:800;color:#dc2626">Meta</td>'+mCells+'<td style="font-size:10px;text-align:right;font-weight:800;background:#eef3ff">'+fmtBRL(anoM)+'</td></tr>'
-        +'<tr><td style="font-size:9px;font-weight:800;color:#15a46f">Realizado</td>'+rCells+'<td style="font-size:10px;text-align:right;font-weight:800;background:#eef3ff;color:#15a46f">'+fmtBRL(anoR)+'</td></tr>'
-        +'<tr><td style="font-size:9px;font-weight:800;color:#687695">Pendente</td>'+pCells+'<td style="font-size:10px;text-align:right;font-weight:800;background:#eef3ff;color:'+(anoM-anoR>0?'#dc2626':'#15a46f')+'">'+fmtBRL(anoM-anoR)+'</td></tr>';
-    }).join('');
-    if(rFoot2){
-      var aTM=0,aTR=0;
-      rFoot2.innerHTML='<tr style="background:#eef3ff"><td colspan="2"><strong>TOTAL</strong></td>'+MS3.map(function(m,i){aTM+=totRM[i];aTR+=totRR[i];var p=totRM[i]-totRR[i];return '<td style="font-size:9px;text-align:right;padding:4px 6px"><div style="font-weight:800">'+fmtBRL(totRM[i])+'</div><div style="color:#15a46f">'+fmtBRL(totRR[i])+'</div><div style="color:'+(p>0?'#dc2626':'#15a46f')+'">'+fmtBRL(p)+'</div></td>';}).join('')+'<td style="text-align:right;padding:4px 6px;background:#e8efff"><div style="font-weight:800">'+fmtBRL(aTM)+'</div><div style="color:#15a46f">'+fmtBRL(aTR)+'</div><div style="color:'+(aTM-aTR>0?'#dc2626':'#15a46f')+'">'+fmtBRL(aTM-aTR)+'</div></td></tr>';
-    }
-  }
+  return '<div class="hCard">'+
+    '<div class="hCardHead"><div><div class="hCardTitle">Desempenho Mensal · Todos os Gerentes</div><div class="hCardSub">Somente leitura — edite em House › Metas</div></div></div>'+
+    '<div class="hTable"><table>'+
+    '<thead><tr><th style="min-width:130px">Gerente</th><th style="min-width:60px"></th>'+
+    MS3.map(function(m){ return '<th style="text-align:right;min-width:100px">'+m+'</th>'; }).join('')+
+    '<th style="text-align:right;min-width:100px;background:#eef3ff;border-left:2px solid #c7d8ff">Ano</th></tr></thead>'+
+    '<tbody>'+rows+'</tbody>'+
+    '<tfoot><tr class="hTotalRow"><td colspan="2">TOTAL</td>'+tc+
+    '<td class="hAnoCol" style="padding:10px 12px;text-align:right"><div style="font-size:12px;font-weight:800;color:#1648d8">'+fmtM(aTM)+'</div><div style="font-size:11px;color:#15a46f">'+fmtM(aTR)+'</div></td></tr></tfoot>'+
+    '</table></div></div>';
 }
+
+function h2Trimestral(){
+  var d=dadosHouse();
+  var gvs=getAllGVs(false).map(function(g){return typeof g==='object'?g.nome:g;}).concat(['Desligados']);
+  var tris=[[0,1,2],[3,4,5],[6,7,8],[9,10,11]];
+  var triL=['1° Trimestre','2° Trimestre','3° Trimestre','4° Trimestre'];
+  var totTM=[0,0,0,0],totTR=[0,0,0,0];
+
+  var rows=gvs.map(function(gv){
+    var gd=d.gvs[gv]||{}; var isD=gv==='Desligados'; var anoM=0,anoR=0;
+    var rM='',rR='',rP='';
+    tris.forEach(function(t,ti){
+      var m=0,r=0; t.forEach(function(i){ var mk=String(i+1).padStart(2,'0'); var md=gd[mk]||{}; m+=md.meta||0; r+=md.realizado||0; });
+      anoM+=m; anoR+=r; totTM[ti]+=m; totTR[ti]+=r;
+      var pp=pct(r,m); var pc2=pctCor(pp);
+      rM+='<td style="text-align:right;padding:10px 14px;font-size:13px;font-weight:800;color:#0c1e48">'+fmtM(m)+'</td>';
+      rR+='<td style="text-align:right;padding:10px 14px;font-size:13px;font-weight:800;color:#15a46f">'+fmtM(r)+'</td>';
+      rP+='<td style="text-align:right;padding:10px 14px">'+
+        '<span style="font-size:13px;font-weight:800;color:'+pc2+'">'+pctStr(r,m)+'</span>'+
+        '<div class="hBar" style="margin-top:5px"><div class="hBarFill" style="width:'+Math.min(pp,100)+'%;background:'+pc2+'"></div></div>'+
+        '<small style="font-size:10px;color:#9aa5b9;font-weight:700">'+fmtBRL(m-r)+' pend.</small>'+
+      '</td>';
+    });
+    var pp3=pct(anoR,anoM); var pc4=pctCor(pp3);
+    var cls=isD?'hDesligRow':'hGvRow';
+    return '<tr class="'+cls+'"><td rowspan="3" style="vertical-align:middle;padding:12px 16px;border-bottom:3px solid #edf1f7;font-size:13px;font-weight:800;color:'+(isD?'#dc2626':'#0c1e48')+'">'+gv+'</td>'+
+      '<td class="hLabel lMeta">META</td>'+rM+'<td class="hAnoCol" style="padding:10px 14px;text-align:right;font-size:13px;font-weight:800;color:#1648d8">'+fmtM(anoM)+'</td></tr>'+
+      '<tr class="'+cls+'"><td class="hLabel lReal">REAL</td>'+rR+'<td class="hAnoCol hAnoGreen" style="padding:10px 14px;text-align:right;font-size:13px;font-weight:800;color:#15a46f">'+fmtM(anoR)+'</td></tr>'+
+      '<tr class="'+cls+'" style="border-bottom:2px solid #e8edf6"><td class="hLabel lPend">%</td>'+rP+
+      '<td class="hAnoCol '+(anoM-anoR>0?'hAnoRed':'hAnoGreen')+'" style="padding:10px 14px;text-align:right">'+
+        '<span style="font-size:14px;font-weight:900;color:'+pc4+'">'+pctStr(anoR,anoM)+'</span>'+
+        '<div class="hBar" style="margin-top:5px"><div class="hBarFill" style="width:'+Math.min(pp3,100)+'%;background:'+pc4+'"></div></div>'+
+      '</td></tr>';
+  }).join('');
+
+  var aTM=0,aTR=0;
+  var tc=tris.map(function(t,ti){ aTM+=totTM[ti];aTR+=totTR[ti]; var p2=totTM[ti]-totTR[ti]; var pp=pct(totTR[ti],totTM[ti]); return '<td style="padding:12px 16px;text-align:right"><div style="font-size:13px;font-weight:800">'+fmtM(totTM[ti])+'</div><div style="font-size:12px;color:#15a46f">'+fmtM(totTR[ti])+'</div><div class="hBar" style="margin-top:4px"><div class="hBarFill" style="width:'+Math.min(pp,100)+'%;background:'+pctCor(pp)+'"></div></div></td>'; }).join('');
+
+  return '<div class="hCard">'+
+    '<div class="hCardHead"><div><div class="hCardTitle">Visão Trimestral · Consolidado</div><div class="hCardSub">Calculado automaticamente dos dados mensais em House › Metas</div></div></div>'+
+    '<div class="hTable"><table>'+
+    '<thead><tr><th style="min-width:130px">Gerente</th><th style="min-width:60px"></th>'+
+    triL.map(function(l){ return '<th style="text-align:right;min-width:140px">'+l+'</th>'; }).join('')+
+    '<th style="text-align:right;min-width:110px;background:#eef3ff;border-left:2px solid #c7d8ff">Ano</th></tr></thead>'+
+    '<tbody>'+rows+'</tbody>'+
+    '<tfoot><tr class="hTotalRow"><td colspan="2">TOTAL</td>'+tc+
+    '<td class="hAnoCol" style="padding:12px 16px;text-align:right"><div style="font-size:13px;font-weight:800;color:#1648d8">'+fmtM(aTM)+'</div><div style="font-size:12px;color:#15a46f">'+fmtM(aTR)+'</div></td></tr></tfoot>'+
+    '</table></div></div>';
+}
+
+function h2Regionais(){
+  var d=dadosHouse();
+  var MS3=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  var regs=[{k:'rene',l:'Regional Rene'},{k:'cahu',l:'Regional Cahú'}];
+  var totM=new Array(12).fill(0),totR=new Array(12).fill(0);
+
+  var rows=regs.map(function(reg){
+    var rd=d.regionais[reg.k]||{}; var anoM=0,anoR=0;
+    var rM='',rR='',rP='';
+    for(var i=0;i<12;i++){
+      var mk=String(i+1).padStart(2,'0'); var md=rd[mk]||{};
+      var m=md.meta||0, r=md.realizado||0, pd=m-r;
+      totM[i]+=m; totR[i]+=r; anoM+=m; anoR+=r;
+      rM+='<td style="text-align:right;padding:8px 10px;font-size:12px;font-weight:700">'+fmtM(m)+'</td>';
+      rR+='<td style="text-align:right;padding:8px 10px;font-size:12px;font-weight:700;color:#15a46f">'+fmtM(r)+'</td>';
+      var pc2=pctCor(pct(r,m));
+      rP+='<td style="text-align:right;padding:8px 10px;font-size:12px;font-weight:700;color:'+(m?pc2:'#c0c8d6')+'">'+fmtBRL(pd)+'</td>';
+    }
+    var pp=pct(anoR,anoM); var pc3=pctCor(pp);
+    return '<tr><td rowspan="3" style="vertical-align:middle;padding:10px 14px;border-bottom:3px solid #edf1f7;font-size:13px;font-weight:800">'+reg.l+'</td>'+
+      '<td class="hLabel lMeta">META</td>'+rM+'<td class="hAnoCol" style="padding:8px 12px;text-align:right;font-size:12px;font-weight:800;color:#1648d8">'+fmtM(anoM)+'</td></tr>'+
+      '<tr><td class="hLabel lReal">REAL</td>'+rR+'<td class="hAnoCol hAnoGreen" style="padding:8px 12px;text-align:right;font-size:12px;font-weight:800;color:#15a46f">'+fmtM(anoR)+'</td></tr>'+
+      '<tr style="border-bottom:2px solid #e8edf6"><td class="hLabel lPend">PEND</td>'+rP+
+      '<td class="hAnoCol '+(anoM-anoR>0?'hAnoRed':'hAnoGreen')+'" style="padding:8px 12px;text-align:right">'+
+        '<span style="font-size:12px;font-weight:800;color:'+pc3+'">'+pctStr(anoR,anoM)+'</span>'+
+        '<div class="hBar" style="margin-top:4px"><div class="hBarFill" style="width:'+Math.min(pp,100)+'%;background:'+pc3+'"></div></div>'+
+      '</td></tr>';
+  }).join('');
+
+  var aTM=0,aTR=0;
+  var tc=MS3.map(function(m,i){ aTM+=totM[i];aTR+=totR[i]; var p2=totM[i]-totR[i]; return '<td style="padding:8px 12px;text-align:right"><div style="font-size:11px;font-weight:800">'+fmtM(totM[i])+'</div><div style="font-size:10px;color:#15a46f">'+fmtM(totR[i])+'</div></td>'; }).join('');
+
+  return '<div class="hCard">'+
+    '<div class="hCardHead"><div><div class="hCardTitle">Regionais · Acompanhamento</div><div class="hCardSub">Meta e realizado por regional por mês</div></div></div>'+
+    '<div class="hTable"><table>'+
+    '<thead><tr><th style="min-width:150px">Regional</th><th style="min-width:60px"></th>'+
+    MS3.map(function(m){ return '<th style="text-align:right;min-width:100px">'+m+'</th>'; }).join('')+
+    '<th style="text-align:right;min-width:100px;background:#eef3ff;border-left:2px solid #c7d8ff">Ano</th></tr></thead>'+
+    '<tbody>'+rows+'</tbody>'+
+    '<tfoot><tr class="hTotalRow"><td colspan="2">TOTAL</td>'+tc+
+    '<td class="hAnoCol" style="padding:10px 12px;text-align:right"><div style="font-size:12px;font-weight:800;color:#1648d8">'+fmtM(aTM)+'</div><div style="font-size:11px;color:#15a46f">'+fmtM(aTR)+'</div></td></tr></tfoot>'+
+    '</table></div></div>';
+}
+
 
 // ═══════════════════════════════════════════════════════════════
 //  GESTÃO DE EQUIPES (fonte única)
