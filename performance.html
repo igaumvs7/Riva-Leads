@@ -192,123 +192,162 @@
 }
 
 /* ═══ HOUSE METAS / DESEMPENHO — Design System ════════════════════ */
+
+/* ── CSS vars bridge (works in both themes) ──
+   Light: --ink=#0c1e48, --bg=#fff, --card-bg=#fff, --line=#dce5f3, --muted=#687695
+   Dark:  riva-shell.css sets [data-theme="dark"] vars                         */
 .hPage { display:flex; flex-direction:column; gap:20px; }
 
-/* ── Topo com meta e KPIs ── */
+/* ── Top row ── */
 .hTopRow { display:grid; grid-template-columns:340px 1fr; gap:16px; align-items:stretch; }
-@media(max-width:900px){ .hTopRow{ grid-template-columns:1fr; } }
+@media(max-width:900px){ .hTopRow { grid-template-columns:1fr; } }
 
+/* ── Meta card (blue gradient — stays vivid in both themes) ── */
 .hMetaCard {
   background: linear-gradient(135deg,#1648d8 0%,#0d2fa3 100%);
   border-radius:16px; padding:24px 24px 20px; color:#fff;
-  box-shadow:0 12px 32px rgba(22,72,216,.28);
+  box-shadow:0 12px 32px rgba(22,72,216,.3);
   display:flex; flex-direction:column; gap:10px;
 }
 .hMetaCard label { font-size:10px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; opacity:.7; }
 .hMetaCard input {
-  background:rgba(255,255,255,.14); border:1.5px solid rgba(255,255,255,.3);
+  background:rgba(255,255,255,.15); border:1.5px solid rgba(255,255,255,.32);
   border-radius:10px; color:#fff; font-size:22px; font-weight:900;
   font-family:inherit; padding:10px 14px; width:100%; outline:none; letter-spacing:-.02em;
 }
 .hMetaCard input::placeholder { color:rgba(255,255,255,.4); font-size:16px; }
-.hMetaCard input:focus { background:rgba(255,255,255,.22); border-color:rgba(255,255,255,.6); }
-.hMetaCalc { font-size:13px; opacity:.8; margin-top:2px; }
+.hMetaCard input:focus { background:rgba(255,255,255,.24); border-color:rgba(255,255,255,.7); }
+.hMetaCalc { font-size:13px; opacity:.8; }
 .hMetaCalc strong { color:#fff; font-weight:800; }
 
 /* ── KPI grid ── */
 .hKpiGrid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
-@media(max-width:700px){ .hKpiGrid{ grid-template-columns:repeat(2,1fr); } }
+@media(max-width:700px){ .hKpiGrid { grid-template-columns:repeat(2,1fr); } }
 .hKpi {
-  background:#fff; border:1px solid var(--line); border-radius:14px;
-  padding:16px 18px; box-shadow:0 4px 14px rgba(17,42,101,.06);
+  background:var(--card,#fff); border:1px solid var(--line,#dce5f3);
+  border-radius:14px; padding:16px 18px;
+  box-shadow:0 4px 14px rgba(17,42,101,.06);
 }
-.hKpi .hKpiLabel { font-size:10px; font-weight:800; color:#9aa5b9; letter-spacing:.06em; text-transform:uppercase; margin-bottom:6px; }
-.hKpi .hKpiVal  { font-size:22px; font-weight:900; color:#0c1e48; letter-spacing:-.03em; line-height:1; }
-.hKpi .hKpiSub  { font-size:11px; font-weight:700; margin-top:5px; }
+.hKpi .hKpiLabel { font-size:10px; font-weight:800; color:var(--muted,#687695); letter-spacing:.06em; text-transform:uppercase; margin-bottom:6px; }
+.hKpi .hKpiVal   { font-size:22px; font-weight:900; color:var(--ink,#0c1e48); letter-spacing:-.03em; line-height:1; }
+.hKpi .hKpiSub   { font-size:11px; font-weight:700; color:var(--muted,#687695); margin-top:5px; }
 .hKpi.hKpiGreen .hKpiVal { color:#15a46f; }
 .hKpi.hKpiRed   .hKpiVal { color:#dc2626; }
 
-/* ── Tab selector ── */
-.hTabBar { display:flex; gap:4px; background:#f0f3f9; border-radius:12px; padding:4px; margin-bottom:4px; }
+/* ── Tab bar ── */
+.hTabBar {
+  display:flex; gap:4px; border-radius:12px; padding:4px; margin-bottom:4px;
+  background:rgba(0,0,0,.06);
+}
+[data-theme="dark"] .hTabBar { background:rgba(255,255,255,.07); }
 .hTabBar button {
   flex:1; padding:9px 0; border:0; background:transparent; border-radius:9px;
-  font-size:12px; font-weight:750; color:#687695; cursor:pointer; font-family:inherit;
-  transition:all .18s;
+  font-size:12px; font-weight:750; color:var(--muted,#687695);
+  cursor:pointer; font-family:inherit; transition:all .18s;
 }
-.hTabBar button.active { background:#fff; color:#1648d8; box-shadow:0 2px 10px rgba(17,42,101,.1); }
+.hTabBar button.active {
+  background:var(--card,#fff); color:#1648d8;
+  box-shadow:0 2px 10px rgba(17,42,101,.12);
+}
+[data-theme="dark"] .hTabBar button.active { background:rgba(255,255,255,.12); color:#7ea3ff; }
 
 /* ── Section card ── */
-.hCard { background:#fff; border:1px solid var(--line); border-radius:16px; overflow:hidden; margin-bottom:16px; box-shadow:0 4px 16px rgba(17,42,101,.05); }
-.hCardHead { padding:16px 20px; border-bottom:1px solid #edf1f7; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
-.hCardTitle { font-size:14px; font-weight:800; color:#0c1e48; letter-spacing:-.01em; }
-.hCardSub   { font-size:11px; color:#9aa5b9; margin-top:2px; font-weight:600; }
-.hCardBadge { background:#eef3ff; color:#1648d8; border-radius:8px; padding:4px 10px; font-size:11px; font-weight:800; }
-.hCardBadgeRed { background:#fef2f2; color:#dc2626; }
-.hCardBadgeGreen { background:#f0fff8; color:#15a46f; }
-
-/* ── Table ── */
-.hTable { width:100%; overflow-x:auto; }
-.hTable table { width:100%; border-collapse:collapse; }
-.hTable th {
-  padding:11px 14px; font-size:10px; font-weight:850; color:#9aa5b9;
-  letter-spacing:.06em; text-transform:uppercase; background:#f7f9fd;
-  border-bottom:2px solid #edf1f7; white-space:nowrap; text-align:right;
+.hCard {
+  background:var(--card,#fff); border:1px solid var(--line,#dce5f3);
+  border-radius:16px; overflow:hidden; margin-bottom:16px;
+  box-shadow:0 4px 16px rgba(17,42,101,.06);
 }
-.hTable th:first-child,.hTable th:nth-child(2) { text-align:left; }
-.hTable td { padding:0 6px; border-bottom:1px solid #f0f3f9; }
-.hTable td:first-child { padding:8px 14px; font-size:12px; font-weight:800; color:#0c1e48; white-space:nowrap; }
-.hTable td.hLabel { padding:3px 8px; font-size:9px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; width:72px; white-space:nowrap; }
-.hTable td.hLabel.lMeta { color:#dc2626; }
-.hTable td.hLabel.lReal { color:#15a46f; }
-.hTable td.hLabel.lPend { color:#9aa5b9; }
-.hTable .hGvRow { background:#fff; }
-.hTable .hGvRow:nth-child(6n+4),.hTable .hGvRow:nth-child(6n+5),.hTable .hGvRow:nth-child(6n+6) { background:#fafbff; }
-.hTable .hDesligRow td:first-child { color:#dc2626; border-left:3px solid #dc2626; }
-.hTable .hTotalRow { background:#eef3ff !important; }
-.hTable .hTotalRow td { font-size:11px; font-weight:800; padding:10px 14px; }
+.hCardHead {
+  padding:16px 20px; border-bottom:1px solid var(--line,#dce5f3);
+  display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;
+}
+.hCardTitle { font-size:14px; font-weight:800; color:var(--ink,#0c1e48); letter-spacing:-.01em; }
+.hCardSub   { font-size:11px; color:var(--muted,#687695); margin-top:2px; font-weight:600; }
+.hCardBadge { background:#eef3ff; color:#1648d8; border-radius:8px; padding:4px 10px; font-size:11px; font-weight:800; }
+[data-theme="dark"] .hCardBadge { background:rgba(22,72,216,.25); color:#7ea3ff; }
 
-/* ── Input in table ── */
+/* ── Inputs ── */
 .hIn {
   width:100%; min-width:90px; padding:6px 9px; margin:3px 0;
-  border:1.5px solid #e5eaf2; border-radius:7px; font-size:12px; font-weight:700;
-  font-family:inherit; text-align:right; color:#0c1e48; background:#fff;
+  border:1.5px solid var(--line,#dce5f3); border-radius:7px;
+  font-size:12px; font-weight:700; font-family:inherit;
+  text-align:right; color:var(--ink,#0c1e48);
+  background:var(--card,#fff);
   transition:border .15s, box-shadow .15s; outline:none;
 }
-.hIn:focus { border-color:#1648d8; box-shadow:0 0 0 3px rgba(22,72,216,.12); background:#f8faff; }
-.hIn.hInMeta { border-color:#fecdd3; background:#fff5f5; }
-.hIn.hInMeta:focus { border-color:#dc2626; box-shadow:0 0 0 3px rgba(220,38,38,.1); }
-.hIn.hInReal { border-color:#bbf7d0; background:#f0fff8; }
-.hIn.hInReal:focus { border-color:#15a46f; box-shadow:0 0 0 3px rgba(21,164,111,.1); }
-.hIn.hInDir { border-color:#dbe5f5; background:#f8faff; }
-.hPendVal { font-size:12px; font-weight:800; text-align:right; padding:6px 9px; display:block; }
-.hPendVal.neg { color:#dc2626; }
-.hPendVal.pos { color:#15a46f; }
-.hPendVal.zero{ color:#c0c8d6; }
+.hIn:focus {
+  border-color:#1648d8; box-shadow:0 0 0 3px rgba(22,72,216,.12);
+  background:var(--card,#fff);
+}
+.hIn.hInMeta  { border-color:#fca5a5; background:rgba(220,38,38,.05); }
+.hIn.hInMeta:focus  { border-color:#dc2626; box-shadow:0 0 0 3px rgba(220,38,38,.1); }
+.hIn.hInReal  { border-color:#6ee7b7; background:rgba(21,164,111,.05); }
+.hIn.hInReal:focus  { border-color:#15a46f; box-shadow:0 0 0 3px rgba(21,164,111,.1); }
+.hIn.hInDir   { border-color:var(--line,#dce5f3); background:rgba(22,72,216,.04); }
 
-/* ── Progress bar in table ── */
-.hBar { height:5px; background:#edf1f7; border-radius:5px; margin-top:4px; overflow:hidden; }
-.hBarFill { height:100%; border-radius:5px; transition:width .5s; }
+/* ── Table headers & rows ── */
+.hTHead th {
+  padding:11px 12px; font-size:10px; font-weight:850; color:var(--muted,#687695);
+  letter-spacing:.06em; text-transform:uppercase;
+  background:rgba(0,0,0,.03); border-bottom:2px solid var(--line,#dce5f3);
+  white-space:nowrap; text-align:right;
+}
+[data-theme="dark"] .hTHead th { background:rgba(255,255,255,.04); }
+.hTHead th:first-child,.hTHead th:nth-child(2) { text-align:left; }
 
-/* ── Director name input ── */
+/* ── Row backgrounds ── */
+.hRowEven { background:var(--card,#fff); }
+.hRowOdd  { background:rgba(0,0,0,.018); }
+[data-theme="dark"] .hRowOdd  { background:rgba(255,255,255,.03); }
+.hRowSep  { border-bottom:3px solid var(--line,#dce5f3) !important; }
+
+/* ── Pending value ── */
+.hPendVal { font-size:12px; font-weight:800; text-align:right; padding:4px 6px; display:block; }
+.hPendVal.neg  { color:#dc2626; }
+.hPendVal.pos  { color:#15a46f; }
+.hPendVal.zero { color:var(--muted,#687695); }
+
+/* ── Progress bar ── */
+.hBar { height:4px; background:rgba(0,0,0,.08); border-radius:4px; margin-top:3px; overflow:hidden; }
+[data-theme="dark"] .hBar { background:rgba(255,255,255,.12); }
+.hBarFill { height:100%; border-radius:4px; transition:width .5s; }
+
+/* ── Ano column ── */
+.hAnoCol { background:rgba(22,72,216,.07) !important; border-left:2px solid rgba(22,72,216,.2) !important; }
+.hAnoGreen { background:rgba(21,164,111,.07) !important; border-left-color:rgba(21,164,111,.3) !important; }
+.hAnoRed   { background:rgba(220,38,38,.07) !important; border-left-color:rgba(220,38,38,.25) !important; }
+
+/* ── Total footer row ── */
+.hTotRow { background:rgba(22,72,216,.06) !important; }
+[data-theme="dark"] .hTotRow { background:rgba(22,72,216,.18) !important; }
+.hTotRow td { font-weight:800 !important; }
+
+/* ── Director name edit ── */
 .hDirName {
-  border:0; background:transparent; font-size:13px; font-weight:800; color:#0c1e48;
-  font-family:inherit; width:150px; outline:none; padding:0;
+  border:0; background:transparent; font-size:13px; font-weight:800;
+  color:var(--ink,#0c1e48); font-family:inherit; width:150px; outline:none; padding:0;
 }
 .hDirName:focus { border-bottom:2px solid #1648d8; color:#1648d8; }
 
-/* ── Ano col highlight ── */
-.hAnoCol { background:#eef3ff !important; border-left:2px solid #c7d8ff !important; }
-.hAnoCol.hAnoGreen { background:#f0fff8 !important; border-left-color:#a7f3d0 !important; }
-.hAnoCol.hAnoRed   { background:#fef2f2 !important; border-left-color:#fecdd3 !important; }
-
 /* ── Save bar ── */
-.hSaveBar { position:sticky; bottom:0; background:rgba(255,255,255,.95); backdrop-filter:blur(8px); border-top:1px solid var(--line); padding:12px 20px; display:flex; justify-content:flex-end; gap:10px; z-index:10; }
-.hSaveBtn { height:40px; padding:0 24px; border-radius:10px; background:linear-gradient(135deg,#1648d8,#0d2fa3); color:#fff; font-size:13px; font-weight:800; border:0; cursor:pointer; font-family:inherit; box-shadow:0 6px 18px rgba(22,72,216,.3); transition:transform .12s,box-shadow .12s; }
-.hSaveBtn:hover { transform:translateY(-1px); box-shadow:0 8px 24px rgba(22,72,216,.4); }
+.hSaveBar {
+  position:sticky; bottom:0;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(10px);
+  border-top:1px solid var(--line,#dce5f3);
+  padding:12px 20px; display:flex; justify-content:flex-end; z-index:10;
+}
+[data-theme="dark"] .hSaveBar { background:rgba(10,17,42,.92); }
+.hSaveBtn {
+  height:40px; padding:0 28px; border-radius:10px;
+  background:linear-gradient(135deg,#1648d8,#0d2fa3);
+  color:#fff; font-size:13px; font-weight:800; border:0;
+  cursor:pointer; font-family:inherit;
+  box-shadow:0 6px 18px rgba(22,72,216,.3);
+  transition:transform .12s, box-shadow .12s;
+}
+.hSaveBtn:hover  { transform:translateY(-1px); box-shadow:0 8px 24px rgba(22,72,216,.4); }
 .hSaveBtn:active { transform:translateY(0); }
-
-/* ── Tri badges ── */
-.hTriBadge { display:inline-block; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:800; background:#eef3ff; color:#1648d8; }
 
 </style>
 </head>
@@ -1072,7 +1111,7 @@ function hGV() {
     var pp = hP(anoR, anoM);
     var nameStyle = 'font-size:13px;font-weight:800;color:' + (isD ? '#dc2626' : '#0c1e48') + ';white-space:nowrap';
     var borderBot = i === gvList.length - 1 ? '' : 'border-bottom:2px solid #e8edf6';
-    return '<tr><td rowspan="3" style="padding:10px 14px;vertical-align:middle;' + borderBot + ';position:sticky;left:0;background:#fff;z-index:1"><span style="' + nameStyle + '">' + gv + '</span></td>'
+    return '<tr><td rowspan="3" style="padding:10px 14px;vertical-align:middle;' + borderBot + ';position:sticky;left:0;background:var(--card,#fff);z-index:1"><span style="' + nameStyle + '">' + gv + '</span></td>'
       + '<td style="padding:3px 8px;font-size:9px;font-weight:900;letter-spacing:.08em;color:#dc2626;white-space:nowrap">META</td>' + metaCells
       + '<td style="padding:5px 12px;text-align:right;font-size:12px;font-weight:800;color:#1648d8;background:#eef3ff;border-left:2px solid #c7d8ff;white-space:nowrap">' + hFmt(anoM) + '</td></tr>'
       + '<tr><td style="padding:3px 8px;font-size:9px;font-weight:900;letter-spacing:.08em;color:#15a46f;white-space:nowrap">REAL</td>' + realCells
@@ -1104,7 +1143,7 @@ function hGV() {
     + '<th style="text-align:right;padding:10px 12px;font-size:10px;font-weight:850;color:#1648d8;background:#eef3ff;border-left:2px solid #c7d8ff;min-width:100px">ANO</th>'
     + '</tr></thead>'
     + '<tbody>' + rows + '</tbody>'
-    + '<tfoot><tr style="background:#eef3ff">'
+    + '<tfoot><tr class="hTotRow" style="">'
     + '<td colspan="2" style="padding:10px 14px;font-size:11px;font-weight:900;position:sticky;left:0;background:#eef3ff">TOTAL</td>'
     + footCells
     + '<td style="padding:8px 12px;text-align:right;background:#dce8ff">'
@@ -1137,7 +1176,7 @@ function hTri() {
       pCells += _tdR('<span style="font-weight:800;color:' + hCor(p) + '">' + hPStr(r,m) + '</span>' + _bar(p));
     });
     var pp = hP(anoR, anoM);
-    return '<tr><td rowspan="3" style="padding:10px 14px;vertical-align:middle;border-bottom:3px solid #e8edf6;position:sticky;left:0;background:#fff;z-index:1">'
+    return '<tr><td rowspan="3" style="padding:10px 14px;vertical-align:middle;border-bottom:3px solid #e8edf6;position:sticky;left:0;background:var(--card,#fff);z-index:1">'
       + '<span style="font-size:13px;font-weight:800;color:' + (isD ? '#dc2626' : '#0c1e48') + '">' + gv + '</span></td>'
       + '<td style="padding:3px 8px;font-size:9px;font-weight:900;color:#dc2626;white-space:nowrap">META</td>' + mCells
       + _tdR('<span style="font-size:12px;font-weight:800;color:#1648d8">' + hFmt(anoM) + '</span>', ';background:#eef3ff;border-left:2px solid #c7d8ff') + '</tr>'
@@ -1167,7 +1206,7 @@ function hTri() {
     + '<th style="text-align:right;padding:10px 12px;background:#eef3ff;border-left:2px solid #c7d8ff;min-width:110px;font-size:10px;font-weight:850;color:#1648d8">ANO</th>'
     + '</tr></thead>'
     + '<tbody>' + rows + '</tbody>'
-    + '<tfoot><tr style="background:#eef3ff">'
+    + '<tfoot><tr class="hTotRow" style="">'
     + '<td colspan="2" style="padding:10px 14px;font-size:11px;font-weight:900;position:sticky;left:0;background:#eef3ff">TOTAL</td>'
     + footCells
     + '<td style="padding:10px 12px;text-align:right;background:#dce8ff;border-left:2px solid #c7d8ff">'
@@ -1219,7 +1258,7 @@ function hDir() {
     + '<th style="text-align:right;padding:10px 12px;background:#eef3ff;border-left:2px solid #c7d8ff;min-width:100px;font-size:10px;font-weight:850;color:#1648d8">TOTAL</th>'
     + '<th></th></tr></thead>'
     + '<tbody>' + rows + '</tbody>'
-    + '<tfoot><tr style="background:#eef3ff">'
+    + '<tfoot><tr class="hTotRow" style="">'
     + '<td style="padding:10px 14px;font-size:11px;font-weight:900;position:sticky;left:0;background:#eef3ff">TOTAL</td>'
     + footCells
     + _tdR('<strong style="color:#1648d8">' + hFmt(aTD) + '</strong>', ';background:#dce8ff;border-left:2px solid #c7d8ff')
@@ -1272,7 +1311,7 @@ function hReg() {
       pC += '<td style="padding:3px 8px;text-align:right">' + _pendSpan(m, r) + '</td>';
     }
     var pp = hP(anoR, anoM);
-    return '<tr><td rowspan="3" style="padding:10px 14px;vertical-align:middle;border-bottom:3px solid #e8edf6;position:sticky;left:0;background:#fff;z-index:1;font-size:13px;font-weight:800">' + reg.l + '</td>'
+    return '<tr><td rowspan="3" style="padding:10px 14px;vertical-align:middle;border-bottom:3px solid #e8edf6;position:sticky;left:0;background:var(--card,#fff);z-index:1;font-size:13px;font-weight:800">' + reg.l + '</td>'
       + '<td style="padding:3px 8px;font-size:9px;font-weight:900;color:#dc2626;white-space:nowrap">META</td>' + mC
       + _tdR('<span style="font-size:12px;font-weight:800;color:#1648d8">' + hFmt(anoM) + '</span>', ';background:#eef3ff;border-left:2px solid #c7d8ff') + '</tr>'
       + '<tr><td style="padding:3px 8px;font-size:9px;font-weight:900;color:#15a46f;white-space:nowrap">REAL</td>' + rC
@@ -1297,7 +1336,7 @@ function hReg() {
     + '<th style="text-align:right;padding:10px 12px;background:#eef3ff;border-left:2px solid #c7d8ff;min-width:100px;font-size:10px;font-weight:850;color:#1648d8">ANO</th>'
     + '</tr></thead>'
     + '<tbody>' + rows + '</tbody>'
-    + '<tfoot><tr style="background:#eef3ff">'
+    + '<tfoot><tr class="hTotRow" style="">'
     + '<td colspan="2" style="padding:10px 14px;font-size:11px;font-weight:900;position:sticky;left:0;background:#eef3ff">TOTAL</td>'
     + footCells
     + '<td style="padding:8px 12px;text-align:right;background:#dce8ff;border-left:2px solid #c7d8ff"><div style="font-size:12px;font-weight:800;color:#1648d8">' + hFmt(aTM) + '</div><div style="font-size:11px;color:#15a46f">' + hFmt(aTR) + '</div></td>'
@@ -1343,6 +1382,9 @@ function hSave() {
   saveConfig(chaveHouse(), nd).then(function(ok) {
     toast(ok ? '\u2705 Dados salvos!' : 'Salvo local. Sem conex\u00e3o.', !ok);
   });
+  // Re-render KPIs and current tab immediately — no need to switch tabs
+  hKpis();
+  hTab(window._hTab || 'gv');
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -1435,7 +1477,7 @@ function h2Mensal() {
       pC += _tdR(_pendSpan(m, r));
     }
     var pp = hP(anoR, anoM);
-    return '<tr><td rowspan="3" style="padding:10px 14px;vertical-align:middle;border-bottom:3px solid #e8edf6;position:sticky;left:0;background:#fff;z-index:1">'
+    return '<tr><td rowspan="3" style="padding:10px 14px;vertical-align:middle;border-bottom:3px solid #e8edf6;position:sticky;left:0;background:var(--card,#fff);z-index:1">'
       + '<span style="font-size:13px;font-weight:800;color:' + (isD ? '#dc2626' : '#0c1e48') + '">' + gv + '</span></td>'
       + '<td style="padding:3px 8px;font-size:9px;font-weight:900;color:#dc2626;white-space:nowrap">META</td>' + mC
       + _tdR('<span style="font-size:12px;font-weight:800;color:#1648d8">' + hFmt(anoM) + '</span>', ';background:#eef3ff;border-left:2px solid #c7d8ff') + '</tr>'
@@ -1460,7 +1502,7 @@ function h2Mensal() {
     + '<th style="text-align:right;padding:10px 12px;background:#eef3ff;border-left:2px solid #c7d8ff;min-width:100px;font-size:10px;font-weight:850;color:#1648d8">ANO</th>'
     + '</tr></thead>'
     + '<tbody>' + rows + '</tbody>'
-    + '<tfoot><tr style="background:#eef3ff"><td colspan="2" style="padding:10px 14px;font-size:11px;font-weight:900;position:sticky;left:0;background:#eef3ff">TOTAL</td>' + fC
+    + '<tfoot><tr class="hTotRow" style=""><td colspan="2" style="padding:10px 14px;font-size:11px;font-weight:900;position:sticky;left:0;background:#eef3ff">TOTAL</td>' + fC
     + '<td style="padding:8px 12px;text-align:right;background:#dce8ff;border-left:2px solid #c7d8ff"><div style="font-size:12px;font-weight:800;color:#1648d8">' + hFmt(aTM) + '</div><div style="font-size:11px;color:#15a46f">' + hFmt(aTR) + '</div></td></tr></tfoot>'
     + '</table></div></div>';
 }
@@ -1491,7 +1533,7 @@ function h2Regionais() {
       pC += _tdR(_pendSpan(m, r));
     }
     var pp = hP(anoR, anoM);
-    return '<tr><td rowspan="3" style="padding:10px 14px;vertical-align:middle;border-bottom:3px solid #e8edf6;position:sticky;left:0;background:#fff;z-index:1;font-size:13px;font-weight:800">' + reg.l + '</td>'
+    return '<tr><td rowspan="3" style="padding:10px 14px;vertical-align:middle;border-bottom:3px solid #e8edf6;position:sticky;left:0;background:var(--card,#fff);z-index:1;font-size:13px;font-weight:800">' + reg.l + '</td>'
       + '<td style="padding:3px 8px;font-size:9px;font-weight:900;color:#dc2626;white-space:nowrap">META</td>' + mC
       + _tdR('<span style="font-size:12px;font-weight:800;color:#1648d8">' + hFmt(anoM) + '</span>', ';background:#eef3ff;border-left:2px solid #c7d8ff') + '</tr>'
       + '<tr><td style="padding:3px 8px;font-size:9px;font-weight:900;color:#15a46f;white-space:nowrap">REAL</td>' + rC
@@ -1515,7 +1557,7 @@ function h2Regionais() {
     + '<th style="text-align:right;padding:10px 12px;background:#eef3ff;border-left:2px solid #c7d8ff;min-width:100px;font-size:10px;font-weight:850;color:#1648d8">ANO</th>'
     + '</tr></thead>'
     + '<tbody>' + rows + '</tbody>'
-    + '<tfoot><tr style="background:#eef3ff"><td colspan="2" style="padding:10px 14px;font-size:11px;font-weight:900;position:sticky;left:0;background:#eef3ff">TOTAL</td>' + fC
+    + '<tfoot><tr class="hTotRow" style=""><td colspan="2" style="padding:10px 14px;font-size:11px;font-weight:900;position:sticky;left:0;background:#eef3ff">TOTAL</td>' + fC
     + '<td style="padding:8px 12px;text-align:right;background:#dce8ff;border-left:2px solid #c7d8ff"><div style="font-size:12px;font-weight:800;color:#1648d8">' + hFmt(aTM) + '</div><div style="font-size:11px;color:#15a46f">' + hFmt(aTR) + '</div></td></tr></tfoot>'
     + '</table></div></div>';
 }
