@@ -373,12 +373,23 @@ var PERM_DEFAULT=[
   {acao:'ver_reunioes',      label:'📅 Ver Agenda Riva',        diretor:true,  regional:true,  gerente:false},
 ];
 
+function mergePermissoes(loaded){
+  // Garantir que novas permissões do PERM_DEFAULT sempre apareçam
+  var result = loaded ? JSON.parse(JSON.stringify(loaded)) : [];
+  PERM_DEFAULT.forEach(function(def){
+    var exists = result.some(function(p){ return p.acao === def.acao; });
+    if(!exists) result.push(def);
+  });
+  return result;
+}
+
 function carregarPermissoes(){
   var tOut=setTimeout(function(){permissoes=PERM_DEFAULT;renderPermissoes();},5000);
   window._pCB=function(j){
     clearTimeout(tOut);
     var sc=document.getElementById('_pt');if(sc)sc.parentNode.removeChild(sc);
-    permissoes=(j&&j.status==='ok'&&j.permissoes&&j.permissoes.length)?j.permissoes:PERM_DEFAULT;
+    var loaded=(j&&j.status==='ok'&&j.permissoes&&j.permissoes.length)?j.permissoes:null;
+    permissoes=mergePermissoes(loaded);
     renderPermissoes();
   };
   var sc=document.createElement('script');sc.id='_pt';
