@@ -811,227 +811,71 @@ function afterHouse(){
 
 
 function renderHouse(){
-  var d = dadosHouse();
-  var totalAno = {meta:0, realizado:0};
-
-  var gvsAtivos = getAllGVs(false);   // ativos
-  var gvsDeslig = getGVsDesligados(); // desligados
-  var gvsExibir = HOUSE_SUB === 'desligados' ? gvsDeslig : gvsAtivos;
-
-  // Fallback: se ainda não tem equipes salvas, usar HOUSE_GVS padrão (ao menos algo aparece)
-  if(HOUSE_SUB==='ativos' && gvsExibir.length === 0){
-    gvsExibir = HOUSE_GVS.slice();
+  var mesEl=document.getElementById('houseMesSel');
+  var gvEl=document.getElementById('houseGvSel');
+  if(!mesEl||!gvEl) return;
+  var mes=S.ano+'-'+mesEl.value;
+  var gvFiltro=gvEl.value;
+  var COLS=['c','a','v','pt','pa','vd'];
+  var gvs=gvFiltro?[gvFiltro]:getAllGVs(false).map(function(g){return typeof g==='object'?g.nome:g;});
+  var weeks=['s1','s2','s3','s4','s5'];
+  var agg={};weeks.forEach(function(w){agg[w]={};COLS.forEach(function(k){agg[w][k]=0;});agg[w].vgv=0;});
+  var metaAgg={};COLS.forEach(function(k){metaAgg[k]=0;});metaAgg.vgv=0;
+  gvs.forEach(function(gv){
+    var d=getHouseMetaGV(gv,mes);
+    weeks.forEach(function(w){COLS.forEach(function(k){agg[w][k]+=parseFloat((d[w]||{})[k]||0);});agg[w].vgv+=parseFloat((d[w]||{}).vgv||0);});
+    COLS.forEach(function(k){metaAgg[k]+=parseFloat((d.meta||{})[k]||0);});metaAgg.vgv+=parseFloat((d.meta||{}).vgv||0);
+  });
+  var acum={};COLS.forEach(function(k){acum[k]=0;});acum.vgv=0;
+  weeks.forEach(function(w){COLS.forEach(function(k){acum[k]+=agg[w][k];});acum.vgv+=agg[w].vgv;});
+  function pctN(a,b){return b>0?Math.round(a/b*100):0;}
+  function taxa(a,b){return b>0?(a/b*100).toFixed(1)+'%':'—';}
+  // KPIs
+  var kpisEl=document.getElementById('houseMetaKpis');
+  if(kpisEl) kpisEl.innerHTML=[
+    {l:'VGV Acumulado',v:brlH(acum.vgv),sub:pctN(acum.vgv,metaAgg.vgv)+'% da meta'},
+    {l:'Vendas',v:acum.vd,sub:'Meta: '+metaAgg.vd},
+    {l:'Visitas',v:acum.v,sub:'Meta: '+metaAgg.v},
+    {l:'Cadastros',v:acum.c,sub:'Meta: '+metaAgg.c},
+  ].map(function(k){return '<div class="pKpi"><span>'+k.l+'</span><strong>'+k.v+'</strong><small>'+k.sub+'</small></div>';}).join('');
+  // Lancamento Semanal
+  var lb=document.getElementById('houseLancBody'),lf=document.getElementById('houseLancFoot');
+  if(lb){
+    lb.innerHTML=weeks.map(function(w,wi){
+      var wd=agg[w];
+      var cells=COLS.map(function(k){
+        if(gvFiltro) return '<td class="center"><input type="number" min="0" data-gv="'+gvFiltro+'" data-mes="'+mes+'" data-week="'+w+'" data-col="'+k+'" value="'+(wd[k]||0)+'" onchange="salvarCelulaHouse(this)" style="width:58px;text-align:center;padding:3px 5px;border:1px solid var(--line);border-radius:6px;font-size:11px;background:#f9fbfe"></td>';
+        return '<td class="center" style="font-size:11px">'+(wd[k]||0)+'</td>';
+      }).join('');
+      var vgvCell=gvFiltro?'<td class="right"><input type="text" data-gv="'+gvFiltro+'" data-mes="'+mes+'" data-week="'+w+'" data-col="vgv" value="'+(wd.vgv?brlH(wd.vgv):'')+'" onchange="salvarCelulaHouseVGV(this)" style="width:100px;text-align:right;padding:3px 5px;border:1px solid var(--line);border-radius:6px;font-size:11px;background:#f9fbfe" placeholder="R$ 0"></td>':'<td class="right" style="font-size:11px;font-weight:700">'+(wd.vgv?brlH(wd.vgv):'—')+'</td>';
+      return '<tr><td><strong style="font-size:11px">Sem. '+(wi+1)+'</strong></td>'+cells+vgvCell+'</tr>';
+    }).join('');
+    if(lf) lf.innerHTML='<tr style="background:#eef3ff"><td><strong>Acumulado</strong></td>'+COLS.map(function(k){return '<td class="center"><strong>'+acum[k]+'</strong></td>';}).join('')+'<td class="right"><strong>'+brlH(acum.vgv)+'</strong></td></tr>'
+      +'<tr style="background:#fff3f3"><td style="color:#dc2626"><strong>Meta</strong></td>'+COLS.map(function(k){return '<td class="center" style="color:#dc2626">'+metaAgg[k]+'</td>';}).join('')+'<td class="right" style="color:#dc2626"><strong>'+brlH(metaAgg.vgv)+'</strong></td></tr>'
+      +'<tr style="background:#f0fff8"><td style="color:#15a46f"><strong>% Meta</strong></td>'+COLS.map(function(k){var p=pctN(acum[k],metaAgg[k]),cor=p>=100?'#15a46f':p>=70?'#1e40af':'#dc2626';return '<td class="center" style="color:'+cor+'"><strong>'+p+'%</strong></td>';}).join('')+'<td class="right"><strong style="color:'+(metaAgg.vgv>0&&pctN(acum.vgv,metaAgg.vgv)>=100?'#15a46f':'#dc2626')+'">'+( metaAgg.vgv>0?pctN(acum.vgv,metaAgg.vgv)+'%':'—')+'</strong></td></tr>';
   }
-
-  // Elementos DOM
-  var thead = document.getElementById('houseThead');
-  var tbody = document.getElementById('houseTbody');
-  var regBody = document.getElementById('houseRegBody');
-  var kpisEl = document.getElementById('houseKpis');
-  if(!thead || !tbody || !regBody || !kpisEl){ return; }
-
-  // ═══ TABELA PRINCIPAL ═══
-  if(!gvsExibir.length){
-    // Vazio (só possível em 'desligados' sem ninguém)
-    thead.innerHTML = '<tr><th>—</th></tr>';
-    tbody.innerHTML = '<tr><td style="padding:40px;text-align:center;color:var(--muted)">Nenhum gerente desligado.<br><small>Marque como "Desligado" em <strong>Gestão de Equipes</strong> para preservar histórico.</small></td></tr>';
-  } else if(HOUSE_VIEW === 'tri'){
-    // ─── POR TRIMESTRE ───
-    var h = '<tr><th style="min-width:130px">Gerente</th>';
-    for(var t=1;t<=4;t++){
-      h += '<th class="right" style="min-width:130px">'+t+'º TRI<br><small style="font-weight:500;color:#9aa5b9">Meta / Real / Pendente</small></th>';
-    }
-    h += '<th class="right" style="min-width:130px;background:#eef3ff">ANO</th></tr>';
-    thead.innerHTML = h;
-
-    var body = '';
-    var totTri = [[0,0],[0,0],[0,0],[0,0]];
-
-    gvsExibir.forEach(function(g){
-      var tris = [[0,0],[0,0],[0,0],[0,0]]; // [meta, real]
-      for(var m=1;m<=12;m++){
-        var t = Math.floor((m-1)/3);
-        var mk = String(m).padStart(2,'0');
-        if(d.gvs[g] && d.gvs[g][mk]){
-          tris[t][0] += num(d.gvs[g][mk].meta);
-          tris[t][1] += num(d.gvs[g][mk].realizado);
-        }
-      }
-      var anoM = tris[0][0]+tris[1][0]+tris[2][0]+tris[3][0];
-      var anoR = tris[0][1]+tris[1][1]+tris[2][1]+tris[3][1];
-      totalAno.meta += anoM; totalAno.realizado += anoR;
-
-      var tds = '<td class="strong">'+g+'</td>';
-      tris.forEach(function(t, i){
-        totTri[i][0] += t[0]; totTri[i][1] += t[1];
-        var pend = Math.max(0, t[0]-t[1]);
-        var p = pct(t[1], t[0]);
-        var pcolor = t[0]===0 ? '#9aa5b9' : (p>=90?'#15a46f':p>=60?'#eab308':'#dc2626');
-        tds += '<td class="right" style="vertical-align:top">'
-          + '<input class="pIn" data-gv="'+g+'" data-tri="'+(i+1)+'" data-k="meta" type="text" value="'+(t[0]?brlFull(t[0]):'')+'" data-brl="1" placeholder="Meta">'
-          + '<input class="pIn" data-gv="'+g+'" data-tri="'+(i+1)+'" data-k="realizado" type="text" value="'+(t[1]?brlFull(t[1]):'')+'" data-brl="1" placeholder="Real">'
-          + '<div style="font-size:9px;margin-top:3px;color:'+pcolor+';font-weight:800;text-align:right">'
-          + (t[0]?p+'% · pend '+brl(pend):'—')
-          + '</div></td>';
-      });
-      var pctA = pct(anoR, anoM);
-      var pendA = Math.max(0, anoM-anoR);
-      var acolor = anoM===0 ? '#9aa5b9' : (pctA>=90?'#15a46f':pctA>=60?'#eab308':'#dc2626');
-      tds += '<td class="right" style="background:#f4f7ff;vertical-align:top">'
-        + '<strong style="display:block">'+brl(anoM)+'</strong>'
-        + '<span style="color:'+acolor+';font-weight:750;font-size:11px">'+brl(anoR)+'</span>'
-        + '<div style="font-size:10px;margin-top:2px;color:'+acolor+'">'+(anoM?pctA+'% · pend '+brl(pendA):'—')+'</div>'
-        + '</td>';
-      body += '<tr>'+tds+'</tr>';
-    });
-
-    // TOTAL
-    var totM = totTri[0][0]+totTri[1][0]+totTri[2][0]+totTri[3][0];
-    var totR = totTri[0][1]+totTri[1][1]+totTri[2][1]+totTri[3][1];
-    body += '<tr class="total"><td>TOTAL</td>';
-    totTri.forEach(function(t){
-      var p = pct(t[1], t[0]);
-      body += '<td class="right"><strong>'+brl(t[0])+'</strong><br>'+brl(t[1])+' · '+(t[0]?p+'%':'—')+'</td>';
-    });
-    body += '<td class="right" style="background:#eef3ff"><strong>'+brl(totM)+'</strong><br>'+brl(totR)+' ('+(totM?pct(totR,totM)+'%':'—')+')</td></tr>';
-    tbody.innerHTML = body;
-
-  } else {
-    // ─── POR MÊS ───
-    // Destaca o mês selecionado em S.mes
-    var mesSelecionado = parseInt((S.mes||'2026-07').split('-')[1]);
-    var h = '<tr><th style="min-width:120px">Gerente</th>';
-    for(var m=1;m<=12;m++){
-      var destaque = m===mesSelecionado ? ';background:#eef3ff' : '';
-      h += '<th class="right" style="min-width:90px'+destaque+'">'+MS[m-1].slice(0,3)+'<br><small style="font-weight:500;color:#9aa5b9">M / R</small></th>';
-    }
-    h += '<th class="right" style="min-width:110px;background:#eef3ff">ANO</th></tr>';
-    thead.innerHTML = h;
-
-    var body2 = '';
-    gvsExibir.forEach(function(g){
-      var tds = '<td class="strong">'+g+'</td>';
-      var anoM=0, anoR=0;
-      for(var m=1;m<=12;m++){
-        var mk = String(m).padStart(2,'0');
-        var meta = (d.gvs[g] && d.gvs[g][mk] && num(d.gvs[g][mk].meta))||0;
-        var real = (d.gvs[g] && d.gvs[g][mk] && num(d.gvs[g][mk].realizado))||0;
-        anoM += meta; anoR += real;
-        var p = meta?pct(real,meta):0;
-        var pcolor = meta===0 ? '#9aa5b9' : (p>=90?'#15a46f':p>=60?'#eab308':'#dc2626');
-        var destaque = m===mesSelecionado ? ';background:#eef3ff' : '';
-        tds += '<td class="right" style="vertical-align:top'+destaque+'">'
-          + '<input class="pIn" data-gv="'+g+'" data-m="'+mk+'" data-k="meta" type="text" value="'+(meta?brlFull(meta):'')+'" data-brl="1" placeholder="Meta" style="width:80px">'
-          + '<input class="pIn" data-gv="'+g+'" data-m="'+mk+'" data-k="realizado" type="text" value="'+(real?brlFull(real):'')+'" data-brl="1" placeholder="Real" style="width:80px">'
-          + (meta?'<div style="font-size:9px;margin-top:2px;color:'+pcolor+';font-weight:800">'+p+'%</div>':'')
-          + '</td>';
-      }
-      totalAno.meta += anoM; totalAno.realizado += anoR;
-      var pctA = pct(anoR, anoM);
-      var acolor = anoM===0 ? '#9aa5b9' : (pctA>=90?'#15a46f':pctA>=60?'#eab308':'#dc2626');
-      tds += '<td class="right" style="background:#f4f7ff">'
-        + '<strong>'+brl(anoM)+'</strong><br>'
-        + '<span style="color:'+acolor+';font-weight:750;font-size:11px">'+brl(anoR)+'</span><br>'
-        + '<span style="font-size:10px;color:'+acolor+'">pend '+brl(Math.max(0,anoM-anoR))+'</span>'
-        + '</td>';
-      body2 += '<tr>'+tds+'</tr>';
-    });
-    // Linha TOTAL
-    body2 += '<tr class="total"><td>TOTAL</td>';
-    var totAnoM=0, totAnoR=0;
-    for(var m=1;m<=12;m++){
-      var mk = String(m).padStart(2,'0');
-      var mm=0, rr=0;
-      gvsExibir.forEach(function(g){
-        if(d.gvs[g] && d.gvs[g][mk]){
-          mm += num(d.gvs[g][mk].meta);
-          rr += num(d.gvs[g][mk].realizado);
-        }
-      });
-      totAnoM+=mm; totAnoR+=rr;
-      var destaque = m===mesSelecionado ? ';background:#eef3ff' : '';
-      body2 += '<td class="right" style="'+destaque+'"><strong>'+brl(mm)+'</strong><br>'+brl(rr)+'</td>';
-    }
-    body2 += '<td class="right" style="background:#eef3ff"><strong>'+brl(totAnoM)+'</strong><br>'+brl(totAnoR)+'</td></tr>';
-    tbody.innerHTML = body2;
+  // Conversao
+  var cb=document.getElementById('houseConvBody'),cf=document.getElementById('houseConvFoot');
+  if(cb){
+    cb.innerHTML=weeks.map(function(w,wi){var d=agg[w];return '<tr><td><strong style="font-size:11px">Sem. '+(wi+1)+'</strong></td><td class="center">'+taxa(d.a,d.c)+'</td><td class="center">'+taxa(d.v,d.a)+'</td><td class="center">'+taxa(d.pt,d.v)+'</td><td class="center">'+taxa(d.pa,d.pt)+'</td><td class="center">'+taxa(d.vd,d.pa)+'</td></tr>';}).join('');
+    if(cf) cf.innerHTML='<tr style="background:#eef3ff"><td><strong>Mês</strong></td><td class="center"><strong>'+taxa(acum.a,acum.c)+'</strong></td><td class="center"><strong>'+taxa(acum.v,acum.a)+'</strong></td><td class="center"><strong>'+taxa(acum.pt,acum.v)+'</strong></td><td class="center"><strong>'+taxa(acum.pa,acum.pt)+'</strong></td><td class="center"><strong>'+taxa(acum.vd,acum.pa)+'</strong></td></tr>';
   }
-
-  // ═══ TABELA REGIONAIS (só ativos) ═══
-  var rgHtml = '';
-  var regTot = {meta:0, realizado:0};
-  ['rene','cahu'].forEach(function(r){
-    var reg = {meta:0, realizado:0};
-    getGVsAtivos(r).forEach(function(g){
-      if(!d.gvs[g]) return;
-      for(var m=1;m<=12;m++){
-        var mk = String(m).padStart(2,'0');
-        if(d.gvs[g][mk]){
-          reg.meta += num(d.gvs[g][mk].meta);
-          reg.realizado += num(d.gvs[g][mk].realizado);
-        }
-      }
-    });
-    regTot.meta += reg.meta; regTot.realizado += reg.realizado;
-    var pend = Math.max(0, reg.meta - reg.realizado);
-    var p = pct(reg.realizado, reg.meta);
-    var cls = reg.meta===0?'':p>=90?'pGood':p>=60?'pWarn':'pBad';
-    var nome = r==='rene'?'Rene':'Cahú';
-    rgHtml += '<tr><td><span class="pMiniChip '+r+'">'+nome+'</span></td>'
-      + '<td class="right strong">'+brl(reg.meta)+'</td>'
-      + '<td class="right">'+brl(reg.realizado)+'</td>'
-      + '<td class="right '+(pend>0?'pBad':'pGood')+'">'+brl(pend)+'</td>'
-      + '<td class="right"><span class="'+cls+'">'+(reg.meta?p+'%':'—')+'</span></td></tr>';
-  });
-  var pendT = Math.max(0, regTot.meta - regTot.realizado);
-  rgHtml += '<tr class="total"><td>TOTAL</td><td class="right">'+brl(regTot.meta)+'</td><td class="right">'+brl(regTot.realizado)+'</td><td class="right">'+brl(pendT)+'</td><td class="right">'+(regTot.meta?pct(regTot.realizado,regTot.meta)+'%':'—')+'</td></tr>';
-  regBody.innerHTML = rgHtml;
-
-  // ═══ KPIs ═══
-  var pctAno = pct(totalAno.realizado, totalAno.meta);
-  kpisEl.innerHTML = ''
-    + '<div class="pKpi '+(pctAno>=90?'ok':pctAno>=60?'warn':'dan')+'"><span>Meta Anual</span><strong>'+brl(totalAno.meta)+'</strong><small>total consolidado</small></div>'
-    + '<div class="pKpi ok"><span>Realizado</span><strong>'+brl(totalAno.realizado)+'</strong><small>'+(totalAno.meta?pctAno+'% da meta':'—')+'</small></div>'
-    + '<div class="pKpi dan"><span>Pendente</span><strong>'+brl(Math.max(0,totalAno.meta-totalAno.realizado))+'</strong><small>a realizar</small></div>'
-    + '<div class="pKpi"><span>Gerentes</span><strong>'+gvsExibir.length+'</strong><small>'+(HOUSE_SUB==='ativos'?'ativos':'desligados')+'</small></div>';
-
-  // Máscara BRL — só formata no input, só re-renderiza no blur
-  document.querySelectorAll('#houseTbody input.pIn[data-brl="1"]').forEach(function(inp){
-    inp.addEventListener('input', function(){ mascaraBRL(this); });
-    inp.addEventListener('blur', function(){ atualizarHouseOnFly(); });
-  });
+  // Meta table
+  var mb=document.getElementById('houseMetaBody');
+  if(mb){
+    var MK=[{k:'c',l:'Cadastro'},{k:'a',l:'Agendamento'},{k:'v',l:'Visita'},{k:'pt',l:'Pasta Total'},{k:'pa',l:'Pasta Aprov.'},{k:'vd',l:'Venda'}];
+    mb.innerHTML=MK.map(function(mk){var meta=metaAgg[mk.k]||0,ac=acum[mk.k]||0,p=pctN(ac,meta),falta=Math.max(0,meta-ac),cor=p>=100?'#15a46f':p>=70?'#1e40af':'#dc2626';return '<tr><td><strong style="font-size:11px">'+mk.l+'</strong></td><td class="right">'+meta+'</td><td class="right"><strong>'+ac+'</strong></td><td class="right"><strong style="color:'+cor+'">'+p+'%</strong><div style="height:4px;background:#eef1f7;border-radius:4px;margin-top:3px"><div style="height:100%;width:'+Math.min(p,100)+'%;background:'+cor+';border-radius:4px"></div></div></td><td class="right" style="color:'+(falta>0?'#dc2626':'#15a46f')+'">'+falta+'</td></tr>';}).join('')
+      +(function(){var vM=metaAgg.vgv,vA=acum.vgv,vP=pctN(vA,vM),vF=Math.max(0,vM-vA),vC=vP>=100?'#15a46f':vP>=70?'#1e40af':'#dc2626';return '<tr style="background:#eef3ff"><td><strong>VGV</strong></td><td class="right"><strong>'+brlH(vM)+'</strong></td><td class="right"><strong>'+brlH(vA)+'</strong></td><td class="right"><strong style="color:'+vC+'">'+vP+'%</strong><div style="height:4px;background:#eef1f7;border-radius:4px;margin-top:3px"><div style="height:100%;width:'+Math.min(vP,100)+'%;background:'+vC+';border-radius:4px"></div></div></td><td class="right" style="color:'+(vF>0?'#dc2626':'#15a46f')+'">'+brlH(vF)+'</td></tr>';})();
+  }
+  // Funil cards
+  var fe=document.getElementById('houseFunilWrap');
+  if(fe){
+    var fd=[{l:'Cadastros',v:acum.c,c:'#1648d8'},{l:'Agendamentos',v:acum.a,c:'#3b82f6'},{l:'Visitas',v:acum.v,c:'#0891b2'},{l:'Pastas',v:acum.pt,c:'#eab308'},{l:'Aprovadas',v:acum.pa,c:'#f97316'},{l:'Vendas',v:acum.vd,c:'#dc2626'}];
+    var mx=Math.max.apply(null,fd.map(function(f){return f.v;}).concat([1]));
+    fe.innerHTML='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px">'+fd.map(function(f){var p=mx>0?Math.round(f.v/mx*100):0;return '<div style="text-align:center;padding:14px 10px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 4px 12px rgba(17,42,101,.05)"><div style="font-size:22px;font-weight:900;color:'+f.c+'">'+f.v+'</div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:4px 0 8px">'+f.l+'</div><div style="height:6px;background:#eef1f7;border-radius:6px"><div style="height:100%;width:'+p+'%;background:'+f.c+';border-radius:6px;transition:.5s"></div></div></div>';}).join('')+'</div>';
+  }
 }
 
-function coletarHouse(){
-  var d = dadosHouse();
-  // Modo mês
-  document.querySelectorAll('input.pIn[data-gv][data-m]').forEach(function(inp){
-    var g = inp.dataset.gv, m = inp.dataset.m, k = inp.dataset.k;
-    if(!d.gvs[g]) d.gvs[g] = {};
-    if(!d.gvs[g][m]) d.gvs[g][m] = {meta:0, realizado:0};
-    d.gvs[g][m][k] = parseBRL(inp.value);
-  });
-  // Modo trimestre — distribui igualmente pelos 3 meses do trimestre
-  document.querySelectorAll('input.pIn[data-gv][data-tri]').forEach(function(inp){
-    var g = inp.dataset.gv, t = parseInt(inp.dataset.tri), k = inp.dataset.k;
-    var val = parseBRL(inp.value);
-    if(!d.gvs[g]) d.gvs[g] = {};
-    // divide igual entre os 3 meses do trimestre
-    var perMes = val/3;
-    for(var i=0;i<3;i++){
-      var mesN = (t-1)*3 + i + 1;
-      var mk = String(mesN).padStart(2,'0');
-      if(!d.gvs[g][mk]) d.gvs[g][mk] = {meta:0, realizado:0};
-      d.gvs[g][mk][k] = perMes;
-    }
-  });
-  return d;
-}
-function atualizarHouseOnFly(){
-  var d = coletarHouse();
-  S.config[chaveHouse()] = d;
-  renderHouse();
-}
-function brlH(v){ v=parseFloat(v)||0; if(v>=1e6) return 'R$ '+(v/1e6).toFixed(1).replace('.',',')+' M'; if(v>=1e3) return 'R$ '+Math.round(v/1e3)+'K'; return 'R$ '+v.toLocaleString('pt-BR'); }
 function salvarHouse(){
   var d = coletarHouse();
   saveConfig(chaveHouse(), d).then(function(ok){
