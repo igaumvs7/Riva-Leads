@@ -866,7 +866,7 @@ function mostrarPortal(pessoaId,cargo){
     ...(isAdmin?[{ titulo:'Administração', desc:'Gerencie usuários e acessos do sistema.', icon:ICONS.admin, color:'purple', href:'admin.html', badge:'Admin', badgeCls:'admin', lock:false }]:[]),
     { titulo:'Gestão de Vendas', desc:'Registre vendas com todos os detalhes.', icon:ICONS.vendas, color:'green', href:'vendas.html', badge:isDiretor?'Acesso Total':'Visualização', badgeCls:isDiretor?'':'view', lock:false },
     ...(isDiretor?[{ titulo:'Performance Executiva', desc:'Acompanhamento semanal, funil de conversão e métricas house.', icon:ICONS.performance, color:'amber', href:'performance.html', badge:'Diretoria', badgeCls:'diretoria', lock:false }]:[]),
-    ...(isDiretor?[{ titulo:'Reuniões', desc:'Agenda de reuniões da equipe. Convoca por escopo.', icon:ICONS.meet, color:'purple', href:'reunioes.html', badge:'Equipe', badgeCls:'sys', lock:false }]:[{ titulo:'Reuniões', desc:'Suas reuniões agendadas.', icon:ICONS.meet, color:'purple', href:'reunioes.html', badge:'Equipe', badgeCls:'sys', lock:false }]),
+    ...(isDiretor?[{ titulo:'Agenda Riva', desc:'Agenda de reuniões da equipe. Convoca por escopo.', icon:ICONS.meet, color:'purple', href:'reunioes.html', badge:'Equipe', badgeCls:'sys', lock:false }]:[{ titulo:'Agenda Riva', desc:'Suas reuniões agendadas.', icon:ICONS.meet, color:'purple', href:'reunioes.html', badge:'Equipe', badgeCls:'sys', lock:false }]),
     { titulo:'Ajuda', desc:'Como usar cada painel do sistema.', icon:ICONS.help, color:'', href:'ajuda.html', badge:'Guia', badgeCls:'sys', lock:false },
     { titulo:'Configurações', desc:'Personalize a aparência do sistema.', icon:ICONS.config, color:'', href:'configuracoes.html', badge:'Sistema', badgeCls:'sys', lock:false }
   ];
