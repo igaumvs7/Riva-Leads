@@ -767,12 +767,13 @@ td { padding: 12px 14px; }
 .horizontalFunnelRow { display: grid; grid-template-columns: 112px 1fr; align-items: center; gap: 12px; }
 .horizontalFunnelRow > span { color: var(--muted); font-size: 11px; font-weight: 700; }
 .horizontalTrack { position: relative; height: 28px; overflow: hidden; border-radius: 8px; background: #eef1f7; }
-.horizontalFill { position: absolute; inset: 0 auto 0 0; border-radius: 8px; background: linear-gradient(90deg, #1648d8, #4f75e1); animation: growWidth .75s ease-out both; }
-.horizontalFill.fill-ag { background: linear-gradient(90deg, #214fcf, #5276d8); }
-.horizontalFill.fill-vis { background: linear-gradient(90deg, #315fd8, #7897eb); }
-.horizontalFill.fill-pas { background: linear-gradient(90deg, #173994, #4165bd); }
+.horizontalFill { position: absolute; inset: 0 auto 0 0; border-radius: 8px; background: linear-gradient(90deg, #0d2fa3, #1e4fd8); animation: growWidth .75s ease-out both; min-width: 0; }
+.horizontalFill.fill-op  { background: linear-gradient(90deg, #0d2fa3, #1e4fd8); }
+.horizontalFill.fill-ag  { background: linear-gradient(90deg, #1648c0, #3060d0); }
+.horizontalFill.fill-vis { background: linear-gradient(90deg, #2060b8, #4080cc); }
+.horizontalFill.fill-pas { background: linear-gradient(90deg, #1a52a0, #3070b8); }
 .horizontalFill.fill-ven { background: linear-gradient(90deg, #991b1b, #dc2626); }
-.horizontalTrack strong { position: relative; z-index: 1; height: 100%; padding: 0 12px; display: flex; align-items: center; color: #fff; font-size: 11px; text-shadow: 0 1px 5px rgba(0,0,0,.22); }
+.horizontalTrack strong { position: relative; z-index: 2; height: 100%; padding: 0 10px; display: flex; align-items: center; color: #fff; font-size: 11px; font-weight: 800; text-shadow: 0 1px 6px rgba(0,0,0,.45); white-space: nowrap; }
 .rateList { padding: 18px 22px 20px; }
 .rateRow { padding: 8px 0; }
 .rateRow > div:first-child { display: flex; justify-content: space-between; gap: 14px; }
@@ -1627,6 +1628,10 @@ tfoot td { color: #fff; border: 0; font-weight: 800; }
   .topbarTools .syncPill > span,
   .topbarTools .syncPill > i { display: none !important; }
 }
+.kpiTop { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+.convGeralBadge { display: inline-flex; align-items: center; gap: 3px; padding: 4px 9px; border-radius: 20px; background: rgba(220,38,38,.12); color: #dc2626; font-size: 11px; font-weight: 800; border: 1px solid rgba(220,38,38,.22); white-space: nowrap; }
+.convGeralBadge small { font-size: 8px; font-weight: 700; opacity: .75; }
+[data-theme="dark"] .convGeralBadge { background: rgba(220,38,38,.18); color: #f87171; border-color: rgba(220,38,38,.3); }
 </style>
 </head>
 <body>
@@ -1711,16 +1716,11 @@ tfoot td { color: #fff; border: 0; font-weight: 800; }
         </select>
         <span class="selectChevron">⌄</span>
       </label>
-      <label class="topSelect periodSelect yearSelect">
+      <label class="topSelect periodSelect yearSelect" style="position:relative">
         <span class="selectLabel">Ano</span>
-        <span class="selectCurrent" id="selAnoCurrent">2026</span>
-        <select id="selAno" onchange="onMesChange()">
-          <option value="2024">2024</option><option value="2025">2025</option>
-          <option value="2026" selected>2026</option><option value="2027">2027</option>
-          <option value="2028">2028</option><option value="2029">2029</option>
-          <option value="2030">2030</option><option value="2031">2031</option>
-        </select>
-        <span class="selectChevron">⌄</span>
+        <input type="number" id="selAno" value="2026" min="2020" max="2099" step="1"
+          onchange="onMesChange()" oninput="onMesChange()"
+          style="position:static!important;opacity:1!important;width:68px;height:100%;border:0;background:transparent;color:inherit;font-size:12px;font-weight:720;font-family:inherit;outline:none;padding:0;-moz-appearance:textfield;-webkit-appearance:none">
       </label>
       <label class="topSelect scopeSelect">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg>
@@ -2029,10 +2029,13 @@ function atualizarSidebar(){
 // ═══════════════════════════════════════════
 function onMesChange(){
   const m=document.getElementById('selMes').value;
-  const a=document.getElementById('selAno').value;
+  const aEl=document.getElementById('selAno');
+  const a=String(parseInt(aEl.value)||new Date().getFullYear());
+  if(parseInt(a)<2020||parseInt(a)>2099) return;
   S.mes = a+'-'+m;
   document.getElementById('selMesCurrent').textContent = (S.lang==='en'?MESES_SHORT_EN:MESES_SHORT)[parseInt(m)-1];
-  document.getElementById('selAnoCurrent').textContent = a;
+  const elAnoCurr = document.getElementById('selAnoCurrent');
+  if(elAnoCurr) elAnoCurr.textContent = a;
   renderPage();
 }
 
@@ -2094,7 +2097,11 @@ function renderDashboard(){
   const ll=getLeadsFiltrados();
   const tot=soma(ll);
   const managers=S.pessoas.filter(p=>p.cargo==='Gerente de Vendas');
-  const managerRows=managers.map(p=>{const t=soma(ll.filter(l=>l.pessoaId===p.id));return{person:p,totals:t};}).sort((a,b)=>b.totals.op-a.totals.op||b.totals.ven-a.totals.ven||a.person.nome.localeCompare(b.person.nome,'pt-BR'));
+  const managerRows=managers.map(p=>{const t=soma(ll.filter(l=>l.pessoaId===p.id));return{person:p,totals:t};}).sort((a,b)=>{
+    const convA=a.totals.op?a.totals.ven/a.totals.op:0;
+    const convB=b.totals.op?b.totals.ven/b.totals.op:0;
+    return convB-convA||b.totals.ven-a.totals.ven||a.person.nome.localeCompare(b.person.nome,'pt-BR');
+  });
   const kpiData=[
     {key:'op',label:'Oportunidades',icon:'target'},
     {key:'ag',label:'Agendamentos',icon:'calendar'},
@@ -2102,6 +2109,7 @@ function renderDashboard(){
     {key:'pas',label:'Pastas',icon:'folder'},
     {key:'ven',label:'Vendas',icon:'sale',red:true},
   ];
+  const convGeralPct = pctStr(tot.ven, tot.op);
   const convData=[
     [tot.ag,tot.op,'OP → AG'],[tot.vis,tot.ag,'AG → VIS'],
     [tot.pas,tot.vis,'VIS → PAS'],[tot.ven,tot.pas,'PAS → VEN'],
@@ -2126,13 +2134,14 @@ function renderDashboard(){
     <section class="kpiGrid">
       ${kpiData.map((k,i)=>{
         const val=tot[k.key];
+        const isVen = k.key==='ven';
         return `<article class="kpiCard${k.red?' saleCard':''}" style="animation-delay:${i*55}ms">
           <div class="kpiTop">
             <span class="kpiIcon">${svgIcon(k.icon,22)}</span>
+            ${isVen ? `<span class="convGeralBadge" title="Conversão Venda / Oportunidade">${convGeralPct} <small>VEN/OP</small></span>` : ''}
           </div>
           <strong>${val.toLocaleString('pt-BR')}</strong>
           <span>${k.label}</span>
-          
           <div class="kpiDepth"></div>
         </article>`;
       }).join('')}
@@ -2155,18 +2164,21 @@ function renderDashboard(){
       <article class="panel funnelPanel overviewPanel">
         <div class="sectionBand"><span>FUNIL DE CONVERSÃO</span></div>
         <div class="horizontalFunnel">
-          ${processKeys.map(k=>{
-            const max=Math.max(tot.op,1);
-            const val=tot[k];
+          ${(()=>{
             const labels={op:'Oportunidades',ag:'Agendamentos',vis:'Visitas',pas:'Pastas',ven:'Vendas'};
-            return `<div class="horizontalFunnelRow">
-              <span>${labels[k]}</span>
-              <div class="horizontalTrack">
-                <i class="horizontalFill fill-${k}" style="width:${Math.max(pct(val,max),val?14:0)}%"></i>
-                <strong>${val.toLocaleString('pt-BR')}</strong>
-              </div>
-            </div>`;
-          }).join('')}
+            const maxVal=Math.max(tot.op,tot.ag,tot.vis,tot.pas,tot.ven,1);
+            return processKeys.map(k=>{
+              const val=tot[k];
+              const w=Math.max(val?Math.round(pct(val,maxVal)):0, val?4:0);
+              return `<div class="horizontalFunnelRow">
+                <span>${labels[k]}</span>
+                <div class="horizontalTrack">
+                  <i class="horizontalFill fill-${k}" style="width:${w}%"></i>
+                  <strong>${val.toLocaleString('pt-BR')}</strong>
+                </div>
+              </div>`;
+            }).join('');
+          })()}
         </div>
       </article>
       <article class="panel ratesPanel overviewPanel">
