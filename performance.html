@@ -785,6 +785,56 @@ function dadosHouse(){
   };
 }
 
+
+function salvarHouseTudo(){
+  // Save director name changes first
+  var dirRenames = {};
+  document.querySelectorAll('.dirNameInput').forEach(function(el){
+    var oldNome = el.dataset.nome, newNome = (el.value||'').trim();
+    if(newNome && newNome !== oldNome) dirRenames[oldNome] = newNome;
+  });
+
+  var metaRiva = parseNumBR(document.getElementById('hMetaRiva') ? document.getElementById('hMetaRiva').value : '0');
+
+  var gvs = {};
+  document.querySelectorAll('[data-htype="gv"]').forEach(function(el){
+    var nome=el.dataset.nome, mes=el.dataset.mes, field=el.dataset.field;
+    if(!gvs[nome]) gvs[nome]={};
+    if(!gvs[nome][mes]) gvs[nome][mes]={meta:0,realizado:0};
+    gvs[nome][mes][field] = parseNumBR(el.dataset.rawValue !== undefined ? el.dataset.rawValue : el.value);
+  });
+
+  var dirs = {};
+  var dirNames = [];
+  document.querySelectorAll('[data-htype="dir"]').forEach(function(el){
+    var nome=el.dataset.nome, mes=el.dataset.mes;
+    var displayNome = dirRenames[nome] || nome;
+    if(!dirs[displayNome]) dirs[displayNome]={};
+    dirs[displayNome][mes] = parseNumBR(el.dataset.rawValue !== undefined ? el.dataset.rawValue : el.value);
+    if(dirNames.indexOf(displayNome)<0) dirNames.push(displayNome);
+  });
+  // Preserve order from dirNames in data
+  var existingDirNames = (dadosHouse().dirNames || []);
+  if(!dirNames.length) dirNames = existingDirNames.map(function(n){ return dirRenames[n]||n; });
+
+  var regs = {};
+  document.querySelectorAll('[data-htype="reg"]').forEach(function(el){
+    var nome=el.dataset.nome, mes=el.dataset.mes, field=el.dataset.field;
+    if(!regs[nome]) regs[nome]={};
+    if(!regs[nome][mes]) regs[nome][mes]={meta:0,realizado:0};
+    regs[nome][mes][field] = parseNumBR(el.dataset.rawValue !== undefined ? el.dataset.rawValue : el.value);
+  });
+
+  var newData = { metaRiva:metaRiva, metaRV:0, gvs:gvs, diretores:dirs, dirNames:dirNames, regionais:regs };
+  var key = chaveHouse();
+  S.config[key] = newData;
+
+  saveConfig(key, newData).then(function(ok){
+    if(ok) toast('✅ Dados salvos com sucesso!');
+    else   toast('Salvo localmente. Sem conexão.', true);
+  });
+}
+
 function salvarHouse(){
   var d = coletarHouse();
   var key = chaveHouse();
