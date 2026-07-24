@@ -1592,28 +1592,28 @@ tfoot td { color: #fff; border: 0; font-weight: 800; }
         <span class="navLabel">Painel Inicial</span>
       </a>
       <span class="navGroupLabel" style="margin-top:8px">MÓDULOS</span>
-      <button class="navItem active" onclick="navTo('dashboard')">
+      <button class="navItem active" data-page="dashboard" onclick="navTo('dashboard')">
         <span class="navIcon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
         <span class="navLabel">Dashboard</span>
         <span class="activeRail"></span>
       </button>
-      <button class="navItem" onclick="navTo('leads')">
+      <button class="navItem" data-page="leads" onclick="navTo('leads')">
         <span class="navIcon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l1 2h3v16H5V5h3z"/><path d="M9 11h6M9 15h6"/></svg></span>
         <span class="navLabel">Consultar resultados</span>
       </button>
-      <button class="navItem" onclick="navTo('team')">
+      <button class="navItem" data-page="team" onclick="navTo('team')">
         <span class="navIcon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2"/><path d="M3 20c0-4 2.7-6 6-6s6 2 6 6M15 15c3 0 5 1.7 5 5"/></svg></span>
         <span class="navLabel">Equipe</span>
       </button>
-      <button class="navItem" onclick="navTo('calculator')">
+      <button class="navItem" data-page="calculator" onclick="navTo('calculator')">
         <span class="navIcon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8v4H8zM8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></svg></span>
         <span class="navLabel">Calculadora %</span>
       </button>
-      <button class="navItem" onclick="navTo('reports')">
+      <button class="navItem" data-page="reports" onclick="navTo('reports')">
         <span class="navIcon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l4 4v16H6z"/><path d="M14 2v5h5M9 13h6M9 17h6"/></svg></span>
         <span class="navLabel">Relatórios</span>
       </button>
-      <button class="navItem navSettings" onclick="navTo('settings')">
+      <button class="navItem navSettings" data-page="settings" onclick="navTo('settings')">
         <span class="navIcon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg></span>
         <span class="navLabel">Configurações</span>
       </button>
@@ -1621,7 +1621,10 @@ tfoot td { color: #fff; border: 0; font-weight: 800; }
     <div class="sidebarFooter">
       <div class="miniStatus">
         <span class="pulseDot"></span>
-        <div><strong>Núcleo Digital</strong><small>Inteligência em resultados</small></div>
+        <div>
+          <strong id="sideUserNameView">Núcleo Digital</strong>
+          <small id="sideUserCargoView" style="color:rgba(255,255,255,.58);font-size:9px;display:block;margin-top:2px">Inteligência em resultados</small>
+        </div>
       </div>
       <div class="sidebarDecoration"><i></i><i></i><i></i></div>
     </div>
@@ -1677,9 +1680,9 @@ tfoot td { color: #fff; border: 0; font-weight: 800; }
         <span><strong id="syncLabel">Conectando</strong><small id="syncTime">—</small></span>
         <i id="syncDot"></i>
       </button>
-      <button class="profileButton" title="Igor Vivas">
-        <span>IV</span>
-        <div><strong>Igor Vivas</strong><small>Visualização</small></div>
+      <button class="profileButton" id="topProfileBtn" title="Perfil">
+        <span id="topProfileIni">--</span>
+        <div><strong id="topProfileNome">—</strong><small id="topProfileCargo">Visualização</small></div>
       </button>
 
     </div>
@@ -1734,6 +1737,7 @@ let S = {
 // ═══════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
   aplicarTema(S.theme);
+  fillUserInfoView();
   carregarLocal();
   renderPage();
   atualizarSidebar();
@@ -1741,6 +1745,28 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(salvarLocal, 15000);
   setInterval(() => { if(S.sheetsOK) carregarSheets(); }, 30000);
 });
+
+function fillUserInfoView(){
+  try {
+    const s = JSON.parse(localStorage.getItem('riva_sessao')||'{}');
+    const nome = s.usuario||'';
+    const cargo = s.cargo||'Visualização';
+    const nomeCap = nome ? nome.charAt(0).toUpperCase()+nome.slice(1) : 'Usuário';
+    const ini = (nomeCap.trim().split(/\s+/).map(w=>w[0]||'').join('').slice(0,2)||'--').toUpperCase();
+    const el = document.getElementById('topProfileNome');
+    const elIni = document.getElementById('topProfileIni');
+    const elCargo = document.getElementById('topProfileCargo');
+    const elSide = document.getElementById('sideUserNameView');
+    const elSideCargo = document.getElementById('sideUserCargoView');
+    if(el) el.textContent = nomeCap;
+    if(elIni) elIni.textContent = ini;
+    if(elCargo) elCargo.textContent = cargo;
+    if(elSide) elSide.textContent = nomeCap||'Núcleo Digital';
+    if(elSideCargo) elSideCargo.textContent = cargo;
+    const btn = document.getElementById('topProfileBtn');
+    if(btn) btn.title = nomeCap;
+  } catch(e){}
+}
 
 // ═══════════════════════════════════════════
 // UTILITÁRIOS
@@ -1828,18 +1854,16 @@ const PAGE_TITLES = {
 
 function navTo(page){
   S.page = page;
-  document.querySelectorAll('.navItem').forEach(b=>{
+  document.querySelectorAll('.navItem[data-page]').forEach(b=>{
     b.classList.remove('active');
     const rail = b.querySelector('.activeRail');
     if(rail) rail.remove();
   });
-  const btns = document.querySelectorAll('.navItem');
-  const pages = ['dashboard','leads','team','calculator','reports','settings'];
-  const idx = pages.indexOf(page);
-  if(btns[idx]){
-    btns[idx].classList.add('active');
-    if(!btns[idx].querySelector('.activeRail')){
-      const r=document.createElement('span');r.className='activeRail';btns[idx].appendChild(r);
+  const btn = document.querySelector('.navItem[data-page="'+page+'"]');
+  if(btn){
+    btn.classList.add('active');
+    if(!btn.querySelector('.activeRail')){
+      const r=document.createElement('span');r.className='activeRail';btn.appendChild(r);
     }
   }
   document.getElementById('pageTitle').textContent = PAGE_TITLES[page]||page;
@@ -1944,7 +1968,11 @@ function renderDashboard(){
   const ll=getLeadsFiltrados();
   const tot=soma(ll);
   const managers=S.pessoas.filter(p=>p.cargo==='Gerente de Vendas');
-  const managerRows=managers.map(p=>{const t=soma(ll.filter(l=>l.pessoaId===p.id));return{person:p,totals:t};}).sort((a,b)=>b.totals.op-a.totals.op||b.totals.ven-a.totals.ven||a.person.nome.localeCompare(b.person.nome,'pt-BR'));
+  const managerRows=managers.map(p=>{const t=soma(ll.filter(l=>l.pessoaId===p.id));return{person:p,totals:t};}).sort((a,b)=>{
+    const convA=a.totals.op?a.totals.ven/a.totals.op:0;
+    const convB=b.totals.op?b.totals.ven/b.totals.op:0;
+    return convB-convA||b.totals.ven-a.totals.ven||a.person.nome.localeCompare(b.person.nome,'pt-BR');
+  });
   const kpiData=[
     {key:'op',label:'Oportunidades',icon:'target'},
     {key:'ag',label:'Agendamentos',icon:'calendar'},
@@ -2004,18 +2032,21 @@ function renderDashboard(){
       <article class="panel funnelPanel overviewPanel">
         <div class="sectionBand"><span>FUNIL DE CONVERSÃO</span></div>
         <div class="horizontalFunnel">
-          ${processKeys.map(k=>{
-            const max=Math.max(tot.op,1);
-            const val=tot[k];
+          ${(()=>{
             const labels={op:'Oportunidades',ag:'Agendamentos',vis:'Visitas',pas:'Pastas',ven:'Vendas'};
-            return `<div class="horizontalFunnelRow">
-              <span>${labels[k]}</span>
-              <div class="horizontalTrack">
-                <i class="horizontalFill fill-${k}" style="width:${Math.max(pct(val,max),val?3:0)}%"></i>
-                <strong>${val.toLocaleString('pt-BR')}</strong>
-              </div>
-            </div>`;
-          }).join('')}
+            const maxVal=Math.max(tot.op,tot.ag,tot.vis,tot.pas,tot.ven,1);
+            return processKeys.map(k=>{
+              const val=tot[k];
+              const w=Math.max(val?Math.round(pct(val,maxVal)):0, val?4:0);
+              return `<div class="horizontalFunnelRow">
+                <span>${labels[k]}</span>
+                <div class="horizontalTrack">
+                  <i class="horizontalFill fill-${k}" style="width:${w}%"></i>
+                  <strong>${val.toLocaleString('pt-BR')}</strong>
+                </div>
+              </div>`;
+            }).join('');
+          })()}
         </div>
       </article>
       <article class="panel ratesPanel overviewPanel">
