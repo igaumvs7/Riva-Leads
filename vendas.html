@@ -504,7 +504,7 @@ function viewOverview(){
     +   '<div class="panel"><div class="panelHeader"><div><span class="eyebrow">META DO MÊS</span><h3>'+(S.canEdit?'Definir / Acompanhar':'Acompanhar Meta')+'</h3></div></div>'
     +     (S.canEdit
       ? '<div style="padding:16px 18px;display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">'
-        + '<select id="metaM" class="filterSel"></select><input id="metaA" class="metaInput" type="number" min="2020" max="2035" style="width:90px;text-align:center" value="2026">'
+        + '<select id="metaM" class="filterSel"></select><input id="metaA" class="metaInput" type="number" min="2020" max="2099" style="width:90px;text-align:center" value="2026">'
         + '<input type="text" id="metaV" placeholder="R$ 0,00" inputmode="numeric" oninput="mascaraBRL(this)" class="metaInput">'
         + '<button class="primaryButton" style="height:38px" onclick="salvarMeta()">Definir</button>'
         + '</div>'
