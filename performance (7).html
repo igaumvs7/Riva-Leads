@@ -1,0 +1,2165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<script src="riva-config.js"></script>
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análise Executiva — Riva Vendas CE</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTMiIGZpbGw9IiNmZmYiLz4KICA8cGF0aCBkPSJNMTQgOHY0OGg5VjM1aDEwbDExIDE4aDEwTDQyIDMxYzUtMyA4LTggOC0xNCAwLTctNS0xMC0xMy0xMEgxNHptOSA5aDEyYzQgMCA2IDIgNiA1cy0yIDUtNiA1SDIzVjE3eiIgZmlsbD0iIzBkMWY2ZCIvPgogIDxwYXRoIGQ9Ik0yNSAyOXYxNmwxMy04LTEzLTh6IiBmaWxsPSIjZGMyNjI2Ii8+CiAgPGNpcmNsZSBjeD0iOCIgY3k9IjIyIiByPSIyLjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzE2NDhkOCIgc3Ryb2tlLXdpZHRoPSIxLjYiLz4KICA8Y2lyY2xlIGN4PSI4IiBjeT0iMzIiIHI9IjIuOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMTY0OGQ4IiBzdHJva2Utd2lkdGg9IjEuNiIvPgogIDxjaXJjbGUgY3g9IjgiIGN5PSI0MiIgcj0iMi44IiBmaWxsPSJub25lIiBzdHJva2U9IiMxNjQ4ZDgiIHN0cm9rZS13aWR0aD0iMS42Ii8+CiAgPGxpbmUgeDE9IjEwLjgiIHkxPSIyMiIgeDI9IjE0IiB5Mj0iMjIiIHN0cm9rZT0iIzE2NDhkOCIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxsaW5lIHgxPSIxMC44IiB5MT0iMzIiIHgyPSIxNCIgeTI9IjMyIiBzdHJva2U9IiMxNjQ4ZDgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8bGluZSB4MT0iMTAuOCIgeTE9IjQyIiB4Mj0iMTQiIHkyPSI0MiIgc3Ryb2tlPSIjMTY0OGQ4IiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPGxpbmUgeDE9IjgiIHkxPSIyNC44IiB4Mj0iOCIgeTI9IjI5LjIiIHN0cm9rZT0iIzE2NDhkOCIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxsaW5lIHgxPSI4IiB5MT0iMzQuOCIgeDI9IjgiIHkyPSIzOS4yIiBzdHJva2U9IiMxNjQ4ZDgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9zdmc+">
+<meta name="theme-color" content="#0d1f6d">
+<link rel="stylesheet" href="riva-shell.css">
+<style>
+/* CSS específico da Performance Executiva */
+.perfHero{margin-bottom:24px}
+.perfHero .eyebrow{color:var(--royal);font-size:10px;font-weight:850;letter-spacing:.14em;text-transform:uppercase}
+.perfHero h1{margin:5px 0 3px;font-size:clamp(24px,2.5vw,32px);line-height:1;letter-spacing:-.04em}
+.perfHero p{margin:0;color:var(--muted);font-size:13px}
+.perfTop{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.perfSel{height:38px;padding:0 28px 0 12px;border:1px solid var(--line);border-radius:9px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' fill='none' stroke='%23687695' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 8px center;color:var(--ink);font-size:12px;font-weight:700;appearance:none;cursor:pointer;font-family:inherit}
+[data-theme="dark"] .perfSel{background-color:#12151f;border-color:#292f3e;color:#eef2fb}
+.yearIn{background-image:none!important;padding:0 12px!important;width:100px;text-align:center;font-variant-numeric:tabular-nums;cursor:text}
+.yearIn:focus{outline:0;border-color:#89a5ee;box-shadow:0 0 0 3px rgba(22,72,216,.1)}
+.yearIn::-webkit-outer-spin-button,.yearIn::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.yearIn{-moz-appearance:textfield}
+.pKpiRow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.pKpi{padding:16px 18px;background:#fff;border:1px solid var(--line);border-top:3px solid var(--royal);border-radius:14px;box-shadow:0 6px 16px rgba(17,42,101,.05)}
+.pKpi.warn{border-top-color:#eab308}
+.pKpi.dan{border-top-color:#dc2626}
+.pKpi.ok{border-top-color:#15a46f}
+.pKpi span{color:var(--muted);font-size:9px;font-weight:850;letter-spacing:.09em;text-transform:uppercase}
+.pKpi strong{display:block;margin-top:6px;font-size:22px;line-height:1;letter-spacing:-.02em;color:var(--royal-deep)}
+.pKpi small{display:block;margin-top:4px;color:#9aa5b9;font-size:10px}
+[data-theme="dark"] .pKpi{background:#12151f;border-color:#292f3e}
+[data-theme="dark"] .pKpi strong{color:#eef2fb}
+[data-theme="dark"] .pKpi span,[data-theme="dark"] .pKpi small{color:#8b93a7}
+
+.pPanel{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:16px;box-shadow:0 6px 16px rgba(17,42,101,.05)}
+.pPanelHead{padding:14px 18px;border-bottom:1px solid #edf1f7;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.pPanelHead h3{font-size:15px;letter-spacing:-.02em}
+.pPanelHead .eyebrow{display:block;color:var(--royal);font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px}
+[data-theme="dark"] .pPanel{background:#12151f;border-color:#292f3e}
+[data-theme="dark"] .pPanelHead{border-color:#242b3b}
+
+.pTable{width:100%;overflow-x:auto}
+.pTable table{width:100%;min-width:600px;border-collapse:collapse;font-size:11px}
+#houseTableWrap table{min-width:auto}
+#houseTableWrap input.pIn{width:100%!important;min-width:70px;display:block;margin-bottom:2px}
+.pTable thead th{padding:10px 12px;color:#73809a;font-size:9px;font-weight:850;letter-spacing:.06em;text-align:left;background:#f7f9fd;border-bottom:1px solid var(--line);white-space:nowrap}
+.pTable thead th.right{text-align:right}
+.pTable thead th.center{text-align:center}
+.pTable tbody td{padding:9px 12px;border-bottom:1px solid #edf1f7;color:#5a6780;white-space:nowrap;font-size:11px}
+.pTable tbody td.right{text-align:right;font-variant-numeric:tabular-nums}
+.pTable tbody td.strong{font-weight:750;color:var(--ink)}
+.pTable tbody tr.total td{background:#eef3ff;font-weight:800;color:var(--royal-deep)}
+.pTable tbody tr.total td.right{color:var(--royal)}
+.pTable input.pIn{width:100%;min-width:70px;padding:5px 7px;border:1px solid transparent;background:transparent;font-size:11px;color:var(--ink);font-family:inherit;border-radius:6px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.pTable input.pIn:hover{border-color:var(--line);background:#f9fbfe}
+.pTable input.pIn:focus{outline:0;border-color:var(--royal);background:#fff;box-shadow:0 0 0 2px rgba(22,72,216,.1)}
+[data-theme="dark"] .pTable thead th{background:#0d1018;color:#858ea3;border-color:#242b3b}
+[data-theme="dark"] .pTable tbody td{border-color:#242b3b;color:#b5bdcd}
+[data-theme="dark"] .pTable tbody td.strong{color:#eef2fb}
+[data-theme="dark"] .pTable tbody tr.total td{background:#0d1018;color:#79a8ff}
+[data-theme="dark"] .pTable input.pIn{color:#eef2fb}
+[data-theme="dark"] .pTable input.pIn:hover{border-color:#292f3e;background:#181d2a}
+[data-theme="dark"] .pTable input.pIn:focus{background:#181d2a;border-color:#7ea3ff}
+.pBad{color:#dc2626;font-weight:700}
+.pGood{color:#15a46f;font-weight:700}
+.pWarn{color:#eab308;font-weight:700}
+
+.pMiniChip{display:inline-block;padding:2px 7px;border-radius:5px;font-size:10px;font-weight:750}
+.pMiniChip.rene{background:rgba(22,72,216,.12);color:var(--royal)}
+.pMiniChip.cahu{background:rgba(255,30,30,.12);color:#dc2626}
+
+/* Barra VGV Semanas — visualização destacada */
+.vgvBar{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px}
+.vgvCell{padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:11px;box-shadow:0 4px 12px rgba(17,42,101,.05);position:relative;overflow:hidden}
+.vgvCell::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--royal);opacity:.5}
+.vgvCell.zero::before{opacity:.15}
+.vgvCell .vgvLbl{font-size:9px;font-weight:850;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.vgvCell .vgvVal{margin-top:5px;font-size:14px;font-weight:800;color:var(--royal-deep);letter-spacing:-.01em;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vgvCell.zero .vgvVal{color:#9aa5b9}
+[data-theme="dark"] .vgvCell{background:#12151f;border-color:#292f3e}
+[data-theme="dark"] .vgvCell .vgvVal{color:#79a8ff}
+[data-theme="dark"] .vgvCell.zero .vgvVal{color:#5a6482}
+@media(max-width:800px){.vgvBar{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:500px){.vgvBar{grid-template-columns:1fr 1fr}}
+
+.pSaveBtn{padding:8px 14px;border-radius:9px;background:linear-gradient(135deg,#1648d8,#0d33a8);color:#fff;font-size:11px;font-weight:750;border:0;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px;box-shadow:0 6px 14px rgba(22,72,216,.28);transition:.2s}
+.pSaveBtn:hover{transform:translateY(-1px)}
+.pSaveBtn:disabled{opacity:.6;cursor:wait}
+
+/* House view tabs */
+.hTab{padding:7px 14px;border-radius:7px;background:transparent;border:0;font-size:11px;font-weight:800;color:var(--muted);cursor:pointer;font-family:inherit;transition:.2s}
+.hTab.on{background:#fff;color:var(--royal);box-shadow:0 2px 6px rgba(17,42,101,.1)}
+[data-theme="dark"] #houseTabs{background:#0d1018}
+[data-theme="dark"] .hTab.on{background:#181d2a;color:#7ea3ff}
+
+.pSubHead{padding:10px 18px;background:#f7f9fd;font-size:10px;font-weight:800;color:var(--royal);letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid #edf1f7}
+[data-theme="dark"] .pSubHead{background:#0d1018;color:#7ea3ff;border-color:#242b3b}
+
+@media(max-width:1100px){.pKpiRow{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.pKpiRow{grid-template-columns:1fr}}
+
+/* Profile Dropdown */
+.profileWrap{position:relative}
+.profileMenu{position:absolute;top:calc(100% + 8px);right:0;min-width:200px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 20px 50px rgba(4,12,40,.25);padding:6px;z-index:50;display:none;animation:pmIn .18s ease-out}
+.profileMenu.open{display:block}
+@keyframes pmIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+[data-theme="dark"] .profileMenu{background:#181d2a;border-color:#292f3e}
+.profileMenu button{width:100%;padding:10px 14px;background:transparent;border:0;border-radius:8px;text-align:left;font-size:13px;font-weight:650;color:var(--ink);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:10px;transition:.15s}
+.profileMenu button:hover{background:#f4f7fb}
+[data-theme="dark"] .profileMenu button{color:#eef2fb}
+[data-theme="dark"] .profileMenu button:hover{background:#0d1018}
+.profileMenu button.danger{color:#dc2626}
+.profileMenu button.danger:hover{background:rgba(220,38,38,.08)}
+.profileMenu .pmSep{height:1px;background:#eef1f7;margin:4px 0}
+[data-theme="dark"] .profileMenu .pmSep{background:#242b3b}
+
+
+/* ── SIDEBAR BRAND ── */
+.fullBrand {
+  width: 184px !important;
+  height: 124px !important;
+  padding: 10px 8px 8px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  overflow: hidden !important;
+  border-radius: 17px !important;
+  background: #fff !important;
+  box-shadow: 0 14px 30px rgba(2,20,83,.2), inset 0 0 0 1px rgba(255,255,255,.8) !important;
+}
+.fullBrand img {
+  width: 64px !important;
+  height: 64px !important;
+  object-fit: contain !important;
+  position: static !important;
+  transform: none !important;
+  flex-shrink: 0 !important;
+}
+.fullBrand strong {
+  color: #0d2f7a !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  letter-spacing: .14em !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  text-shadow: none !important;
+}
+
+
+.fullBrand {
+  width: 188px !important;
+  height: 126px !important;
+  padding: 10px 8px 8px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  overflow: hidden !important;
+  border-radius: 17px !important;
+  background: #fff !important;
+  box-shadow: 0 14px 30px rgba(2,20,83,.2), inset 0 0 0 1px rgba(255,255,255,.8) !important;
+}
+.fullBrand img {
+  width: 68px !important;
+  height: 68px !important;
+  object-fit: contain !important;
+  position: static !important;
+  transform: none !important;
+  flex-shrink: 0 !important;
+}
+.fullBrand strong {
+  color: #0d2f7a !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  letter-spacing: .14em !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  text-shadow: none !important;
+}
+/* Sidebar recolhida: ocultar fullBrand, mostrar brandMark */
+.sidebarCollapsed .fullBrand { display: none !important; }
+.sidebarCollapsed .brandMark { display: block !important; }
+@media (max-width: 760px) {
+  .sidebarCollapsed .fullBrand { display: flex !important; }
+  .sidebarCollapsed .brandMark { display: none !important; }
+}
+
+/* ═══ HOUSE METAS / DESEMPENHO — Design System ════════════════════ */
+.hPage {
+  --h-surface:#fff;
+  --h-surface-raised:#fff;
+  --h-surface-alt:#f6f8fc;
+  --h-surface-hover:#edf3ff;
+  --h-surface-accent:#eef3ff;
+  --h-surface-accent-strong:#dce8ff;
+  --h-surface-success:#effbf6;
+  --h-surface-danger:#fff1f2;
+  --h-text:#10234a;
+  --h-muted:#66738e;
+  --h-border:#d9e2ef;
+  --h-border-strong:#bfd0f5;
+  --h-primary:#1648d8;
+  --h-success:#087b53;
+  --h-danger:#c51f2f;
+  --h-shadow:0 7px 22px rgba(17,42,101,.07);
+  --card:var(--h-surface);
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  color:var(--h-text);
+  color-scheme:light;
+}
+[data-theme="dark"] .hPage {
+  --h-surface:#111722;
+  --h-surface-raised:#151d2a;
+  --h-surface-alt:#0c121d;
+  --h-surface-hover:#1a2538;
+  --h-surface-accent:#17243d;
+  --h-surface-accent-strong:#1d3155;
+  --h-surface-success:#102b24;
+  --h-surface-danger:#321820;
+  --h-text:#f3f6ff;
+  --h-muted:#aab5ca;
+  --h-border:#30394b;
+  --h-border-strong:#3c5788;
+  --h-primary:#8eafff;
+  --h-success:#5ee0ad;
+  --h-danger:#ff7180;
+  --h-shadow:0 12px 30px rgba(0,0,0,.24);
+  color-scheme:dark;
+}
+.hPage * { scrollbar-color:var(--h-border-strong) var(--h-surface-alt); }
+.hPage ::selection { color:#fff; background:#1648d8; }
+
+.hHouseToolbar {
+  min-height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.hYearControl {
+  min-height:40px;
+  padding:5px 7px 5px 13px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border:1px solid var(--h-border);
+  border-radius:11px;
+  background:var(--h-surface);
+  color:var(--h-muted);
+  box-shadow:var(--h-shadow);
+  font-size:10px;
+  font-weight:850;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.hYearControl input {
+  width:82px;
+  height:29px;
+  border:0;
+  border-radius:7px;
+  outline:0;
+  background:var(--h-surface-alt);
+  color:var(--h-text);
+  font:800 13px/1 inherit;
+  text-align:center;
+}
+.hSafetyHint { color:var(--h-muted); font-size:10px; font-weight:650; }
+
+.hTopRow { display:grid; grid-template-columns:minmax(280px,340px) 1fr; gap:14px; align-items:stretch; }
+.hMetaCard {
+  padding:22px 23px 19px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:16px;
+  background:linear-gradient(135deg,#1648d8 0%,#0d2fa3 100%);
+  color:#fff;
+  box-shadow:0 12px 32px rgba(22,72,216,.28);
+}
+.hMetaCard label { color:rgba(255,255,255,.78); font-size:10px; font-weight:850; letter-spacing:.12em; text-transform:uppercase; }
+.hMetaCard input {
+  width:100%;
+  padding:10px 14px;
+  border:1.5px solid rgba(255,255,255,.36);
+  border-radius:10px;
+  outline:0;
+  background:rgba(255,255,255,.15);
+  color:#fff;
+  font:900 22px/1.15 inherit;
+  letter-spacing:-.02em;
+}
+.hMetaCard input::placeholder { color:rgba(255,255,255,.5); font-size:16px; }
+.hMetaCard input:focus { border-color:rgba(255,255,255,.82); background:rgba(255,255,255,.23); box-shadow:0 0 0 3px rgba(255,255,255,.12); }
+.hMetaCalc { min-height:16px; color:rgba(255,255,255,.82); font-size:12px; }
+.hMetaCalc strong { color:#fff; font-weight:850; }
+
+.hKpiGrid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+.hKpiGrid.hKpiGridFour { grid-template-columns:repeat(4,minmax(0,1fr)); }
+.hKpi {
+  min-width:0;
+  padding:16px 18px;
+  border:1px solid var(--h-border);
+  border-top:3px solid var(--h-primary);
+  border-radius:14px;
+  background:var(--h-surface-raised);
+  box-shadow:var(--h-shadow);
+}
+.hKpi .hKpiLabel { margin-bottom:7px; color:var(--h-muted); font-size:9px; font-weight:850; letter-spacing:.07em; text-transform:uppercase; }
+.hKpi .hKpiVal { overflow:hidden; color:var(--h-text); font-size:clamp(17px,1.7vw,22px); font-weight:900; line-height:1.08; letter-spacing:-.03em; text-overflow:ellipsis; white-space:nowrap; }
+.hKpi .hKpiSub { margin-top:5px; color:var(--h-muted); font-size:10px; font-weight:650; }
+.hKpi.hKpiGreen { border-top-color:var(--h-success); }
+.hKpi.hKpiGreen .hKpiVal { color:var(--h-success); }
+.hKpi.hKpiRed { border-top-color:var(--h-danger); }
+.hKpi.hKpiRed .hKpiVal { color:var(--h-danger); }
+
+.hTabBar {
+  padding:4px;
+  display:flex;
+  gap:4px;
+  overflow-x:auto;
+  border:1px solid var(--h-border);
+  border-radius:12px;
+  background:var(--h-surface-alt);
+}
+.hTabBar button {
+  min-width:120px;
+  flex:1;
+  padding:9px 12px;
+  border:0;
+  border-radius:9px;
+  background:transparent;
+  color:var(--h-muted);
+  cursor:pointer;
+  font:780 11px/1.2 inherit;
+  white-space:nowrap;
+  transition:background .18s,color .18s,box-shadow .18s;
+}
+.hTabBar button:hover { color:var(--h-text); background:var(--h-surface-hover); }
+.hTabBar button.active { color:var(--h-primary); background:var(--h-surface-raised); box-shadow:0 3px 12px rgba(17,42,101,.12); }
+
+.hCard {
+  overflow:hidden;
+  margin-bottom:16px;
+  border:1px solid var(--h-border);
+  border-radius:16px;
+  background:var(--h-surface-raised);
+  box-shadow:var(--h-shadow);
+}
+.hCardHead {
+  min-height:67px;
+  padding:15px 19px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  border-bottom:1px solid var(--h-border);
+  background:var(--h-surface-raised);
+}
+.hCardTitle { color:var(--h-text); font-size:14px; font-weight:850; letter-spacing:-.01em; }
+.hCardSub { margin-top:3px; color:var(--h-muted); font-size:10px; font-weight:650; }
+.hCardBadge { padding:5px 10px; border:1px solid var(--h-border-strong); border-radius:8px; background:var(--h-surface-accent); color:var(--h-primary); font-size:10px; font-weight:850; }
+.hTableWrap { width:100%; overflow:auto; overscroll-behavior-inline:contain; }
+.hTable { width:100%; border-collapse:separate; border-spacing:0; color:var(--h-text); font-size:11px; }
+.hTable th,.hTable td { border-color:var(--h-border); }
+.hTable thead th {
+  padding:10px 11px;
+  border-bottom:2px solid var(--h-border);
+  background:var(--h-surface-alt);
+  color:var(--h-muted);
+  font-size:9px;
+  font-weight:850;
+  letter-spacing:.05em;
+  text-align:right;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+.hTable thead th:first-child,.hTable thead th:nth-child(2) { text-align:left; }
+.hTable tbody td { padding:5px 9px; border-bottom:1px solid var(--h-border); background:var(--h-surface); color:var(--h-text); }
+.hTable tbody tr:hover td { background:var(--h-surface-hover); }
+.hTable tfoot td { padding:9px 10px; border-top:1px solid var(--h-border-strong); background:var(--h-surface-accent); color:var(--h-text); font-weight:850; }
+.hSticky { position:sticky; left:0; z-index:2; }
+.hTable thead .hSticky { z-index:4; background:var(--h-surface-alt); }
+.hTable tbody .hSticky { background:var(--h-surface); }
+.hTable tbody tr:hover .hSticky { background:var(--h-surface-hover); }
+.hTable tfoot .hSticky { z-index:3; background:var(--h-surface-accent); }
+.hNameCell { min-width:145px; vertical-align:middle; color:var(--h-text); font-size:12px; font-weight:850; white-space:nowrap; }
+.hNameCell.isOff { color:var(--h-danger); }
+.hMetricCell { min-width:55px; color:var(--h-muted); font-size:8px; font-weight:900; letter-spacing:.07em; white-space:nowrap; }
+.hMetricCell.isMeta { color:var(--h-danger); }
+.hMetricCell.isReal { color:var(--h-success); }
+.hMetricEnd td { border-bottom:3px solid var(--h-border); }
+.hRight { text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; }
+.hValue { color:var(--h-text); font-weight:780; }
+.hValuePrimary { color:var(--h-primary); font-weight:850; }
+.hValueSuccess { color:var(--h-success); font-weight:850; }
+.hValueDanger { color:var(--h-danger); font-weight:850; }
+.hValueMuted { color:var(--h-muted); }
+.hYearCell { min-width:105px; border-left:2px solid var(--h-border-strong)!important; background:var(--h-surface-accent)!important; }
+.hYearCell.isReal { border-left-color:color-mix(in srgb,var(--h-success) 45%,transparent)!important; background:var(--h-surface-success)!important; }
+.hYearCell.isDanger { border-left-color:color-mix(in srgb,var(--h-danger) 45%,transparent)!important; background:var(--h-surface-danger)!important; }
+.hTotalRow td { background:var(--h-surface-accent)!important; }
+.hTotalStrong { background:var(--h-surface-accent-strong)!important; }
+
+.hIn {
+  width:100%;
+  min-width:92px;
+  margin:2px 0;
+  padding:6px 8px;
+  border:1.5px solid var(--h-border);
+  border-radius:7px;
+  outline:0;
+  background:var(--h-surface);
+  color:var(--h-text);
+  font:720 11px/1.2 inherit;
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+  transition:border-color .15s,background .15s,box-shadow .15s;
+}
+.hIn:hover { background:var(--h-surface-hover); }
+.hIn:focus { border-color:#4d78ed; background:var(--h-surface-raised); box-shadow:0 0 0 3px rgba(22,72,216,.16); }
+.hIn::placeholder { color:var(--h-muted); opacity:.72; }
+.hIn.hInMeta { border-color:color-mix(in srgb,var(--h-danger) 48%,var(--h-border)); background:var(--h-surface-danger); }
+.hIn.hInReal { border-color:color-mix(in srgb,var(--h-success) 48%,var(--h-border)); background:var(--h-surface-success); }
+.hIn.hInDir { border-color:var(--h-border-strong); background:var(--h-surface-accent); }
+.hDirName {
+  width:150px;
+  padding:5px 0;
+  border:0;
+  border-bottom:2px solid transparent;
+  outline:0;
+  background:transparent;
+  color:var(--h-text);
+  font:820 12px/1.2 inherit;
+}
+.hDirName:focus { border-bottom-color:var(--h-primary); color:var(--h-primary); }
+.hRemoveBtn { width:30px; height:30px; border:0; border-radius:8px; background:transparent; color:var(--h-danger); cursor:pointer; font-size:18px; line-height:1; }
+.hRemoveBtn:hover { background:var(--h-surface-danger); }
+
+.hPendVal { display:block; padding:3px 1px; color:var(--h-danger); font-size:11px; font-weight:820; text-align:right; }
+.hPendVal.pos { color:var(--h-success); }
+.hPendVal.zero { color:var(--h-muted); }
+.hBar { height:4px; margin-top:4px; overflow:hidden; border-radius:4px; background:var(--h-border); }
+.hBarFill { height:100%; border-radius:4px; transition:width .4s ease; }
+
+.hSaveBar {
+  position:sticky;
+  z-index:10;
+  bottom:0;
+  padding:12px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:12px;
+  border-top:1px solid var(--h-border);
+  background:color-mix(in srgb,var(--h-surface) 92%,transparent);
+  backdrop-filter:blur(12px);
+}
+.hSaveState { margin-right:auto; color:var(--h-muted); font-size:10px; font-weight:650; }
+.hSaveBtn {
+  height:40px;
+  padding:0 26px;
+  border:0;
+  border-radius:10px;
+  background:linear-gradient(135deg,#1648d8,#0d2fa3);
+  color:#fff;
+  cursor:pointer;
+  font:800 12px/1 inherit;
+  box-shadow:0 6px 18px rgba(22,72,216,.3);
+  transition:transform .12s,box-shadow .12s,opacity .12s;
+}
+.hSaveBtn:hover { transform:translateY(-1px); box-shadow:0 8px 24px rgba(22,72,216,.4); }
+.hSaveBtn:active { transform:translateY(0); }
+.hSaveBtn:disabled { opacity:.6; cursor:wait; transform:none; }
+.hTabBar button:focus-visible,.hSaveBtn:focus-visible,.hRemoveBtn:focus-visible,.hYearControl input:focus-visible {
+  outline:3px solid color-mix(in srgb,var(--h-primary) 42%,transparent);
+  outline-offset:2px;
+}
+
+/* Compatibilidade visual com o HTML anterior enquanto dados salvos antigos são carregados. */
+.hCard table { color:var(--h-text); }
+.hCard thead tr,.hCard thead th { background:var(--h-surface-alt)!important; color:var(--h-muted)!important; border-color:var(--h-border)!important; }
+.hCard tbody td { background-color:var(--h-surface)!important; color:var(--h-text); border-color:var(--h-border)!important; }
+.hCard tbody tr:hover td { background-color:var(--h-surface-hover)!important; }
+.hCard tfoot td,.hCard .hTotRow td { background-color:var(--h-surface-accent)!important; color:var(--h-text); border-color:var(--h-border-strong)!important; }
+.hCard [style*="background:#eef3ff"] { background-color:var(--h-surface-accent)!important; border-color:var(--h-border-strong)!important; }
+.hCard [style*="background:#dce8ff"] { background-color:var(--h-surface-accent-strong)!important; border-color:var(--h-border-strong)!important; }
+.hCard [style*="background:#f0fff8"] { background-color:var(--h-surface-success)!important; }
+.hCard [style*="background:#fef2f2"] { background-color:var(--h-surface-danger)!important; }
+.hCard [style*="color:#0c1e48"] { color:var(--h-text)!important; }
+.hCard [style*="color:#1648d8"] { color:var(--h-primary)!important; }
+.hCard [style*="color:#15a46f"] { color:var(--h-success)!important; }
+.hCard [style*="color:#dc2626"] { color:var(--h-danger)!important; }
+.hCard [style*="color:#9aa5b9"],.hCard [style*="color:#c0c8d6"] { color:var(--h-muted)!important; }
+
+@media(max-width:1050px) {
+  .hKpiGrid.hKpiGridFour { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media(max-width:900px) {
+  .hTopRow { grid-template-columns:1fr; }
+}
+@media(max-width:700px) {
+  .hKpiGrid,.hKpiGrid.hKpiGridFour { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .hSafetyHint { width:100%; }
+}
+@media(max-width:480px) {
+  .hKpiGrid,.hKpiGrid.hKpiGridFour { grid-template-columns:1fr; }
+  .hTabBar button { min-width:118px; }
+  .hSaveBar { padding:10px 12px; }
+  .hSaveState { display:none; }
+  .hSaveBtn { width:100%; }
+}
+
+</style>
+</head>
+<body>
+<div class="app sidebarExpanded" id="app">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brandArea">
+      <div class="fullBrand">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHBhdGggZD0iTTE0IDh2NDhoOVYzNWgxMGwxMSAxOGgxMEw0MiAzMWM1LTMgOC04IDgtMTQgMC03LTUtMTAtMTMtMTBIMTR6bTkgOWgxMmM0IDAgNiAyIDYgNXMtMiA1LTYgNUgyM1YxN3oiIGZpbGw9IiMwZDFmNmQiLz4KICA8cGF0aCBkPSJNMjUgMjl2MTZsMTMtOC0xMy04eiIgZmlsbD0iI2RjMjYyNiIvPgogIDxjaXJjbGUgY3g9IjgiIGN5PSIyMiIgcj0iMi44IiBmaWxsPSJub25lIiBzdHJva2U9IiMxNjQ4ZDgiIHN0cm9rZS13aWR0aD0iMS42Ii8+CiAgPGNpcmNsZSBjeD0iOCIgY3k9IjMyIiByPSIyLjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzE2NDhkOCIgc3Ryb2tlLXdpZHRoPSIxLjYiLz4KICA8Y2lyY2xlIGN4PSI4IiBjeT0iNDIiIHI9IjIuOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMTY0OGQ4IiBzdHJva2Utd2lkdGg9IjEuNiIvPgogIDxsaW5lIHgxPSIxMC44IiB5MT0iMjIiIHgyPSIxNCIgeTI9IjIyIiBzdHJva2U9IiMxNjQ4ZDgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8bGluZSB4MT0iMTAuOCIgeTE9IjMyIiB4Mj0iMTQiIHkyPSIzMiIgc3Ryb2tlPSIjMTY0OGQ4IiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPGxpbmUgeDE9IjEwLjgiIHkxPSI0MiIgeDI9IjE0IiB5Mj0iNDIiIHN0cm9rZT0iIzE2NDhkOCIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxsaW5lIHgxPSI4IiB5MT0iMjQuOCIgeDI9IjgiIHkyPSIyOS4yIiBzdHJva2U9IiMxNjQ4ZDgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8bGluZSB4MT0iOCIgeTE9IjM0LjgiIHgyPSI4IiB5Mj0iMzkuMiIgc3Ryb2tlPSIjMTY0OGQ4IiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+Cjwvc3ZnPg==" alt="ANÁLISE EXECUTIVA">
+        <strong>ANÁLISE EXECUTIVA</strong>
+      </div>
+      <img class="brandMark" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHBhdGggZD0iTTE0IDh2NDhoOVYzNWgxMGwxMSAxOGgxMEw0MiAzMWM1LTMgOC04IDgtMTQgMC03LTUtMTAtMTMtMTBIMTR6bTkgOWgxMmM0IDAgNiAyIDYgNXMtMiA1LTYgNUgyM1YxN3oiIGZpbGw9IiMwZDFmNmQiLz4KICA8cGF0aCBkPSJNMjUgMjl2MTZsMTMtOC0xMy04eiIgZmlsbD0iI2RjMjYyNiIvPgogIDxjaXJjbGUgY3g9IjgiIGN5PSIyMiIgcj0iMi44IiBmaWxsPSJub25lIiBzdHJva2U9IiMxNjQ4ZDgiIHN0cm9rZS13aWR0aD0iMS42Ii8+CiAgPGNpcmNsZSBjeD0iOCIgY3k9IjMyIiByPSIyLjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzE2NDhkOCIgc3Ryb2tlLXdpZHRoPSIxLjYiLz4KICA8Y2lyY2xlIGN4PSI4IiBjeT0iNDIiIHI9IjIuOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMTY0OGQ4IiBzdHJva2Utd2lkdGg9IjEuNiIvPgogIDxsaW5lIHgxPSIxMC44IiB5MT0iMjIiIHgyPSIxNCIgeTI9IjIyIiBzdHJva2U9IiMxNjQ4ZDgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8bGluZSB4MT0iMTAuOCIgeTE9IjMyIiB4Mj0iMTQiIHkyPSIzMiIgc3Ryb2tlPSIjMTY0OGQ4IiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPGxpbmUgeDE9IjEwLjgiIHkxPSI0MiIgeDI9IjE0IiB5Mj0iNDIiIHN0cm9rZT0iIzE2NDhkOCIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxsaW5lIHgxPSI4IiB5MT0iMjQuOCIgeDI9IjgiIHkyPSIyOS4yIiBzdHJva2U9IiMxNjQ4ZDgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8bGluZSB4MT0iOCIgeTE9IjM0LjgiIHgyPSI4IiB5Mj0iMzkuMiIgc3Ryb2tlPSIjMTY0OGQ4IiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+Cjwvc3ZnPg==" alt="R">
+    </div>
+      
+    <nav class="sideNav">
+      <a href="home.html" class="navItem" style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;margin-bottom:6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.8);font-size:13px;font-weight:700;text-decoration:none">
+        <span class="navIcon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21V12h6v9"/></svg></span>
+        <span class="navLabel">Painel Inicial</span>
+      </a>
+      <button class="navItem active" data-page="rene" onclick="navTo('rene')">
+        <span class="navIcon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg></span>
+        <span class="navLabel">Regional Rene</span>
+        <span class="activeRail"></span>
+      </button>
+      <button class="navItem" data-page="cahu" onclick="navTo('cahu')">
+        <span class="navIcon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg></span>
+        <span class="navLabel">Regional Cahú</span>
+      </button>
+      <button class="navItem" data-page="house" onclick="navTo('house')">
+        <span class="navIcon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="1"/><rect x="12" y="8" width="3" height="10" rx="1"/><rect x="17" y="5" width="3" height="13" rx="1"/></svg></span>
+        <span class="navLabel">House — Metas</span>
+      </button>
+      <button class="navItem" data-page="house2" onclick="navTo('house2')">
+        <span class="navIcon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 5-5"/></svg></span>
+        <span class="navLabel">House — Desempenho</span>
+      </button>
+      <button class="navItem" data-page="equipes" onclick="navTo('equipes')">
+        <span class="navIcon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+        <span class="navLabel">Gestão de Equipes</span>
+      </button>
+      <button class="navItem navSettings" data-page="settings" onclick="navTo('settings')">
+        <span class="navIcon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg></span>
+        <span class="navLabel">Configurações</span>
+      </button>
+    </nav>
+    <div class="sidebarFooter">
+      <div class="miniStatus">
+        <span class="pulseDot"></span>
+        <div>
+          <strong id="sideUserName" style="font-size:12px">Usuário</strong>
+          <small id="sideUserCargo" style="color:rgba(255,255,255,.58);font-size:9px;display:block;margin-top:2px">Riva Vendas CE</small>
+          <small style="color:rgba(255,255,255,.35);font-size:8px;margin-top:2px;display:block;letter-spacing:.06em;text-transform:uppercase">EXECUTIVO</small>
+        </div>
+      </div>
+      <div class="sidebarDecoration"><i></i><i></i><i></i></div>
+    </div>
+  </aside>
+  <button class="sidebarBackdrop" id="sidebarBackdrop" aria-label="Fechar menu" onclick="closeMobileMenu()"></button>
+
+  <header class="topbar">
+    <button class="menuToggle isOpen" id="menuToggle" onclick="toggleSidebar()" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="topbarTitle">
+      <span>ANÁLISE EXECUTIVA</span>
+      <strong id="pageTitle">Regional Rene</strong>
+    </div>
+    <div class="topbarTools">
+      <button class="syncPill loading" id="syncPill" onclick="loadRemote()" title="Sincronizar">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7v5h-5"/><path d="M4 17v-5h5"/><path d="M6.1 8a7 7 0 0 1 11.4-2L20 8M4 16l2.5 2A7 7 0 0 0 18 16"/></svg>
+        <span><strong id="syncLabel">Conectando</strong><small id="syncTime">Nuvem</small></span>
+        <i id="syncDot"></i>
+      </button>
+      <div class="profileWrap"><button class="profileButton" id="profileBtn" onclick="toggleProfileMenu(event)" title="Sair">
+        <span id="profileIni">--</span>
+        <div><strong id="profileNome">—</strong><small id="profileCargo">—</small></div>
+      </button><div class="profileMenu" id="profileMenu"><button onclick="location.href='home.html'">🏠 Painel Inicial</button><button onclick="location.href='configuracoes.html'">⚙️ Configurações</button><div class="pmSep"></div><button class="danger" onclick="doLogout()">🚪 Sair da conta</button></div></div>
+    </div>
+  
+      <div id="userMenu" style="display:none;position:fixed;z-index:200;min-width:220px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 20px 40px rgba(4,12,40,.25);overflow:hidden;top:56px;right:20px">
+        <div style="padding:14px 16px;border-bottom:1px solid var(--line);background:#f4f7fb">
+          <strong id="umNome" style="display:block;font-size:13px;color:var(--ink)">—</strong>
+          <small id="umCargo" style="font-size:11px;color:var(--muted)">—</small>
+        </div>
+        <button onclick="location.href='home.html'" style="width:100%;padding:11px 16px;border:0;background:transparent;text-align:left;font-size:13px;color:var(--ink);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:10px" onmouseover="this.style.background='#eef2ff'" onmouseout="this.style.background=''">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21V12h6v9"/></svg>
+          Painel Inicial
+        </button>
+        <button onclick="location.href='ajuda.html'" style="width:100%;padding:11px 16px;border:0;background:transparent;text-align:left;font-size:13px;color:var(--ink);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:10px" onmouseover="this.style.background='#eef2ff'" onmouseout="this.style.background=''">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="0.6" fill="currentColor"/></svg>
+          Ajuda
+        </button>
+        <button onclick="doLogout()" style="width:100%;padding:11px 16px;border:0;border-top:1px solid var(--line);background:transparent;text-align:left;font-size:13px;color:#dc2626;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:10px;font-weight:700" onmouseover="this.style.background='rgba(220,38,38,.06)'" onmouseout="this.style.background=''">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sair da conta
+        </button>
+      </div>
+
+  </header>
+
+  <main class="mainContent">
+    <div class="pageTransition" id="pageContent"></div>
+  </main>
+
+  <div class="toastMessage" id="toast" style="position:fixed;z-index:99;bottom:28px;left:50%;transform:translateX(-50%);min-width:200px;max-width:340px;padding:11px 16px;display:none;align-items:center;gap:10px;border-radius:14px;background:#0c2a7a;color:#fff;font-size:12px;font-weight:650;box-shadow:0 18px 40px rgba(4,12,40,.3)">
+    <span>✓</span><span id="toastMsg"></span>
+  </div>
+
+</div>
+<script>
+var SU = 'https://script.google.com/macros/s/AKfycbz1_ohqAABk-RhPb-i67e6eITzk9ve5hNnCI9qICtEuudSCl0Pu3pHtlV0cxMGUsZyKAg/exec';
+var MS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+var PAGE_TITLES = { rene:'Regional Rene', cahu:'Regional Cahú', house:'House — Metas', house2:'House — Desempenho', equipes:'Gestão de Equipes', settings:'Configurações' };
+
+var HIER_GVS = {
+  rene: ['Aloisio','Flavia','Sergio','Pereira','Lima','Carol','Paulo','Lemos'],
+  cahu: ['Priscilla','Mikaella','Carol','Paulo','Redney','Claudio','Daniel','Sheily','Melquisedeque','Fernanda']
+};
+
+var HOUSE_GVS = ['Aloisio','Flavia','Priscilla','Mikaella','Sergio','Carol','Pereira','Lima','Claudio','Paulo','Lemos','Sheily','Melquisedeque','Daniel'];
+var HOUSE_VIEW = 'tri'; // 'tri' ou 'mes'
+
+// ─── Gestão de Equipes: fonte única de verdade ───
+// Estrutura salva em S.config.equipes:
+// { rene: [{nome, email, ativo}, ...], cahu: [...] }
+function getEquipes(){
+  var eq = S.config.equipes;
+  var temAtivos = eq && (
+    ((eq.rene||[]).some(function(p){return p && p.ativo!==false && p.nome;})) ||
+    ((eq.cahu||[]).some(function(p){return p && p.ativo!==false && p.nome;}))
+  );
+  if(!temAtivos){
+    // Fallback com defaults
+    eq = {
+      rene: HIER_GVS.rene.map(function(n){ return {nome:n, email:'', ativo:true}; }),
+      cahu: HIER_GVS.cahu.map(function(n){ return {nome:n, email:'', ativo:true}; })
+    };
+  }
+  return eq;
+}
+function getGVsAtivos(regional){
+  var eq = getEquipes();
+  return (eq[regional]||[]).filter(function(p){ return p.ativo!==false; }).map(function(p){ return p.nome; });
+}
+function getAllGVs(incluirDesligados){
+  var eq = getEquipes();
+  var set = {};
+  ['rene','cahu'].forEach(function(r){
+    (eq[r]||[]).forEach(function(p){
+      if(incluirDesligados || p.ativo!==false) set[p.nome] = true;
+    });
+  });
+  return Object.keys(set);
+}
+function getGVsDesligados(){
+  var eq = getEquipes();
+  var set = {};
+  ['rene','cahu'].forEach(function(r){
+    (eq[r]||[]).forEach(function(p){
+      if(p.ativo===false) set[p.nome] = true;
+    });
+  });
+  return Object.keys(set);
+}
+function getEmailsEscopo(escopo){
+  var eq = getEquipes();
+  var emails = [];
+  if(escopo==='todos'){
+    ['rene','cahu'].forEach(function(r){
+      (eq[r]||[]).forEach(function(p){ if(p.ativo!==false && p.email) emails.push(p.email); });
+    });
+  } else if(escopo==='rene' || escopo==='cahu'){
+    (eq[escopo]||[]).forEach(function(p){ if(p.ativo!==false && p.email) emails.push(p.email); });
+  }
+  return emails;
+}
+
+function setHouseView(v){
+  HOUSE_VIEW = v;
+  document.querySelectorAll('.hTab').forEach(function(b){ b.classList.toggle('on', b.dataset.view===v); });
+  document.getElementById('houseSubtitle').textContent = v==='tri' ? 'Meta vs Realizado por Trimestre' : 'Meta vs Realizado por Mês';
+  renderHouse();
+}
+
+var S = { page:'rene', mes:'', ano:0, user:{}, canEdit:false, sheetsOK:false, sidebarOpen:true, sT:null, config:{} };
+var PERF_CACHE_VERSION = 'v2';
+
+function perfStorageKey(tipo) {
+  var usuario = String((S.user && S.user.usuario) || 'default').toLowerCase().replace(/[^\w-]+/g, '_');
+  return 'riva_performance_' + PERF_CACHE_VERSION + '_' + tipo + '_' + usuario;
+}
+function readLocalObject(chave) {
+  try {
+    var parsed = JSON.parse(localStorage.getItem(chave) || '{}');
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+  } catch (e) { return {}; }
+}
+function persistConfigCache() {
+  try { localStorage.setItem(perfStorageKey('cache'), JSON.stringify(S.config || {})); } catch (e) {}
+}
+function loadCachedConfig() {
+  var cached = readLocalObject(perfStorageKey('cache'));
+  if (Object.keys(cached).length) S.config = cached;
+}
+function pendingConfig() { return readLocalObject(perfStorageKey('pending')); }
+function setPendingConfig(chave, pendente) {
+  var pending = pendingConfig();
+  if (pendente) pending[chave] = Date.now();
+  else delete pending[chave];
+  try { localStorage.setItem(perfStorageKey('pending'), JSON.stringify(pending)); } catch (e) {}
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  try { S.user = JSON.parse(localStorage.getItem('riva_sessao')||'{}'); } catch(e) {}
+  // Só Admin/Diretor pode acessar
+  if(!S.user.cargo || ['Administrador','Diretor de Vendas'].indexOf(S.user.cargo)===-1){
+    alert('Acesso restrito ao Diretor e Administrador.');
+    window.location.href='home.html';
+    return;
+  }
+  S.canEdit = true;
+  if(window.RivaConfig){ var c=window.RivaConfig.get(); if(c.tema) window.RivaConfig.aplicarTema(c.tema); }
+
+  var nm = S.user.usuario||'Usuário';
+  var nC = nm.charAt(0).toUpperCase()+nm.slice(1);
+  document.getElementById('sideUserName').textContent = nC;
+  document.getElementById('sideUserCargo').textContent = S.user.cargo||'Riva Vendas CE';
+  document.getElementById('profileIni').textContent = nC.slice(0,2).toUpperCase();
+  document.getElementById('profileNome').textContent = nC;
+  document.getElementById('profileCargo').textContent = S.user.cargo||'';
+
+  var now = new Date();
+  S.ano = now.getFullYear();
+  S.mes = S.ano+'-'+String(now.getMonth()+1).padStart(2,'0');
+
+  loadCachedConfig();
+  navTo('rene');
+  setTimeout(loadRemote, 400);
+});
+
+function navTo(page){
+  S.page = page;
+  document.querySelectorAll('.navItem').forEach(function(b){ b.classList.remove('active'); var r=b.querySelector('.activeRail'); if(r) r.remove(); });
+  var btn = document.querySelector('.navItem[data-page="'+page+'"]');
+  if(btn){ btn.classList.add('active'); var r=document.createElement('span'); r.className='activeRail'; btn.appendChild(r); }
+  document.getElementById('pageTitle').textContent = PAGE_TITLES[page]||page;
+  if(window.innerWidth<=760) closeMobileMenu();
+  renderPage();
+}
+function toggleSidebar(){
+  if(window.innerWidth<=760){
+    var sb=document.getElementById('sidebar'), bd=document.getElementById('sidebarBackdrop');
+    var open=sb.classList.contains('mobileOpen');
+    if(open){ sb.classList.remove('mobileOpen'); bd.style.display='none'; }
+    else{ sb.classList.add('mobileOpen'); bd.style.display='block'; }
+    document.getElementById('menuToggle').classList.toggle('isOpen',!open);
+  } else {
+    S.sidebarOpen=!S.sidebarOpen;
+    document.getElementById('app').className='app '+(S.sidebarOpen?'sidebarExpanded':'sidebarCollapsed');
+    document.getElementById('menuToggle').classList.toggle('isOpen',S.sidebarOpen);
+  }
+}
+function closeMobileMenu(){
+  document.getElementById('sidebar').classList.remove('mobileOpen');
+  document.getElementById('sidebarBackdrop').style.display='none';
+  document.getElementById('menuToggle').classList.remove('isOpen');
+}
+
+function toggleUserMenu(ev){
+  ev && ev.stopPropagation();
+  var m = document.getElementById('userMenu');
+  if(!m) return;
+  if(m.style.display === 'block'){ m.style.display = 'none'; return; }
+  // Preenche nome/cargo
+  var sess = {}; try{ sess = JSON.parse(localStorage.getItem('riva_sessao')||'{}'); }catch(e){}
+  var nm = (sess.usuario||'—');
+  document.getElementById('umNome').textContent = nm.charAt(0).toUpperCase()+nm.slice(1);
+  document.getElementById('umCargo').textContent = sess.cargo || '—';
+  m.style.display = 'block';
+  setTimeout(function(){
+    document.addEventListener('click', closeUserMenuOnClickOut);
+  }, 10);
+}
+function closeUserMenuOnClickOut(ev){
+  var m = document.getElementById('userMenu');
+  if(m && !m.contains(ev.target)){
+    m.style.display = 'none';
+    document.removeEventListener('click', closeUserMenuOnClickOut);
+  }
+}
+
+function doLogout(){ if(!confirm('Sair do sistema?')) return; localStorage.removeItem('riva_sessao'); window.location.href='home.html'; }
+
+// ─── Storage: usa aba Config do Sheets ───
+function setSyn(st){
+  var p=document.getElementById('syncPill'), l=document.getElementById('syncLabel');
+  p.classList.remove('loading','online','offline');
+  if(st==='loading'){ p.classList.add('loading'); l.textContent='Sincronizando'; }
+  else if(st==='ok'){ p.classList.add('online'); l.textContent='Sincronizado'; S.sheetsOK=true; }
+  else { p.classList.add('offline'); l.textContent='Offline'; S.sheetsOK=false; }
+}
+async function loadRemote(){
+  setSyn('loading');
+  try{
+    var r=await fetchWithTimeout(SU+'?action=getConfig&t='+Date.now(), {}, 15000);
+    if(!r.ok) throw new Error('Falha HTTP '+r.status);
+    var j=await r.json();
+    if(j.status!=='ok' || !j.config || typeof j.config!=='object') throw new Error('Resposta inválida do servidor');
+
+    var cached = readLocalObject(perfStorageKey('cache'));
+    var pending = pendingConfig();
+    var merged = Object.assign({}, j.config);
+    Object.keys(pending).forEach(function(chave) {
+      if (Object.prototype.hasOwnProperty.call(cached, chave)) merged[chave] = cached[chave];
+    });
+    S.config = merged;
+    persistConfigCache();
+    renderPage();
+
+    var pendentes = Object.keys(pending);
+    if (pendentes.length) {
+      var sincronizou = true;
+      for (var i = 0; i < pendentes.length; i++) {
+        var chave = pendentes[i];
+        try {
+          await postConfigPatch(chave, S.config[chave]);
+          setPendingConfig(chave, false);
+        } catch (e) { sincronizou = false; }
+      }
+      setSyn(sincronizou ? 'ok' : 'offline');
+    } else {
+      setSyn('ok');
+    }
+  }catch(e){
+    loadCachedConfig();
+    renderPage();
+    setSyn('offline');
+  }
+}
+
+function fetchWithTimeout(url, opcoes, timeoutMs) {
+  var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+  var timer = controller ? setTimeout(function(){ controller.abort(); }, timeoutMs || 15000) : null;
+  var opts = Object.assign({}, opcoes || {});
+  if (controller) opts.signal = controller.signal;
+  return fetch(url, opts).finally(function(){ if (timer) clearTimeout(timer); });
+}
+
+async function postConfigPatch(chave, valor) {
+  var body = { config: {} };
+  body.config[chave] = valor;
+  var resposta = await fetchWithTimeout(SU, {
+    method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify(body)
+  }, 15000);
+  if (!resposta.ok) throw new Error('Falha HTTP '+resposta.status);
+
+  var texto = await resposta.text();
+  if (texto) {
+    var retorno = null;
+    try { retorno = JSON.parse(texto); } catch (e) {}
+    if (retorno && retorno.status && retorno.status !== 'ok') {
+      throw new Error(retorno.message || retorno.error || 'Servidor recusou a gravação');
+    }
+    /* Alguns deployments retornam texto simples; HTTP 2xx continua válido. */
+  }
+  return true;
+}
+
+async function saveConfig(chave, valor){
+  S.config[chave] = valor;
+  persistConfigCache();
+  setPendingConfig(chave, true);
+  setSyn('loading');
+  try {
+    await postConfigPatch(chave, valor);
+    setPendingConfig(chave, false);
+    setSyn('ok');
+    return true;
+  } catch (e) {
+    setSyn('offline');
+    return false;
+  }
+}
+
+function brl(v){ v=parseFloat(v)||0; if(v>=1e6) return 'R$ '+(v/1e6).toFixed(1).replace('.',',')+'M'; if(v>=1e3) return 'R$ '+Math.round(v/1e3)+'K'; return 'R$ '+v.toLocaleString('pt-BR'); }
+function brlFull(v){ v=parseFloat(v)||0; return 'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:0, maximumFractionDigits:0}); }
+function pct(a,b){ if(!b) return 0; return Math.round(a/b*100); }
+function pctTxt(a,b){ if(!b) return '—'; return Math.round(a/b*100)+'%'; }
+function num(v){ return parseFloat(v)||0; }
+var _toastT;
+function toast(msg, err){ var t=document.getElementById('toast'); document.getElementById('toastMsg').textContent=msg; t.style.background=err?'#b91c1c':'#0c2a7a'; t.style.display='flex'; clearTimeout(_toastT); _toastT=setTimeout(function(){ t.style.display='none'; },2500); }
+
+// ─── ROTEADOR ───
+function renderPage(){
+  var el = document.getElementById('pageContent');
+  if(S.page==='rene'){ el.innerHTML = viewRegional('rene'); afterRegional('rene'); }
+  else if(S.page==='cahu'){ el.innerHTML = viewRegional('cahu'); afterRegional('cahu'); }
+  else if(S.page==='house'){ el.innerHTML = viewHouse(); afterHouse(); }
+  else if(S.page==='house2'){ el.innerHTML = viewHouse2(); afterHouse2(); }
+  else if(S.page==='equipes'){ el.innerHTML = viewEquipes(); afterEquipes(); }
+  else if(S.page==='settings'){ el.innerHTML = viewSettings(); afterSettings(); }
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  REGIONAL (Rene / Cahú) — Acompanhamento de Meta Mensal
+// ═══════════════════════════════════════════════════════════════
+function chaveRegional(reg){ return 'perf_reg_'+reg+'_'+S.mes; }
+function dadosRegional(reg){
+  var chave = chaveRegional(reg);
+  var d = S.config[chave] || {};
+  // estrutura padrão: sem1..sem5 = {c,a,v,pt,pa,vd,vgv}, meta = {c,a,v,pt,pa,vd,vgv}
+  var pad = {};
+  for(var i=1;i<=5;i++) pad['s'+i] = {c:0,a:0,v:0,pt:0,pa:0,vd:0,vgv:0};
+  pad.meta = {c:0,a:0,v:0,pt:0,pa:0,vd:0,vgv:0};
+  return Object.assign(pad, d);
+}
+
+function viewRegional(reg){
+  var nomeReg = reg==='rene'?'Rene':'Cahú';
+  return ''
+    + '<div class="perfHero">'
+    +   '<span class="eyebrow">REGIONAL · '+nomeReg.toUpperCase()+'</span>'
+    +   '<h1>Acompanhamento de Meta Mensal</h1>'
+    +   '<p>Lançamento semanal · Conversão das etapas · % da meta</p>'
+    + '</div>'
+    + '<div class="perfTop">'
+    +   '<select class="perfSel" id="regMes"></select>'
+    +   '<input class="perfSel yearIn" id="regAno" type="number" min="2020" max="2099" step="1">'
+    +   '<div style="display:flex;align-items:center;gap:8px;padding:0 12px;height:38px;background:#fff;border:1px solid var(--line);border-radius:9px">'
+    +     '<span style="font-size:9px;font-weight:850;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Meta Regional</span>'
+    +     '<input id="regMetaVGV" type="text" placeholder="R$ 0,00" style="width:130px;border:0;background:transparent;font-size:13px;font-weight:800;color:var(--royal-deep);outline:0;font-family:inherit">'
+    +   '</div>'
+    +   '<div style="margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap">'
+    +     '<span class="pMiniChip '+reg+'">'+nomeReg+'</span>'
+    +     '<button class="pSaveBtn" onclick="salvarRegional(\''+reg+'\')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Salvar</button>'
+    +   '</div>'
+    + '</div>'
+
+    // Barra VGV Semanal (destaque)
+    + '<div class="vgvBar" id="vgvBar"></div>'
+
+    // KPIs de resumo
+    + '<div class="pKpiRow" id="regKpis"></div>'
+
+    // Tabela LANÇAMENTO SEMANAL
+    + '<div class="pPanel">'
+    +   '<div class="pPanelHead"><div><span class="eyebrow">LANÇAMENTO SEMANAL</span><h3>Volume por Semana</h3></div><small style="color:var(--muted);font-size:11px">Digite valores nas células editáveis (semanas + meta)</small></div>'
+    +   '<div class="pTable"><table>'
+    +     '<thead><tr><th>Semana</th><th class="right">Cadastro</th><th class="right">Agendamento</th><th class="right">Visita</th><th class="right">Pasta Total</th><th class="right">Pasta Aprovada</th><th class="right">Venda</th><th class="right">VGV da Semana</th></tr></thead>'
+    +     '<tbody id="regSemBody"></tbody>'
+    +   '</table></div>'
+    + '</div>'
+
+    // Tabela CONVERSÃO DAS ETAPAS
+    + '<div class="pPanel">'
+    +   '<div class="pPanelHead"><div><span class="eyebrow">CONVERSÃO DAS ETAPAS</span><h3>Funil de Conversão</h3></div><small style="color:var(--muted);font-size:11px">Pasta Total é informativo · % é calculado só sobre Pasta Aprovada</small></div>'
+    +   '<div class="pTable"><table>'
+    +     '<thead><tr><th>Semana</th><th class="right">Cadastro → Agend.</th><th class="right">Agend. → Visita</th><th class="right">Visita → Pasta Aprov.</th><th class="right">Pasta Aprov. → Venda</th></tr></thead>'
+    +     '<tbody id="regConvBody"></tbody>'
+    +   '</table></div>'
+    + '</div>';
+}
+
+function afterRegional(reg){
+  buildRegSelects();
+  renderRegional(reg);
+  // hooks
+  document.getElementById('regMes').addEventListener('change', function(){ onMesRegChange(reg); });
+  document.getElementById('regAno').addEventListener('change', function(){ onMesRegChange(reg); });
+}
+function buildRegSelects(){
+  var m = parseInt(S.mes.split('-')[1]);
+  document.getElementById('regMes').innerHTML = MS.map(function(x,i){ return '<option value="'+(i+1)+'"'+(i+1===m?' selected':'')+'>'+x+'</option>'; }).join('');
+  document.getElementById('regAno').value = S.ano;
+}
+function onMesRegChange(reg){
+  var m = document.getElementById('regMes').value.padStart(2,'0');
+  var a = document.getElementById('regAno').value;
+  S.mes = a+'-'+m; S.ano = parseInt(a);
+  renderRegional(reg);
+}
+function renderRegional(reg){
+  var d = dadosRegional(reg);
+  var COLS = ['c','a','v','pt','pa','vd','vgv'];
+  var LBL = {c:'Cadastro',a:'Agendamento',v:'Visita',pt:'Pasta Total',pa:'Pasta Aprovada',vd:'Venda',vgv:'VGV'};
+
+  // Acumulado
+  var acum = {c:0,a:0,v:0,pt:0,pa:0,vd:0,vgv:0};
+  for(var i=1;i<=5;i++){
+    COLS.forEach(function(k){ acum[k] += num(d['s'+i][k]); });
+  }
+
+  // Body Semanal
+  var html = '';
+  for(var s=1;s<=5;s++){
+    html += '<tr><td class="strong">Semana '+s+'</td>';
+    COLS.forEach(function(k){
+      var v = num(d['s'+s][k]);
+      var vv = k==='vgv' ? (v?brlFull(v):'') : (v||'');
+      html += '<td class="right"><input class="pIn" type="text" data-reg="'+reg+'" data-sem="'+s+'" data-k="'+k+'" value="'+vv+'"'+(k==='vgv'?' data-brl="1"':'')+'></td>';
+    });
+    html += '</tr>';
+  }
+  // Acumulado
+  html += '<tr class="total"><td>Acumulado do Mês</td>';
+  COLS.forEach(function(k){ html += '<td class="right">'+(k==='vgv'?brlFull(acum[k]):acum[k])+'</td>'; });
+  html += '</tr>';
+  // Meta
+  html += '<tr><td class="strong">Meta Mensal</td>';
+  COLS.forEach(function(k){
+    var v = num(d.meta[k]);
+    var vv = k==='vgv' ? (v?brlFull(v):'') : (v||'');
+    html += '<td class="right"><input class="pIn" type="text" data-reg="'+reg+'" data-meta="1" data-k="'+k+'" value="'+vv+'"'+(k==='vgv'?' data-brl="1"':'')+'></td>';
+  });
+  html += '</tr>';
+  // % da Meta
+  html += '<tr class="total"><td>% da Meta</td>';
+  COLS.forEach(function(k){
+    var p = pct(acum[k], num(d.meta[k]));
+    var cls = p>=90?'pGood':(p>=60?'pWarn':'pBad');
+    html += '<td class="right"><span class="'+cls+'">'+(num(d.meta[k])?p+'%':'—')+'</span></td>';
+  });
+  html += '</tr>';
+  // Falta
+  html += '<tr><td class="strong">Falta para a Meta</td>';
+  COLS.forEach(function(k){
+    var f = Math.max(0, num(d.meta[k]) - acum[k]);
+    html += '<td class="right">'+(k==='vgv'?brlFull(f):f)+'</td>';
+  });
+  html += '</tr>';
+  document.getElementById('regSemBody').innerHTML = html;
+
+  // Body Conversão
+  var htmlC = '';
+  var somaC = {ca:0,av:0,vpa:0,pav:0};
+  var qtdC = {ca:0,av:0,vpa:0,pav:0};
+  for(var s=1;s<=5;s++){
+    var w = d['s'+s];
+    var ca = num(w.c)?num(w.a)/num(w.c):0;
+    var av = num(w.a)?num(w.v)/num(w.a):0;
+    var vpa = num(w.v)?num(w.pa)/num(w.v):0;
+    var pav = num(w.pa)?num(w.vd)/num(w.pa):0;
+    if(num(w.c)){ somaC.ca+=ca; qtdC.ca++; }
+    if(num(w.a)){ somaC.av+=av; qtdC.av++; }
+    if(num(w.v)){ somaC.vpa+=vpa; qtdC.vpa++; }
+    if(num(w.pa)){ somaC.pav+=pav; qtdC.pav++; }
+    htmlC += '<tr><td class="strong">Semana '+s+'</td>'
+      + '<td class="right">'+(num(w.c)?Math.round(ca*100)+'%':'—')+'</td>'
+      + '<td class="right">'+(num(w.a)?Math.round(av*100)+'%':'—')+'</td>'
+      + '<td class="right">'+(num(w.v)?Math.round(vpa*100)+'%':'—')+'</td>'
+      + '<td class="right">'+(num(w.pa)?Math.round(pav*100)+'%':'—')+'</td></tr>';
+  }
+  // Conversão do mês
+  var caT = num(acum.c)?acum.a/acum.c:0;
+  var avT = num(acum.a)?acum.v/acum.a:0;
+  var vpaT = num(acum.v)?acum.pa/acum.v:0;
+  var pavT = num(acum.pa)?acum.vd/acum.pa:0;
+  htmlC += '<tr class="total"><td>Conversão do Mês</td>'
+    + '<td class="right">'+(num(acum.c)?Math.round(caT*100)+'%':'—')+'</td>'
+    + '<td class="right">'+(num(acum.a)?Math.round(avT*100)+'%':'—')+'</td>'
+    + '<td class="right">'+(num(acum.v)?Math.round(vpaT*100)+'%':'—')+'</td>'
+    + '<td class="right">'+(num(acum.pa)?Math.round(pavT*100)+'%':'—')+'</td></tr>';
+  document.getElementById('regConvBody').innerHTML = htmlC;
+
+  // KPIs
+  var vgvPct = pct(acum.vgv, d.meta.vgv);
+  var vdPct = pct(acum.vd, d.meta.vd);
+  document.getElementById('regKpis').innerHTML = ''
+    + '<div class="pKpi '+(vgvPct>=90?'ok':vgvPct>=60?'warn':'dan')+'"><span>VGV Realizado</span><strong>'+brl(acum.vgv)+'</strong><small>'+brl(d.meta.vgv)+' meta · '+(d.meta.vgv?vgvPct+'%':'—')+'</small></div>'
+    + '<div class="pKpi '+(vdPct>=90?'ok':vdPct>=60?'warn':'dan')+'"><span>Vendas</span><strong>'+acum.vd+'</strong><small>'+d.meta.vd+' meta · '+(d.meta.vd?vdPct+'%':'—')+'</small></div>'
+    + '<div class="pKpi"><span>Visitas</span><strong>'+acum.v+'</strong><small>'+d.meta.v+' meta · '+(d.meta.v?pct(acum.v,d.meta.v)+'%':'—')+'</small></div>'
+    + '<div class="pKpi"><span>Cadastros</span><strong>'+acum.c+'</strong><small>'+d.meta.c+' meta · '+(d.meta.c?pct(acum.c,d.meta.c)+'%':'—')+'</small></div>';
+
+  // Barra VGV Semanas — visualização destacada
+  var vgvBar = document.getElementById('vgvBar');
+  if(vgvBar){
+    var bar = '';
+    for(var i=1;i<=5;i++){
+      var vgvS = num(d['s'+i].vgv);
+      bar += '<div class="vgvCell '+(vgvS===0?'zero':'')+'"><div class="vgvLbl">Semana '+i+'</div><div class="vgvVal">'+(vgvS?brlFull(vgvS):'R$ 0')+'</div></div>';
+    }
+    vgvBar.innerHTML = bar;
+  }
+
+  // Meta Regional (sincronizado com d.meta.vgv)
+  var metaInp = document.getElementById('regMetaVGV');
+  if(metaInp && document.activeElement !== metaInp){
+    metaInp.value = num(d.meta.vgv) ? 'R$ ' + num(d.meta.vgv).toLocaleString('pt-BR',{minimumFractionDigits:2, maximumFractionDigits:2}) : '';
+    metaInp.oninput = function(){ mascaraBRL(this); };
+    metaInp.onblur = function(){
+      var v = parseBRL(this.value);
+      var dNow = dadosRegional(reg);
+      dNow.meta.vgv = v;
+      S.config[chaveRegional(reg)] = dNow;
+      renderRegional(reg);
+    };
+  }
+
+  // Máscara BRL nos inputs vgv (só formata, NÃO re-renderiza — mantém foco)
+  document.querySelectorAll('input.pIn[data-brl="1"]').forEach(function(inp){
+    inp.addEventListener('input', function(){ mascaraBRL(this); });
+    inp.addEventListener('blur', function(){ atualizarRegOnFly(reg); });
+  });
+  document.querySelectorAll('input.pIn:not([data-brl])').forEach(function(inp){
+    inp.addEventListener('input', function(){ this.value = this.value.replace(/[^\d]/g,''); });
+    inp.addEventListener('blur', function(){ atualizarRegOnFly(reg); });
+  });
+}
+function mascaraBRL(el){
+  var v = (el.value||'').replace(/[^\d]/g,'');
+  if(!v){ el.value=''; return; }
+  var n = parseFloat(v)/100;
+  el.value = 'R$ ' + n.toLocaleString('pt-BR',{minimumFractionDigits:2, maximumFractionDigits:2});
+}
+function parseBRL(txt){
+  var t = String(txt||'').replace(/[R$\s.]/g,'').replace(',','.');
+  return parseFloat(t) || 0;
+}
+function coletarRegional(reg){
+  var d = { meta:{c:0,a:0,v:0,pt:0,pa:0,vd:0,vgv:0} };
+  for(var i=1;i<=5;i++) d['s'+i] = {c:0,a:0,v:0,pt:0,pa:0,vd:0,vgv:0};
+  document.querySelectorAll('input.pIn[data-reg="'+reg+'"]').forEach(function(inp){
+    var k = inp.dataset.k;
+    var val = inp.dataset.brl ? parseBRL(inp.value) : num(inp.value);
+    if(inp.dataset.meta){ d.meta[k] = val; }
+    else if(inp.dataset.sem){ d['s'+inp.dataset.sem][k] = val; }
+  });
+  return d;
+}
+function atualizarRegOnFly(reg){
+  var d = coletarRegional(reg);
+  S.config[chaveRegional(reg)] = d;
+  renderRegional(reg);
+}
+function salvarRegional(reg){
+  var d = coletarRegional(reg);
+  saveConfig(chaveRegional(reg), d).then(function(ok){
+    if(ok) toast('Regional '+reg+' salvo!');
+    else toast('Salvo local. Sem conexão.', true);
+  });
+}
+
+
+
+// ═══════════════════════════════════════════════════════════════
+//  HOUSE — Funções base (chave, dados, formatação)
+// ═══════════════════════════════════════════════════════════════
+
+// ═══════════════════════════════════════════════════════════════
+//  HOUSE — Core (chave, dados, formatação)
+// ═══════════════════════════════════════════════════════════════
+
+function chaveHouse() { return 'house_' + S.ano; }
+
+function dadosHouse() {
+  var saved = S.config[chaveHouse()];
+  if (!saved || typeof saved !== 'object' || Array.isArray(saved)) saved = {};
+  var gvSet = {};
+  getAllGVs(false).forEach(function(g) {
+    var nome = typeof g === 'object' ? g.nome : g;
+    if (nome) gvSet[nome] = true;
+  });
+  gvSet.Desligados = true;
+  var gvList = Object.keys(gvSet);
+  var base = {
+    metaRiva: 0,
+    gvs:       {},
+    diretores: {},
+    dirNames:  [],
+    regionais: { rene: {}, cahu: {} }
+  };
+  gvList.forEach(function(gv) { base.gvs[gv] = {}; });
+  var d = JSON.parse(JSON.stringify(base));
+  if (Object.prototype.hasOwnProperty.call(saved, 'metaRiva')) d.metaRiva = hParse(saved.metaRiva);
+  if (saved.gvs && typeof saved.gvs === 'object') Object.assign(d.gvs, saved.gvs);
+  if (saved.diretores && typeof saved.diretores === 'object') Object.assign(d.diretores, saved.diretores);
+  if (Array.isArray(saved.dirNames)) d.dirNames = saved.dirNames.filter(Boolean);
+  if (saved.regionais && typeof saved.regionais === 'object') Object.assign(d.regionais, saved.regionais);
+
+  Object.keys(d.gvs).forEach(function(gv) {
+    if (!d.gvs[gv] || typeof d.gvs[gv] !== 'object') d.gvs[gv] = {};
+    for (var m = 1; m <= 12; m++) {
+      var mk = String(m).padStart(2, '0');
+      var row = d.gvs[gv][mk];
+      if (!row || typeof row !== 'object') row = {};
+      d.gvs[gv][mk] = { meta:hParse(row.meta), realizado:hParse(row.realizado) };
+    }
+  });
+  ['rene','cahu'].forEach(function(r) {
+    if (!d.regionais[r] || typeof d.regionais[r] !== 'object') d.regionais[r] = {};
+    for (var m = 1; m <= 12; m++) {
+      var mk = String(m).padStart(2, '0');
+      var row = d.regionais[r][mk];
+      if (!row || typeof row !== 'object') row = {};
+      d.regionais[r][mk] = { meta:hParse(row.meta), realizado:hParse(row.realizado) };
+    }
+  });
+  Object.keys(d.diretores).forEach(function(nome) {
+    if (!d.diretores[nome] || typeof d.diretores[nome] !== 'object') d.diretores[nome] = {};
+    for (var m = 1; m <= 12; m++) {
+      var mk = String(m).padStart(2, '0');
+      d.diretores[nome][mk] = hParse(d.diretores[nome][mk]);
+    }
+  });
+  return d;
+}
+
+function hFmt(v) {
+  v = parseFloat(v) || 0;
+  if (!v) return '\u2014';
+  return 'R$\u00a0' + v.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
+function hParse(s) {
+  if (typeof s === 'number') return s;
+  return parseFloat(String(s || '0').replace(/R\$\s?/g,'').replace(/\u00a0/g,'').replace(/\./g,'').replace(',','.')) || 0;
+}
+
+function hP(a, b) { return b > 0 ? Math.round(a / b * 100) : 0; }
+function hPStr(a, b) { return hP(a, b) + '%'; }
+function hCor(p) { return p >= 100 ? 'var(--h-success)' : p >= 70 ? 'var(--h-primary)' : 'var(--h-danger)'; }
+function hEsc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function hV(el) {
+  if (!el) return 0;
+  return hParse(el.value);
+}
+
+// ── Normalize input on blur ──
+function hNorm(el) {
+  var v = hParse(el.value);
+  el.dataset.v = v;
+  el.value = v ? hFmt(v) : '';
+}
+
+function hSetSaveState(texto, sujo) {
+  window._houseDirty = !!sujo;
+  var el = document.getElementById('hSaveState');
+  if (el) el.textContent = texto || (sujo ? 'Alterações prontas para salvar' : 'Todos os dados estão salvos');
+}
+
+function hCommitInput(el) {
+  if (!el || !el.dataset) return;
+  hNorm(el);
+  var d = dadosHouse();
+  var tipo = el.dataset.htype;
+  var nome = el.dataset.nome;
+  var mes = el.dataset.mes;
+  var field = el.dataset.field;
+  var valor = hV(el);
+
+  if (tipo === 'gv' || tipo === 'reg') {
+    var grupo = tipo === 'gv' ? d.gvs : d.regionais;
+    if (!grupo[nome]) grupo[nome] = {};
+    if (!grupo[nome][mes]) grupo[nome][mes] = { meta:0, realizado:0 };
+    grupo[nome][mes][field] = valor;
+  } else if (tipo === 'dir') {
+    if (!d.diretores[nome]) d.diretores[nome] = {};
+    d.diretores[nome][mes] = valor;
+  }
+  S.config[chaveHouse()] = d;
+  persistConfigCache();
+  hKpis();
+  hSetSaveState('Alterações locais — clique em Salvar tudo', true);
+}
+
+function hCommitMeta(el) {
+  hNorm(el);
+  var d = dadosHouse();
+  d.metaRiva = hV(el);
+  S.config[chaveHouse()] = d;
+  persistConfigCache();
+  hKpis();
+  hSetSaveState('Alterações locais — clique em Salvar tudo', true);
+}
+
+// ─────────────────────────────────────────────────────────────
+//  HOUSE — METAS  (page: house)
+// ─────────────────────────────────────────────────────────────
+
+function viewHouse() {
+  var d = dadosHouse();
+  return '<div class="hPage">'
+    + '<div class="hHouseToolbar">'
+    +   '<label class="hYearControl">Ano de referência<input id="houseAno" type="number" min="2020" max="2099" step="1" value="' + S.ano + '"></label>'
+    +   '<span class="hSafetyHint">Os campos ficam preservados ao trocar de aba; a confirmação ocorre após resposta do servidor.</span>'
+    + '</div>'
+    + '<div class="hTopRow">'
+    +   '<div class="hMetaCard">'
+    +     '<label>Meta RIVA \u2014 Ano ' + S.ano + '</label>'
+    +     '<input id="hMetaRiva" type="text" inputmode="numeric" placeholder="R$\u00a00"'
+    +       ' value="' + (d.metaRiva ? hFmt(d.metaRiva) : '') + '"'
+    +       ' onfocus="this.select()" onblur="hCommitMeta(this)"'
+    +       ' onkeydown="if(event.key===\'Enter\')this.blur()">'
+    +     '<div class="hMetaCalc" id="hMetaCalcTxt"></div>'
+    +   '</div>'
+    +   '<div class="hKpiGrid" id="hKpiGrid"></div>'
+    + '</div>'
+    + '<div class="hTabBar">'
+    +   '<button class="active" id="htab-gv"  onclick="hTab(\'gv\')" >&#128101; Gerentes</button>'
+    +   '<button           id="htab-tri" onclick="hTab(\'tri\')">&#128202; Trimestral</button>'
+    +   '<button           id="htab-dir" onclick="hTab(\'dir\')">&#127970; Diretores</button>'
+    +   '<button           id="htab-reg" onclick="hTab(\'reg\')">&#128506; Regionais</button>'
+    + '</div>'
+    + '<div id="hTabBody"></div>'
+    + '<div class="hSaveBar"><span class="hSaveState" id="hSaveState">Todos os dados estão salvos</span><button class="hSaveBtn" id="hSaveBtn" onclick="hSave()">&#128190; Salvar tudo</button></div>'
+    + '</div>';
+}
+
+function afterHouse() {
+  var el = document.getElementById('houseAno');
+  if (el) {
+    el.value = S.ano;
+    el.onchange = function() {
+      var v = parseInt(this.value) || S.ano;
+      v = Math.max(2020, Math.min(2099, v));
+      S.ano = v; this.value = v; window._hTab = 'gv'; renderPage();
+    };
+  }
+  window._hTab = window._hTab || 'gv';
+  hKpis();
+  hTab(window._hTab);
+}
+
+function hKpis() {
+  var d = dadosHouse();
+  var mRiva = hV(document.getElementById('hMetaRiva')) || d.metaRiva || 0;
+  var gvList = Object.keys(d.gvs);
+  var totM = 0, totR = 0;
+  gvList.forEach(function(gv) {
+    for (var m = 1; m <= 12; m++) {
+      var mk = String(m).padStart(2, '0');
+      var row = d.gvs[gv][mk] || {};
+      totM += row.meta || 0;
+      totR += row.realizado || 0;
+    }
+  });
+  var p = hP(totR, mRiva || totM);
+  var kEl = document.getElementById('hKpiGrid');
+  if (kEl) {
+    kEl.innerHTML = [
+      { l: 'Realizado Total', v: hFmt(totR), s: hPStr(totR, mRiva) + (mRiva ? ' da meta' : ''), c: (totR >= mRiva && mRiva) ? 'hKpiGreen' : '' },
+      { l: 'Pendente',        v: hFmt(Math.max(0, mRiva - totR)), s: 'Para fechar o ano',           c: (mRiva && mRiva > totR) ? 'hKpiRed' : 'hKpiGreen' },
+      { l: 'Soma Metas GVs', v: hFmt(totM), s: 'Total das metas individuais',                       c: '' }
+    ].map(function(k) {
+      return '<div class="hKpi ' + k.c + '"><div class="hKpiLabel">' + k.l + '</div><div class="hKpiVal">' + k.v + '</div><div class="hKpiSub">' + k.s + '</div></div>';
+    }).join('');
+  }
+  var cEl = document.getElementById('hMetaCalcTxt');
+  if (cEl) {
+    cEl.innerHTML = mRiva
+      ? '<strong>' + hFmt(mRiva) + '</strong> &mdash; ' + hPStr(totR, mRiva) + ' realizado'
+      : 'Informe a meta anual para acompanhar o percentual realizado.';
+  }
+}
+
+function hTab(tab) {
+  window._hTab = tab;
+  ['gv','tri','dir','reg'].forEach(function(t) {
+    var b = document.getElementById('htab-' + t);
+    if (b) b.className = (t === tab) ? 'active' : '';
+  });
+  var el = document.getElementById('hTabBody');
+  if (!el) return;
+  if (tab === 'gv')  el.innerHTML = hGV();
+  if (tab === 'tri') el.innerHTML = hTri();
+  if (tab === 'dir') el.innerHTML = hDir();
+  if (tab === 'reg') el.innerHTML = hReg();
+}
+
+// ── shared helpers ──
+var _MS3 = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+
+function _th(cols) {
+  return cols.map(function(c) { return '<th' + (c.style ? ' style="' + c.style + '"' : '') + '>' + c.l + '</th>'; }).join('');
+}
+function _tdR(v, extra) {
+  var cls = 'hRight';
+  var ex = extra || '';
+  if (/background:#(?:eef3ff|dce8ff)/i.test(ex)) cls += ' hYearCell';
+  if (/background:#f0fff8/i.test(ex)) cls += ' hYearCell isReal';
+  if (/background:#fef2f2/i.test(ex)) cls += ' hYearCell isDanger';
+  return '<td class="' + cls + '" style="padding:7px 12px' + ex + '">' + v + '</td>';
+}
+function _pendSpan(m, r) {
+  var pd = m - r, p = hP(r, m);
+  if (!m) return '<span class="hPendVal zero">\u2014</span>';
+  return '<span class="hPendVal ' + (pd <= 0 ? 'pos' : '') + '" style="color:' + hCor(p) + '">' + hFmt(pd) + '</span>';
+}
+function _bar(p) {
+  var c = hCor(p);
+  var largura = Math.max(0, Math.min(parseFloat(p) || 0, 100));
+  return '<div class="hBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + largura + '"><div class="hBarFill" style="width:' + largura + '%;background:' + c + '"></div></div>';
+}
+function _inpCell(htype, nome, mes, field, val) {
+  var cls = field === 'meta' ? 'hIn hInMeta' : (field === 'realizado' ? 'hIn hInReal' : 'hIn hInDir');
+  var display = val ? hFmt(val) : '';
+  return '<td style="padding:3px 5px"><input class="' + cls + '"'
+    + ' data-htype="' + hEsc(htype) + '" data-nome="' + hEsc(nome) + '" data-mes="' + hEsc(mes) + '"'
+    + (field ? ' data-field="' + hEsc(field) + '"' : '')
+    + ' value="' + hEsc(display) + '" placeholder="—" onfocus="this.select()" onblur="hCommitInput(this)"'
+    + ' onkeydown="if(event.key===\'Enter\')this.blur()"></td>';
+}
+
+// ── TAB GV ──
+function hGV() {
+  var d = dadosHouse();
+  var gvList = getAllGVs(false).map(function(g) { return typeof g === 'object' ? g.nome : g; }).concat(['Desligados']);
+  var totM = new Array(12).fill(0), totR = new Array(12).fill(0);
+
+  var rows = gvList.map(function(gv, gi) {
+    var gd = d.gvs[gv] || {};
+    var isD = gv === 'Desligados';
+    var anoM = 0, anoR = 0;
+    var metaCells = '', realCells = '', pendCells = '';
+    for (var i = 0; i < 12; i++) {
+      var mk = String(i + 1).padStart(2, '0');
+      var row = gd[mk] || {};
+      var m = row.meta || 0, r = row.realizado || 0;
+      totM[i] += m; totR[i] += r; anoM += m; anoR += r;
+      metaCells += _inpCell('gv', gv, mk, 'meta', m);
+      realCells += _inpCell('gv', gv, mk, 'realizado', r);
+      pendCells += '<td style="padding:3px 8px;text-align:right">' + _pendSpan(m, r) + '</td>';
+    }
+    var pp = hP(anoR, anoM);
+    var nameStyle = 'font-size:13px;font-weight:800;color:' + (isD ? '#dc2626' : '#0c1e48') + ';white-space:nowrap';
+    var borderBot = i === gvList.length - 1 ? '' : 'border-bottom:2px solid #e8edf6';
+    return '<tr><td rowspan="3" style="padding:10px 14px;vertical-align:middle;' + borderBot + ';position:sticky;left:0;background:var(--card,#fff);z-index:1"><span style="' + nameStyle + '">' + gv + '</span></td>'
+      + '<td style="padding:3px 8px;font-size:9px;font-weight:900;letter-spacing:.08em;color:#dc2626;white-space:nowrap">META</td>' + metaCells
+      + '<td style="padding:5px 12px;text-align:right;font-size:12px;font-weight:800;color:#1648d8;background:#eef3ff;border-left:2px solid #c7d8ff;white-space:nowrap">' + hFmt(anoM) + '</td></tr>'
+      + '<tr><td style="padding:3px 8px;font-size:9px;font-weight:900;letter-spacing:.08em;color:#15a46f;white-space:nowrap">REAL</td>' + realCells
+      + '<td style="padding:5px 12px;text-align:right;font-size:12px;font-weight:800;color:#15a46f;background:#f0fff8;border-left:2px solid #a7f3d0;white-space:nowrap">' + hFmt(anoR) + '</td></tr>'
+      + '<tr style="border-bottom:3px solid #e8edf6"><td style="padding:3px 8px;font-size:9px;font-weight:900;letter-spacing:.08em;color:#9aa5b9;white-space:nowrap">PEND</td>' + pendCells
+      + '<td style="padding:5px 12px;background:#' + (anoM - anoR > 0 ? 'fef2f2;border-left:2px solid #fecdd3' : 'f0fff8;border-left:2px solid #a7f3d0') + ';white-space:nowrap">'
+      + '<span style="font-size:12px;font-weight:800;color:' + hCor(pp) + '">' + hPStr(anoR, anoM) + '</span>'
+      + _bar(pp) + '</td></tr>';
+  }).join('');
+
+  var aTM = 0, aTR = 0;
+  var footCells = _MS3.map(function(m, i) {
+    aTM += totM[i]; aTR += totR[i];
+    var p2 = totM[i] - totR[i];
+    return '<td style="padding:8px 10px;text-align:right">'
+      + '<div style="font-size:11px;font-weight:800">' + hFmt(totM[i]) + '</div>'
+      + '<div style="font-size:10px;color:#15a46f">' + hFmt(totR[i]) + '</div>'
+      + '<div style="font-size:10px;color:' + (p2 > 0 ? '#dc2626' : '#15a46f') + '">' + hFmt(p2) + '</div></td>';
+  }).join('');
+
+  return '<div class="hCard">'
+    + '<div class="hCardHead"><div><div class="hCardTitle">Gerentes de Vendas</div><div class="hCardSub">Meta (vermelho) &bull; Realizado (verde) &bull; Pendente calculado &bull; % no ano</div></div>'
+    + '<span class="hCardBadge">' + gvList.length + ' gerentes</span></div>'
+    + '<div class="hTableWrap"><table class="hTable">'
+    + '<thead><tr style="background:#f7f9fd">'
+    + '<th style="padding:10px 14px;text-align:left;font-size:10px;font-weight:850;color:#9aa5b9;letter-spacing:.06em;text-transform:uppercase;position:sticky;left:0;background:#f7f9fd;z-index:2;min-width:130px">Gerente</th>'
+    + '<th style="padding:10px 8px;min-width:55px;font-size:10px;font-weight:850;color:#9aa5b9"></th>'
+    + _MS3.map(function(m) { return '<th style="text-align:right;padding:10px 10px;font-size:10px;font-weight:850;color:#9aa5b9;min-width:100px;letter-spacing:.04em">' + m + '</th>'; }).join('')
+    + '<th style="text-align:right;padding:10px 12px;font-size:10px;font-weight:850;color:#1648d8;background:#eef3ff;border-left:2px solid #c7d8ff;min-width:100px">ANO</th>'
+    + '</tr></thead>'
+    + '<tbody>' + rows + '</tbody>'
+    + '<tfoot><tr class="hTotRow" style="">'
+    + '<td colspan="2" style="padding:10px 14px;font-size:11px;font-weight:900;position:sticky;left:0;background:#eef3ff">TOTAL</td>'
+    + footCells
+    + '<td style="padding:8px 12px;text-align:right;background:#dce8ff">'
+    + '<div style="font-size:12px;font-weight:800;color:#1648d8">' + hFmt(aTM) + '</div>'
+    + '<div style="font-size:11px;color:#15a46f">' + hFmt(aTR) + '</div>'
+    + '</td></tr></tfoot>'
+    + '</table></div></div>';
+}
+
+// ── TAB TRI ──
+function hTri() {
+  var d = dadosHouse();
+  var gvList = getAllGVs(false).map(function(g) { return typeof g === 'object' ? g.nome : g; }).concat(['Desligados']);
+  var tris = [[0,1,2],[3,4,5],[6,7,8],[9,10,11]];
+  var triLabels = ['1° Tri','2° Tri','3° Tri','4° Tri'];
+  var totTM = [0,0,0,0], totTR = [0,0,0,0];
+
+  var rows = gvList.map(function(gv) {
+    var gd = d.gvs[gv] || {};
+    var isD = gv === 'Desligados';
+    var anoM = 0, anoR = 0;
+    var mCells = '', rCells = '', pCells = '';
+    tris.forEach(function(t, ti) {
+      var m = 0, r = 0;
+      t.forEach(function(i) { var mk = String(i+1).padStart(2,'0'); var row = gd[mk]||{}; m += row.meta||0; r += row.realizado||0; });
+      anoM += m; anoR += r; totTM[ti] += m; totTR[ti] += r;
+      var p = hP(r, m);
+      mCells += _tdR('<span style="font-weight:800">' + hFmt(m) + '</span>');
+      rCells += _tdR('<span style="font-weight:800;color:#15a46f">' + hFmt(r) + '</span>');
+      pCells += _tdR('<span style="font-weight:800;color:' + hCor(p) + '">' + hPStr(r,m) + '</span>' + _bar(p));
+    });
+    var pp = hP(anoR, anoM);
+    return '<tr><td rowspan="3" style="padding:10px 14px;vertical-align:middle;border-bottom:3px solid #e8edf6;position:sticky;left:0;background:var(--card,#fff);z-index:1">'
+      + '<span style="font-size:13px;font-weight:800;color:' + (isD ? '#dc2626' : '#0c1e48') + '">' + gv + '</span></td>'
+      + '<td style="padding:3px 8px;font-size:9px;font-weight:900;color:#dc2626;white-space:nowrap">META</td>' + mCells
+      + _tdR('<span style="font-size:12px;font-weight:800;color:#1648d8">' + hFmt(anoM) + '</span>', ';background:#eef3ff;border-left:2px solid #c7d8ff') + '</tr>'
+      + '<tr><td style="padding:3px 8px;font-size:9px;font-weight:900;color:#15a46f;white-space:nowrap">REAL</td>' + rCells
+      + _tdR('<span style="font-size:12px;font-weight:800;color:#15a46f">' + hFmt(anoR) + '</span>', ';background:#f0fff8;border-left:2px solid #a7f3d0') + '</tr>'
+      + '<tr style="border-bottom:3px solid #e8edf6"><td style="padding:3px 8px;font-size:9px;font-weight:900;color:#9aa5b9;white-space:nowrap">%</td>' + pCells
+      + _tdR('<span style="font-size:13px;font-weight:900;color:' + hCor(pp) + '">' + hPStr(anoR,anoM) + '</span>' + _bar(pp), ';background:#eef3ff;border-left:2px solid #c7d8ff') + '</tr>';
+  }).join('');
+
+  var aTM = 0, aTR = 0;
+  var footCells = tris.map(function(t, ti) {
+    aTM += totTM[ti]; aTR += totTR[ti];
+    var p2 = hP(totTR[ti], totTM[ti]);
+    return '<td style="padding:10px 12px;text-align:right">'
+      + '<div style="font-size:12px;font-weight:800">' + hFmt(totTM[ti]) + '</div>'
+      + '<div style="font-size:11px;color:#15a46f">' + hFmt(totTR[ti]) + '</div>'
+      + _bar(p2) + '</td>';
+  }).join('');
+
+  return '<div class="hCard">'
+    + '<div class="hCardHead"><div><div class="hCardTitle">Trimestral</div><div class="hCardSub">Calculado automaticamente dos dados mensais</div></div></div>'
+    + '<div class="hTableWrap"><table class="hTable">'
+    + '<thead><tr style="background:#f7f9fd">'
+    + '<th style="padding:10px 14px;text-align:left;position:sticky;left:0;background:#f7f9fd;z-index:2;min-width:130px;font-size:10px;font-weight:850;color:#9aa5b9;text-transform:uppercase;letter-spacing:.06em">Gerente</th>'
+    + '<th style="min-width:55px"></th>'
+    + triLabels.map(function(l) { return '<th style="text-align:right;padding:10px 14px;min-width:130px;font-size:10px;font-weight:850;color:#9aa5b9;text-transform:uppercase;letter-spacing:.06em">' + l + '</th>'; }).join('')
+    + '<th style="text-align:right;padding:10px 12px;background:#eef3ff;border-left:2px solid #c7d8ff;min-width:110px;font-size:10px;font-weight:850;color:#1648d8">ANO</th>'
+    + '</tr></thead>'
+    + '<tbody>' + rows + '</tbody>'
+    + '<tfoot><tr class="hTotRow" style="">'
+    + '<td colspan="2" style="padding:10px 14px;font-size:11px;font-weight:900;position:sticky;left:0;background:#eef3ff">TOTAL</td>'
+    + footCells
+    + '<td style="padding:10px 12px;text-align:right;background:#dce8ff;border-left:2px solid #c7d8ff">'
+    + '<div style="font-size:12px;font-weight:800;color:#1648d8">' + hFmt(aTM) + '</div>'
+    + '<div style="font-size:11px;color:#15a46f">' + hFmt(aTR) + '</div>'
+    + '</td></tr></tfoot>'
+    + '</table></div></div>';
+}
+
+// ── TAB DIR ──
+function hDir() {
+  var d = dadosHouse();
+  var dirNames = (d.dirNames && d.dirNames.length)
+    ? d.dirNames
+    : (Object.keys(d.diretores).length ? Object.keys(d.diretores) : ['Humberto','Diretor 02','Edvan','Mercado']);
+  var totD = new Array(12).fill(0);
+
+  var rows = dirNames.map(function(nome, gi) {
+    var dd = d.diretores[nome] || {};
+    var anoT = 0;
+    var cells = _MS3.map(function(m, i) {
+      var mk = String(i+1).padStart(2,'0');
+      var v = dd[mk] || 0;
+      totD[i] += v; anoT += v;
+      return _inpCell('dir', nome, mk, null, v);
+    }).join('');
+    return '<tr style="background:' + (gi % 2 ? '#fafbff' : '#fff') + '">'
+      + '<td style="padding:8px 14px;position:sticky;left:0;background:' + (gi % 2 ? '#fafbff' : '#fff') + ';z-index:1">'
+      + '<input class="hDirName dirNameInput" data-nome="' + hEsc(nome) + '" value="' + hEsc(nome) + '" title="Clique para editar"></td>'
+      + cells
+      + _tdR('<span style="font-size:12px;font-weight:800;color:#1648d8">' + hFmt(anoT) + '</span>', ';background:#eef3ff;border-left:2px solid #c7d8ff')
+      + '<td style="padding:0 8px"><button class="hRemoveBtn" data-nome="' + hEsc(nome) + '" onclick="hRemDir(this.dataset.nome)" aria-label="Remover diretoria">&times;</button></td>'
+      + '</tr>';
+  }).join('');
+
+  var aTD = 0;
+  var footCells = _MS3.map(function(m, i) {
+    aTD += totD[i];
+    return _tdR('<strong>' + hFmt(totD[i]) + '</strong>');
+  }).join('');
+
+  return '<div class="hCard">'
+    + '<div class="hCardHead"><div><div class="hCardTitle">Diretores</div><div class="hCardSub">Clique no nome para editar &bull; &times; para remover</div></div>'
+    + '<button class="pSaveBtn" onclick="hAddDir()" style="font-size:11px">+ Diretoria</button></div>'
+    + '<div class="hTableWrap"><table class="hTable">'
+    + '<thead><tr style="background:#f7f9fd">'
+    + '<th style="padding:10px 14px;text-align:left;position:sticky;left:0;background:#f7f9fd;z-index:2;min-width:160px;font-size:10px;font-weight:850;color:#9aa5b9;text-transform:uppercase;letter-spacing:.06em">Diretoria</th>'
+    + _MS3.map(function(m) { return '<th style="text-align:right;padding:10px 10px;min-width:100px;font-size:10px;font-weight:850;color:#9aa5b9">' + m + '</th>'; }).join('')
+    + '<th style="text-align:right;padding:10px 12px;background:#eef3ff;border-left:2px solid #c7d8ff;min-width:100px;font-size:10px;font-weight:850;color:#1648d8">TOTAL</th>'
+    + '<th></th></tr></thead>'
+    + '<tbody>' + rows + '</tbody>'
+    + '<tfoot><tr class="hTotRow" style="">'
+    + '<td style="padding:10px 14px;font-size:11px;font-weight:900;position:sticky;left:0;background:#eef3ff">TOTAL</td>'
+    + footCells
+    + _tdR('<strong style="color:#1648d8">' + hFmt(aTD) + '</strong>', ';background:#dce8ff;border-left:2px solid #c7d8ff')
+    + '<td></td></tr></tfoot>'
+    + '</table></div></div>';
+}
+
+function hAddDir() {
+  var nome = prompt('Nome da Diretoria:');
+  if (!nome || !nome.trim()) return;
+  nome = nome.trim();
+  var d = dadosHouse();
+  if (!d.dirNames) d.dirNames = Object.keys(d.diretores || {});
+  if (d.dirNames.indexOf(nome) >= 0 || d.diretores[nome]) {
+    toast('Essa diretoria já está cadastrada.', true);
+    return;
+  }
+  d.dirNames.push(nome);
+  if (!d.diretores[nome]) d.diretores[nome] = {};
+  S.config[chaveHouse()] = d;
+  persistConfigCache();
+  hSetSaveState('Nova diretoria pronta para salvar', true);
+  hTab('dir');
+}
+
+function hRemDir(nome) {
+  if (!confirm('Remover "' + nome + '"?')) return;
+  var d = dadosHouse();
+  delete d.diretores[nome];
+  d.dirNames = (d.dirNames || []).filter(function(n) { return n !== nome; });
+  S.config[chaveHouse()] = d;
+  persistConfigCache();
+  hSetSaveState('Remoção pronta para salvar', true);
+  hTab('dir');
+}
+
+// keep old names for compatibility
+function addDiretor() { hAddDir(); }
+function removeDiretor(n) { hRemDir(n); }
+
+// ── TAB REG ──
+function hReg() {
+  var d = dadosHouse();
+  var regs = [{ k: 'rene', l: 'Regional Rene' }, { k: 'cahu', l: 'Regional Cah\u00fa' }];
+  var totM = new Array(12).fill(0), totR = new Array(12).fill(0);
+
+  var rows = regs.map(function(reg) {
+    var rd = d.regionais[reg.k] || {};
+    var anoM = 0, anoR = 0;
+    var mC = '', rC = '', pC = '';
+    for (var i = 0; i < 12; i++) {
+      var mk = String(i+1).padStart(2,'0');
+      var row = rd[mk] || {};
+      var m = row.meta || 0, r = row.realizado || 0;
+      totM[i] += m; totR[i] += r; anoM += m; anoR += r;
+      mC += _inpCell('reg', reg.k, mk, 'meta', m);
+      rC += _inpCell('reg', reg.k, mk, 'realizado', r);
+      pC += '<td style="padding:3px 8px;text-align:right">' + _pendSpan(m, r) + '</td>';
+    }
+    var pp = hP(anoR, anoM);
+    return '<tr><td rowspan="3" style="padding:10px 14px;vertical-align:middle;border-bottom:3px solid #e8edf6;position:sticky;left:0;background:var(--card,#fff);z-index:1;font-size:13px;font-weight:800">' + reg.l + '</td>'
+      + '<td style="padding:3px 8px;font-size:9px;font-weight:900;color:#dc2626;white-space:nowrap">META</td>' + mC
+      + _tdR('<span style="font-size:12px;font-weight:800;color:#1648d8">' + hFmt(anoM) + '</span>', ';background:#eef3ff;border-left:2px solid #c7d8ff') + '</tr>'
+      + '<tr><td style="padding:3px 8px;font-size:9px;font-weight:900;color:#15a46f;white-space:nowrap">REAL</td>' + rC
+      + _tdR('<span style="font-size:12px;font-weight:800;color:#15a46f">' + hFmt(anoR) + '</span>', ';background:#f0fff8;border-left:2px solid #a7f3d0') + '</tr>'
+      + '<tr style="border-bottom:3px solid #e8edf6"><td style="padding:3px 8px;font-size:9px;font-weight:900;color:#9aa5b9;white-space:nowrap">PEND</td>' + pC
+      + _tdR('<span style="font-size:12px;font-weight:800;color:' + hCor(pp) + '">' + hPStr(anoR,anoM) + '</span>' + _bar(pp), ';background:#eef3ff;border-left:2px solid #c7d8ff') + '</tr>';
+  }).join('');
+
+  var aTM = 0, aTR = 0;
+  var footCells = _MS3.map(function(m, i) {
+    aTM += totM[i]; aTR += totR[i];
+    return '<td style="padding:8px 10px;text-align:right"><div style="font-size:11px;font-weight:800">' + hFmt(totM[i]) + '</div><div style="font-size:10px;color:#15a46f">' + hFmt(totR[i]) + '</div></td>';
+  }).join('');
+
+  var mensal = '<div class="hCard">'
+    + '<div class="hCardHead"><div><div class="hCardTitle">Regionais</div><div class="hCardSub">Meta e realizado por regional por m\u00eas</div></div></div>'
+    + '<div class="hTableWrap"><table class="hTable">'
+    + '<thead><tr style="background:#f7f9fd">'
+    + '<th style="padding:10px 14px;text-align:left;position:sticky;left:0;background:#f7f9fd;z-index:2;min-width:150px;font-size:10px;font-weight:850;color:#9aa5b9;text-transform:uppercase;letter-spacing:.06em">Regional</th>'
+    + '<th style="min-width:55px"></th>'
+    + _MS3.map(function(m) { return '<th style="text-align:right;padding:10px 10px;min-width:100px;font-size:10px;font-weight:850;color:#9aa5b9">' + m + '</th>'; }).join('')
+    + '<th style="text-align:right;padding:10px 12px;background:#eef3ff;border-left:2px solid #c7d8ff;min-width:100px;font-size:10px;font-weight:850;color:#1648d8">ANO</th>'
+    + '</tr></thead>'
+    + '<tbody>' + rows + '</tbody>'
+    + '<tfoot><tr class="hTotRow" style="">'
+    + '<td colspan="2" style="padding:10px 14px;font-size:11px;font-weight:900;position:sticky;left:0;background:#eef3ff">TOTAL</td>'
+    + footCells
+    + '<td style="padding:8px 12px;text-align:right;background:#dce8ff;border-left:2px solid #c7d8ff"><div style="font-size:12px;font-weight:800;color:#1648d8">' + hFmt(aTM) + '</div><div style="font-size:11px;color:#15a46f">' + hFmt(aTR) + '</div></td>'
+    + '</tr></tfoot></table></div></div>';
+  return mensal + hRegionalTrimestral();
+}
+
+function hRegionalTrimestral() {
+  var d = dadosHouse();
+  var regs = [{ k:'rene', l:'Regional Rene' }, { k:'cahu', l:'Regional Cah\u00fa' }];
+  var tris = [
+    { l:'1\u00ba Tri', meses:[0,1,2] },
+    { l:'2\u00ba Tri', meses:[3,4,5] },
+    { l:'3\u00ba Tri', meses:[6,7,8] },
+    { l:'4\u00ba Tri', meses:[9,10,11] }
+  ];
+  var totaisMeta = [0,0,0,0];
+  var totaisReal = [0,0,0,0];
+
+  var rows = regs.map(function(reg) {
+    var rd = d.regionais[reg.k] || {};
+    var metaAno = 0, realAno = 0, metaCells = '', realCells = '', pctCells = '';
+    tris.forEach(function(tri, ti) {
+      var meta = 0, real = 0;
+      tri.meses.forEach(function(indice) {
+        var mk = String(indice + 1).padStart(2,'0');
+        var row = rd[mk] || {};
+        meta += hParse(row.meta);
+        real += hParse(row.realizado);
+      });
+      metaAno += meta; realAno += real;
+      totaisMeta[ti] += meta; totaisReal[ti] += real;
+      var percentual = hP(real, meta);
+      metaCells += '<td class="hRight"><span class="hValueDanger">' + hFmt(meta) + '</span></td>';
+      realCells += '<td class="hRight"><span class="hValueSuccess">' + hFmt(real) + '</span></td>';
+      pctCells += '<td class="hRight"><span class="hValue" style="color:' + hCor(percentual) + '">' + hPStr(real,meta) + '</span>' + _bar(percentual) + '</td>';
+    });
+    var percentualAno = hP(realAno, metaAno);
+    return '<tr>'
+      + '<td class="hSticky hNameCell" rowspan="3">' + hEsc(reg.l) + '</td>'
+      + '<td class="hMetricCell isMeta">META</td>' + metaCells
+      + '<td class="hRight hYearCell"><span class="hValuePrimary">' + hFmt(metaAno) + '</span></td></tr>'
+      + '<tr><td class="hMetricCell isReal">REAL</td>' + realCells
+      + '<td class="hRight hYearCell isReal"><span class="hValueSuccess">' + hFmt(realAno) + '</span></td></tr>'
+      + '<tr class="hMetricEnd"><td class="hMetricCell">%</td>' + pctCells
+      + '<td class="hRight hYearCell"><span class="hValue" style="color:' + hCor(percentualAno) + '">' + hPStr(realAno,metaAno) + '</span>' + _bar(percentualAno) + '</td></tr>';
+  }).join('');
+
+  var totalMetaAno = 0, totalRealAno = 0;
+  var footer = tris.map(function(tri, ti) {
+    totalMetaAno += totaisMeta[ti];
+    totalRealAno += totaisReal[ti];
+    return '<td class="hRight"><div class="hValueDanger">' + hFmt(totaisMeta[ti]) + '</div>'
+      + '<div class="hValueSuccess">' + hFmt(totaisReal[ti]) + '</div></td>';
+  }).join('');
+
+  return '<div class="hCard">'
+    + '<div class="hCardHead"><div><div class="hCardTitle">Trimestral por Regional</div>'
+    + '<div class="hCardSub">Consolidado automático dos valores mensais de cada regional</div></div>'
+    + '<span class="hCardBadge">4 trimestres</span></div>'
+    + '<div class="hTableWrap"><table class="hTable">'
+    + '<thead><tr><th class="hSticky">Regional</th><th>Indicador</th>'
+    + tris.map(function(tri) { return '<th>' + tri.l + '</th>'; }).join('')
+    + '<th class="hYearCell">Ano</th></tr></thead>'
+    + '<tbody>' + rows + '</tbody>'
+    + '<tfoot><tr class="hTotalRow"><td class="hSticky" colspan="2">TOTAL</td>' + footer
+    + '<td class="hRight hTotalStrong"><div class="hValuePrimary">' + hFmt(totalMetaAno) + '</div>'
+    + '<div class="hValueSuccess">' + hFmt(totalRealAno) + '</div></td></tr></tfoot>'
+    + '</table></div></div>';
+}
+
+// ── SAVE ──
+async function hSave() {
+  var nd = dadosHouse();
+  var metaEl = document.getElementById('hMetaRiva');
+  if (metaEl) {
+    hNorm(metaEl);
+    nd.metaRiva = hV(metaEl);
+  }
+
+  document.querySelectorAll('[data-htype="gv"]').forEach(function(el) {
+    hNorm(el);
+    var nome = el.dataset.nome, mes = el.dataset.mes, field = el.dataset.field;
+    if (!nd.gvs[nome]) nd.gvs[nome] = {};
+    if (!nd.gvs[nome][mes]) nd.gvs[nome][mes] = { meta:0, realizado:0 };
+    nd.gvs[nome][mes][field] = hV(el);
+  });
+  document.querySelectorAll('[data-htype="dir"]').forEach(function(el) {
+    hNorm(el);
+    var nome = el.dataset.nome, mes = el.dataset.mes;
+    if (!nd.diretores[nome]) nd.diretores[nome] = {};
+    nd.diretores[nome][mes] = hV(el);
+  });
+  document.querySelectorAll('[data-htype="reg"]').forEach(function(el) {
+    hNorm(el);
+    var nome = el.dataset.nome, mes = el.dataset.mes, field = el.dataset.field;
+    if (!nd.regionais[nome]) nd.regionais[nome] = {};
+    if (!nd.regionais[nome][mes]) nd.regionais[nome][mes] = { meta:0, realizado:0 };
+    nd.regionais[nome][mes][field] = hV(el);
+  });
+
+  var renames = {};
+  var nomeDuplicado = '';
+  document.querySelectorAll('.dirNameInput').forEach(function(el) {
+    var antigo = el.dataset.nome;
+    var novo = (el.value || '').trim();
+    if (!novo) {
+      el.value = antigo;
+      return;
+    }
+    if (novo !== antigo) {
+      if (nd.diretores[novo] && !renames[novo]) nomeDuplicado = novo;
+      renames[antigo] = novo;
+    }
+  });
+  if (nomeDuplicado) {
+    toast('Já existe uma diretoria chamada "' + nomeDuplicado + '".', true);
+    return;
+  }
+  Object.keys(renames).forEach(function(antigo) {
+    var novo = renames[antigo];
+    nd.diretores[novo] = nd.diretores[antigo] || {};
+    delete nd.diretores[antigo];
+  });
+  var ordem = (nd.dirNames && nd.dirNames.length) ? nd.dirNames : Object.keys(nd.diretores);
+  nd.dirNames = ordem.map(function(nome) { return renames[nome] || nome; })
+    .filter(function(nome, i, arr) { return nome && arr.indexOf(nome) === i; });
+
+  S.config[chaveHouse()] = nd;
+  persistConfigCache();
+  var btn = document.getElementById('hSaveBtn');
+  if (btn) { btn.disabled = true; btn.innerHTML = '&#8987; Salvando...'; }
+  hSetSaveState('Confirmando os dados no servidor...', true);
+
+  var ok = await saveConfig(chaveHouse(), nd);
+  if (btn) { btn.disabled = false; btn.innerHTML = '&#128190; Salvar tudo'; }
+  if (ok) {
+    hSetSaveState('Dados confirmados no servidor', false);
+    toast('\u2705 Dados salvos e confirmados!');
+  } else {
+    hSetSaveState('Cópia local preservada — sincronização pendente', true);
+    toast('Sem conexão. Os dados ficaram seguros neste dispositivo.', true);
+  }
+  hKpis();
+}
+
+// ─────────────────────────────────────────────────────────────
+//  HOUSE — DESEMPENHO  (page: house2)
+// ─────────────────────────────────────────────────────────────
+
+function viewHouse2() {
+  return '<div class="hPage">'
+    + '<div class="hHouseToolbar">'
+    + '<label class="hYearControl">Ano de referência<input id="houseAno2" type="number" min="2020" max="2099" step="1"></label>'
+    + '<span class="hSafetyHint">Painel somente leitura, calculado com os dados confirmados em House — Metas.</span>'
+    + '</div>'
+    + '<div class="hKpiGrid hKpiGridFour" id="h2KpiRow"></div>'
+    + '<div class="hTabBar">'
+    +   '<button class="active" id="h2tab-mensal"      onclick="h2Tab(\'mensal\')"     >&#128197; Mensal</button>'
+    +   '<button               id="h2tab-trimestral"   onclick="h2Tab(\'trimestral\')" >&#128202; Trimestral</button>'
+    +   '<button               id="h2tab-regionais"    onclick="h2Tab(\'regionais\')"  >&#128506; Regionais</button>'
+    + '</div>'
+    + '<div id="h2TabBody"></div>'
+    + '</div>';
+}
+
+function afterHouse2() {
+  var el = document.getElementById('houseAno2');
+  if (el) {
+    el.value = S.ano;
+    el.onchange = function() {
+      var v = Math.max(2020, Math.min(2099, parseInt(this.value) || S.ano));
+      S.ano = v; this.value = v; renderPage();
+    };
+  }
+  h2Kpis();
+  window._h2Tab = window._h2Tab || 'mensal';
+  h2Tab(window._h2Tab);
+}
+
+function h2Kpis() {
+  var d = dadosHouse();
+  var mRiva = d.metaRiva || 0;
+  var totM = 0, totR = 0;
+  Object.keys(d.gvs).forEach(function(gv) {
+    for (var m = 1; m <= 12; m++) {
+      var mk = String(m).padStart(2, '0');
+      var row = d.gvs[gv][mk] || {};
+      totM += row.meta || 0;
+      totR += row.realizado || 0;
+    }
+  });
+  var el = document.getElementById('h2KpiRow');
+  if (el) el.innerHTML = [
+    { l: 'Meta RIVA',       v: hFmt(mRiva),                     s: 'Meta anual', c:'' },
+    { l: 'Realizado Total', v: hFmt(totR),                      s: hPStr(totR, mRiva) + (mRiva ? ' da meta' : ''), c:(mRiva && totR >= mRiva) ? 'hKpiGreen' : '' },
+    { l: 'Pendente',        v: hFmt(Math.max(0, mRiva - totR)), s: 'Para fechar o ano', c:(mRiva && totR < mRiva) ? 'hKpiRed' : 'hKpiGreen' },
+    { l: 'Soma Metas GVs',  v: hFmt(totM),                     s: 'Total das metas', c:'' }
+  ].map(function(k) {
+    return '<div class="hKpi ' + k.c + '"><div class="hKpiLabel">' + k.l + '</div><div class="hKpiVal">' + k.v + '</div><div class="hKpiSub">' + k.s + '</div></div>';
+  }).join('');
+}
+
+function h2Tab(tab) {
+  window._h2Tab = tab;
+  ['mensal','trimestral','regionais'].forEach(function(t) {
+    var b = document.getElementById('h2tab-' + t);
+    if (b) b.className = (t === tab) ? 'active' : '';
+  });
+  var el = document.getElementById('h2TabBody');
+  if (!el) return;
+  if (tab === 'mensal')     el.innerHTML = h2Mensal();
+  if (tab === 'trimestral') el.innerHTML = h2Trimestral();
+  if (tab === 'regionais')  el.innerHTML = h2Regionais();
+}
+
+function h2Mensal() {
+  // Read-only view — same structure as hGV but no inputs
+  var d = dadosHouse();
+  var gvList = getAllGVs(false).map(function(g) { return typeof g === 'object' ? g.nome : g; }).concat(['Desligados']);
+  var totM = new Array(12).fill(0), totR = new Array(12).fill(0);
+
+  var rows = gvList.map(function(gv) {
+    var gd = d.gvs[gv] || {};
+    var isD = gv === 'Desligados';
+    var anoM = 0, anoR = 0;
+    var mC = '', rC = '', pC = '';
+    for (var i = 0; i < 12; i++) {
+      var mk = String(i+1).padStart(2,'0');
+      var row = gd[mk] || {};
+      var m = row.meta || 0, r = row.realizado || 0;
+      totM[i] += m; totR[i] += r; anoM += m; anoR += r;
+      mC += _tdR('<span style="font-weight:700">' + hFmt(m) + '</span>');
+      rC += _tdR('<span style="font-weight:700;color:#15a46f">' + hFmt(r) + '</span>');
+      pC += _tdR(_pendSpan(m, r));
+    }
+    var pp = hP(anoR, anoM);
+    return '<tr><td rowspan="3" style="padding:10px 14px;vertical-align:middle;border-bottom:3px solid #e8edf6;position:sticky;left:0;background:var(--card,#fff);z-index:1">'
+      + '<span style="font-size:13px;font-weight:800;color:' + (isD ? '#dc2626' : '#0c1e48') + '">' + gv + '</span></td>'
+      + '<td style="padding:3px 8px;font-size:9px;font-weight:900;color:#dc2626;white-space:nowrap">META</td>' + mC
+      + _tdR('<span style="font-size:12px;font-weight:800;color:#1648d8">' + hFmt(anoM) + '</span>', ';background:#eef3ff;border-left:2px solid #c7d8ff') + '</tr>'
+      + '<tr><td style="padding:3px 8px;font-size:9px;font-weight:900;color:#15a46f;white-space:nowrap">REAL</td>' + rC
+      + _tdR('<span style="font-size:12px;font-weight:800;color:#15a46f">' + hFmt(anoR) + '</span>', ';background:#f0fff8;border-left:2px solid #a7f3d0') + '</tr>'
+      + '<tr style="border-bottom:3px solid #e8edf6"><td style="padding:3px 8px;font-size:9px;font-weight:900;color:#9aa5b9;white-space:nowrap">PEND</td>' + pC
+      + _tdR('<span style="font-size:12px;font-weight:800;color:' + hCor(pp) + '">' + hPStr(anoR,anoM) + '</span>' + _bar(pp), ';background:#eef3ff;border-left:2px solid #c7d8ff') + '</tr>';
+  }).join('');
+
+  var aTM = 0, aTR = 0;
+  var fC = _MS3.map(function(m, i) {
+    aTM += totM[i]; aTR += totR[i];
+    return '<td style="padding:8px 10px;text-align:right"><div style="font-size:11px;font-weight:800">' + hFmt(totM[i]) + '</div><div style="font-size:10px;color:#15a46f">' + hFmt(totR[i]) + '</div></td>';
+  }).join('');
+
+  return '<div class="hCard"><div class="hCardHead"><div><div class="hCardTitle">Desempenho Mensal</div><div class="hCardSub">Somente leitura &mdash; edite em House &rsaquo; Metas</div></div></div>'
+    + '<div class="hTableWrap"><table class="hTable">'
+    + '<thead><tr style="background:#f7f9fd">'
+    + '<th style="padding:10px 14px;text-align:left;position:sticky;left:0;background:#f7f9fd;z-index:2;min-width:130px;font-size:10px;font-weight:850;color:#9aa5b9;text-transform:uppercase;letter-spacing:.06em">Gerente</th>'
+    + '<th style="min-width:55px"></th>'
+    + _MS3.map(function(m) { return '<th style="text-align:right;padding:10px 10px;min-width:100px;font-size:10px;font-weight:850;color:#9aa5b9">' + m + '</th>'; }).join('')
+    + '<th style="text-align:right;padding:10px 12px;background:#eef3ff;border-left:2px solid #c7d8ff;min-width:100px;font-size:10px;font-weight:850;color:#1648d8">ANO</th>'
+    + '</tr></thead>'
+    + '<tbody>' + rows + '</tbody>'
+    + '<tfoot><tr class="hTotRow" style=""><td colspan="2" style="padding:10px 14px;font-size:11px;font-weight:900;position:sticky;left:0;background:#eef3ff">TOTAL</td>' + fC
+    + '<td style="padding:8px 12px;text-align:right;background:#dce8ff;border-left:2px solid #c7d8ff"><div style="font-size:12px;font-weight:800;color:#1648d8">' + hFmt(aTM) + '</div><div style="font-size:11px;color:#15a46f">' + hFmt(aTR) + '</div></td></tr></tfoot>'
+    + '</table></div></div>';
+}
+
+function h2Trimestral() {
+  return hTri();
+}
+
+function h2Regionais() {
+  // Read-only regional
+  var d = dadosHouse();
+  var regs = [{ k: 'rene', l: 'Regional Rene' }, { k: 'cahu', l: 'Regional Cah\u00fa' }];
+  var totM = new Array(12).fill(0), totR = new Array(12).fill(0);
+
+  var rows = regs.map(function(reg) {
+    var rd = d.regionais[reg.k] || {};
+    var anoM = 0, anoR = 0;
+    var mC = '', rC = '', pC = '';
+    for (var i = 0; i < 12; i++) {
+      var mk = String(i+1).padStart(2,'0');
+      var row = rd[mk] || {};
+      var m = row.meta || 0, r = row.realizado || 0;
+      totM[i] += m; totR[i] += r; anoM += m; anoR += r;
+      mC += _tdR('<span style="font-weight:700">' + hFmt(m) + '</span>');
+      rC += _tdR('<span style="font-weight:700;color:#15a46f">' + hFmt(r) + '</span>');
+      pC += _tdR(_pendSpan(m, r));
+    }
+    var pp = hP(anoR, anoM);
+    return '<tr><td rowspan="3" style="padding:10px 14px;vertical-align:middle;border-bottom:3px solid #e8edf6;position:sticky;left:0;background:var(--card,#fff);z-index:1;font-size:13px;font-weight:800">' + reg.l + '</td>'
+      + '<td style="padding:3px 8px;font-size:9px;font-weight:900;color:#dc2626;white-space:nowrap">META</td>' + mC
+      + _tdR('<span style="font-size:12px;font-weight:800;color:#1648d8">' + hFmt(anoM) + '</span>', ';background:#eef3ff;border-left:2px solid #c7d8ff') + '</tr>'
+      + '<tr><td style="padding:3px 8px;font-size:9px;font-weight:900;color:#15a46f;white-space:nowrap">REAL</td>' + rC
+      + _tdR('<span style="font-size:12px;font-weight:800;color:#15a46f">' + hFmt(anoR) + '</span>', ';background:#f0fff8;border-left:2px solid #a7f3d0') + '</tr>'
+      + '<tr style="border-bottom:3px solid #e8edf6"><td style="padding:3px 8px;font-size:9px;font-weight:900;color:#9aa5b9;white-space:nowrap">PEND</td>' + pC
+      + _tdR('<span style="font-size:12px;font-weight:800;color:' + hCor(pp) + '">' + hPStr(anoR,anoM) + '</span>' + _bar(pp), ';background:#eef3ff;border-left:2px solid #c7d8ff') + '</tr>';
+  }).join('');
+
+  var aTM = 0, aTR = 0;
+  var fC = _MS3.map(function(m, i) {
+    aTM += totM[i]; aTR += totR[i];
+    return '<td style="padding:8px 10px;text-align:right"><div style="font-size:11px;font-weight:800">' + hFmt(totM[i]) + '</div><div style="font-size:10px;color:#15a46f">' + hFmt(totR[i]) + '</div></td>';
+  }).join('');
+
+  var mensal = '<div class="hCard"><div class="hCardHead"><div><div class="hCardTitle">Regionais</div><div class="hCardSub">Meta e realizado por regional</div></div></div>'
+    + '<div class="hTableWrap"><table class="hTable">'
+    + '<thead><tr style="background:#f7f9fd">'
+    + '<th style="padding:10px 14px;text-align:left;position:sticky;left:0;background:#f7f9fd;z-index:2;min-width:150px;font-size:10px;font-weight:850;color:#9aa5b9;text-transform:uppercase;letter-spacing:.06em">Regional</th>'
+    + '<th style="min-width:55px"></th>'
+    + _MS3.map(function(m) { return '<th style="text-align:right;padding:10px 10px;min-width:100px;font-size:10px;font-weight:850;color:#9aa5b9">' + m + '</th>'; }).join('')
+    + '<th style="text-align:right;padding:10px 12px;background:#eef3ff;border-left:2px solid #c7d8ff;min-width:100px;font-size:10px;font-weight:850;color:#1648d8">ANO</th>'
+    + '</tr></thead>'
+    + '<tbody>' + rows + '</tbody>'
+    + '<tfoot><tr class="hTotRow" style=""><td colspan="2" style="padding:10px 14px;font-size:11px;font-weight:900;position:sticky;left:0;background:#eef3ff">TOTAL</td>' + fC
+    + '<td style="padding:8px 12px;text-align:right;background:#dce8ff;border-left:2px solid #c7d8ff"><div style="font-size:12px;font-weight:800;color:#1648d8">' + hFmt(aTM) + '</div><div style="font-size:11px;color:#15a46f">' + hFmt(aTR) + '</div></td></tr></tfoot>'
+    + '</table></div></div>';
+  return mensal + hRegionalTrimestral();
+}
+
+// backwards-compat aliases
+function h2BuildKpis() { h2Kpis(); }
+function h2SetTab(t)   { h2Tab(t); }
+
+
+
+function viewEquipes(){
+  return ''
+    + '<div class="perfHero">'
+    +   '<span class="eyebrow">ESTRUTURA COMERCIAL</span>'
+    +   '<h1>Gestão de Equipes</h1>'
+    +   '<p>Cadastre os gerentes de cada regional. Marque como desligado ao invés de excluir — o histórico é preservado.</p>'
+    + '</div>'
+    + '<div class="perfTop">'
+    +   '<div style="display:flex;gap:4px;padding:3px;background:#eef2ff;border-radius:9px" id="eqTabs">'
+    +     '<button class="hTab on" data-eq="rene" onclick="setEqTab(\'rene\')">Equipe Rene</button>'
+    +     '<button class="hTab" data-eq="cahu" onclick="setEqTab(\'cahu\')">Equipe Cahú</button>'
+    +   '</div>'
+    +   '<div style="margin-left:auto;display:flex;gap:8px">'
+    +     '<button class="pSaveBtn" style="background:linear-gradient(135deg,#15a46f,#0d7a52)" onclick="adicionarGV()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Adicionar GV</button>'
+    +     '<button class="pSaveBtn" onclick="salvarEquipes()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>Salvar</button>'
+    +   '</div>'
+    + '</div>'
+    + '<div class="pPanel">'
+    +   '<div class="pPanelHead"><div><span class="eyebrow" id="eqLbl">EQUIPE RENE</span><h3 id="eqTitle">Gerentes de Vendas</h3></div><small style="color:var(--muted);font-size:11px">Edite direto nas células · toggle ativo/desligado</small></div>'
+    +   '<div class="pTable"><table>'
+    +     '<thead><tr><th style="width:40px">#</th><th style="min-width:180px">Nome</th><th style="min-width:220px">Email</th><th style="width:110px;text-align:center">Status</th><th style="width:70px"></th></tr></thead>'
+    +     '<tbody id="eqBody"></tbody>'
+    +   '</table></div>'
+    + '</div>'
+    + '<div class="pKpiRow" id="eqKpis" style="margin-top:16px"></div>';
+}
+
+var _eqTab = 'rene';
+function setEqTab(t){
+  _eqTab = t;
+  document.querySelectorAll('.hTab[data-eq]').forEach(function(b){ b.classList.toggle('on', b.dataset.eq===t); });
+  document.getElementById('eqLbl').textContent = 'EQUIPE '+(t==='rene'?'RENE':'CAHÚ');
+  renderEquipes();
+}
+function afterEquipes(){
+  _eqDraft = JSON.parse(JSON.stringify(getEquipes()));
+  renderEquipes();
+}
+function renderEquipes(){
+  if(!_eqDraft) _eqDraft = JSON.parse(JSON.stringify(getEquipes()));
+  var lista = _eqDraft[_eqTab] || [];
+  var body = lista.map(function(p, i){
+    var desligado = p.ativo===false;
+    return '<tr'+(desligado?' style="opacity:.55"':'')+'>'
+      + '<td class="strong">'+(i+1)+'</td>'
+      + '<td><input class="pIn" type="text" data-idx="'+i+'" data-k="nome" value="'+esc(p.nome||'')+'" placeholder="Nome" style="text-align:left;font-weight:750"></td>'
+      + '<td><input class="pIn" type="email" data-idx="'+i+'" data-k="email" value="'+esc(p.email||'')+'" placeholder="email@exemplo.com" style="text-align:left"></td>'
+      + '<td style="text-align:center"><label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-size:11px;font-weight:750;color:'+(desligado?'#dc2626':'#15a46f')+'"><input type="checkbox" data-idx="'+i+'" data-k="ativo" '+(!desligado?'checked':'')+' onchange="toggleAtivo('+i+', this.checked)">'+(desligado?'Desligado':'Ativo')+'</label></td>'
+      + '<td style="text-align:center"><button onclick="removerGV('+i+')" title="Remover" style="background:none;border:0;color:#dc2626;cursor:pointer;font-size:16px">🗑</button></td>'
+      + '</tr>';
+  }).join('');
+  if(!lista.length){
+    body = '<tr><td colspan="5" style="padding:40px;text-align:center;color:var(--muted)">Nenhum GV cadastrado. Clique em "Adicionar GV".</td></tr>';
+  }
+  document.getElementById('eqBody').innerHTML = body;
+
+  // hook nos inputs
+  document.querySelectorAll('#eqBody input.pIn').forEach(function(inp){
+    inp.addEventListener('blur', function(){
+      var i = parseInt(this.dataset.idx), k = this.dataset.k;
+      _eqDraft[_eqTab][i][k] = this.value.trim();
+    });
+  });
+
+  // KPIs
+  var eqAtivos = { rene:0, cahu:0 }, eqDeslig = { rene:0, cahu:0 };
+  ['rene','cahu'].forEach(function(r){
+    (_eqDraft[r]||[]).forEach(function(p){
+      if(p.ativo===false) eqDeslig[r]++;
+      else eqAtivos[r]++;
+    });
+  });
+  var totAtivos = eqAtivos.rene + eqAtivos.cahu;
+  var totDeslig = eqDeslig.rene + eqDeslig.cahu;
+  document.getElementById('eqKpis').innerHTML = ''
+    + '<div class="pKpi ok"><span>Ativos Rene</span><strong>'+eqAtivos.rene+'</strong><small>gerentes de vendas</small></div>'
+    + '<div class="pKpi ok"><span>Ativos Cahú</span><strong>'+eqAtivos.cahu+'</strong><small>gerentes de vendas</small></div>'
+    + '<div class="pKpi"><span>Total Ativos</span><strong>'+totAtivos+'</strong><small>house completa</small></div>'
+    + '<div class="pKpi dan"><span>Desligados</span><strong>'+totDeslig+'</strong><small>histórico preservado</small></div>';
+}
+function toggleAtivo(i, checked){
+  _eqDraft[_eqTab][i].ativo = checked;
+  renderEquipes();
+}
+function adicionarGV(){
+  var nome = prompt('Nome do novo GV:');
+  if(!nome || !nome.trim()) return;
+  if(!_eqDraft[_eqTab]) _eqDraft[_eqTab] = [];
+  _eqDraft[_eqTab].push({nome:nome.trim(), email:'', ativo:true});
+  renderEquipes();
+}
+function removerGV(i){
+  var p = _eqDraft[_eqTab][i];
+  if(!confirm('Remover DEFINITIVAMENTE '+p.nome+'? (para preservar histórico, prefira marcar como Desligado)')) return;
+  _eqDraft[_eqTab].splice(i, 1);
+  renderEquipes();
+}
+function esc(s){ return String(s||'').replace(/[<>&"]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];}); }
+function salvarEquipes(){
+  // coleta valores do draft (blur pode não ter disparado)
+  document.querySelectorAll('#eqBody input.pIn').forEach(function(inp){
+    var i = parseInt(inp.dataset.idx), k = inp.dataset.k;
+    if(_eqDraft[_eqTab][i]) _eqDraft[_eqTab][i][k] = inp.value.trim();
+  });
+  saveConfig('equipes', _eqDraft).then(function(ok){
+    toast(ok ? 'Equipes salvas!' : 'Salvo local. Sem conexão.', !ok);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  CONFIGURAÇÕES
+// ═══════════════════════════════════════════════════════════════
+function viewSettings(){
+  var atual = (window.RivaConfig && window.RivaConfig.get().tema) || 'claro';
+  var isDark = atual==='escuro' || atual==='dark';
+  var sun='<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
+  var moon='<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  var gear='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/></svg>';
+  return ''
+    + '<div class="modulePage settingsPage">'
+    +   '<section class="moduleHeader"><div><span class="eyebrow">PREFERÊNCIAS DO SISTEMA</span><h1>Configurações</h1><p>Personalize a aparência do painel executivo.</p></div></section>'
+    +   '<section class="panel settingsPanel">'
+    +     '<div class="panelHeader"><div><span class="eyebrow">APARÊNCIA</span><h3>Escolha o tema</h3></div></div>'
+    +     '<div class="themeChoices">'
+    +       '<button class="themeChoice '+(!isDark?'selected':'')+'" onclick="setTemaPerf(\'claro\')">'
+    +         '<span class="themePreview lightPreview"><i></i><i></i><i></i></span>'
+    +         '<span class="themeChoiceCopy"><b>'+sun+' Tema claro</b><small>Fundo branco, leitura leve e visual executivo.</small></span>'
+    +         '<em>'+(!isDark?'✓':'')+'</em>'
+    +       '</button>'
+    +       '<button class="themeChoice '+(isDark?'selected':'')+'" onclick="setTemaPerf(\'escuro\')">'
+    +         '<span class="themePreview darkPreview"><i></i><i></i><i></i></span>'
+    +         '<span class="themeChoiceCopy"><b>'+moon+' Tema escuro</b><small>Gradiente preto e azul-marinho para pouca luz.</small></span>'
+    +         '<em>'+(isDark?'✓':'')+'</em>'
+    +       '</button>'
+    +     '</div>'
+    +   '</section>'
+    +   '<section class="panel preferenceInfo"><div>'+gear+'<span><strong>Sessão</strong><small>Conectado como <b id="cfgUser">—</b></small></span><button class="secondaryButton" onclick="doLogout()" style="color:#dc2626;border-color:#f5c9c9;margin-left:auto">Sair do sistema</button></div></section>'
+    + '</div>';
+}
+function afterSettings(){
+  var u=document.getElementById('cfgUser'); if(u) u.textContent=(S.user.usuario||'—')+' ('+(S.user.cargo||'')+')';
+}
+function setTemaPerf(tema){
+  if(window.RivaConfig) window.RivaConfig.salvar(tema);
+  toast((tema==='escuro'||tema==='dark')?'Tema escuro aplicado!':'Tema claro aplicado!');
+  renderPage();
+}
+</script>
+</body>
+</html>
