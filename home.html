@@ -827,18 +827,43 @@ function fazerLogin(){
 // Notificação Agenda Riva
 function agendaNotifBadge(){
   try {
+    // 1. New event created since user last opened Agenda
     var updated = localStorage.getItem('riva_agenda_updated');
     var lastSeen = localStorage.getItem('riva_agenda_seen');
     if(updated && (!lastSeen || updated > lastSeen)){
       return '<span class="agendaNotif" title="Novo evento na Agenda Riva">!</span>';
     }
+    // 2. Event happening TODAY (from cache)
+    var cache = localStorage.getItem('riva_agenda_cache');
+    if(cache){
+      var cc = JSON.parse(cache);
+      var hoje = new Date().toISOString().slice(0,10);
+      var config = cc.config || {};
+      var temHoje = false;
+      Object.keys(config).forEach(function(k){
+        if(k.indexOf('reunioes_') === 0){
+          var arr = config[k];
+          if(Array.isArray(arr)){
+            arr.forEach(function(r){
+              if(r.data === hoje) temHoje = true;
+            });
+          }
+        }
+      });
+      if(temHoje){
+        return '<span class="agendaNotif" title="Você tem evento hoje!">!</span>';
+      }
+    }
   } catch(e){}
   return '';
 }
 
-// Marcar notificação como vista quando clica em Agenda Riva
+// Marca agenda como vista: apaga flag de "novo evento"
+// Mas NÃO apaga o badge de "evento hoje" - esse some sozinho quando o dia passa
 function marcarAgendaVista(){
   localStorage.setItem('riva_agenda_seen', new Date().toISOString());
+  // Re-render cards to remove new-event badge (event-today badge stays)
+  if(typeof mostrarPortal === 'function') mostrarPortal();
 }
 
 function mostrarPortal(pessoaId,cargo){
