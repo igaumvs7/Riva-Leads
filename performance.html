@@ -862,6 +862,40 @@ function salvarRegional(reg){
 }
 
 
+
+// ═══════════════════════════════════════════════════════════════
+//  HOUSE — Funções base (chave, dados, formatação)
+// ═══════════════════════════════════════════════════════════════
+
+function chaveHouse(){ return 'house_'+S.ano; }
+
+function dadosHouse(){
+  var d = S.config[chaveHouse()] || {};
+  var gvs = getAllGVs(false).map(function(g){ return typeof g==='object' ? g.nome : g; }).concat(['Desligados']);
+  // Garantir estrutura mínima
+  var base = { metaRiva:0, metaRV:0, gvs:{}, diretores:{}, dirNames:[], regionais:{rene:{},cahu:{}} };
+  gvs.forEach(function(gv){ base.gvs[gv] = base.gvs[gv] || {}; });
+  return Object.assign({}, base, d, {
+    gvs:      Object.assign({}, base.gvs,      d.gvs      || {}),
+    diretores:Object.assign({}, base.diretores, d.diretores|| {}),
+    regionais:Object.assign({}, base.regionais, d.regionais|| {}),
+    dirNames: d.dirNames || Object.keys(d.diretores||{}),
+  });
+}
+
+function fmtBRL(v){
+  v = parseFloat(v) || 0;
+  if(!v) return '';
+  return 'R$ ' + v.toLocaleString('pt-BR', {minimumFractionDigits:0, maximumFractionDigits:0});
+}
+
+function parseNumBR(s){
+  if(typeof s === 'number') return s;
+  var str = String(s||'0').replace(/R\$\s?/g,'').replace(/\u00a0/g,'').replace(/\./g,'').replace(',','.');
+  return parseFloat(str) || 0;
+}
+
+
 function viewHouse(){
   var d = dadosHouse();
   var MS3=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
