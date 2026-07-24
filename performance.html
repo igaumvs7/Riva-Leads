@@ -1031,6 +1031,7 @@ function atualizarHouseOnFly(){
   S.config[chaveHouse()] = d;
   renderHouse();
 }
+function brlH(v){ v=parseFloat(v)||0; if(v>=1e6) return 'R$ '+(v/1e6).toFixed(1).replace('.',',')+' M'; if(v>=1e3) return 'R$ '+Math.round(v/1e3)+'K'; return 'R$ '+v.toLocaleString('pt-BR'); }
 function salvarHouse(){
   var d = coletarHouse();
   saveConfig(chaveHouse(), d).then(function(ok){
