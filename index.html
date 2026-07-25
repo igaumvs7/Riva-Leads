@@ -2574,37 +2574,37 @@ function filterLeadsTable(q){
 // TEAM PAGE
 // ═══════════════════════════════════════════
 function renderManagerChips(reg, managers, totaisForFn){
-  // Primary: use S.config.equipes if available (reflects latest team edits)
   var eq = S.config && S.config.equipes;
-  var regNomeLower = reg.nome.toLowerCase();
-  var regKey = /rene/i.test(regNomeLower) ? 'rene' : /cah/i.test(regNomeLower) ? 'cahu' : null;
-  
-  if(eq && regKey && (eq[regKey]||[]).some(function(m){return m&&m.nome&&m.ativo!==false;})){
-    // Use equipes config as source of truth
-    var activeNames = (eq[regKey]||[])
-      .filter(function(m){return m&&m.nome&&m.ativo!==false;})
-      .map(function(m){return m.nome.toLowerCase().trim();});
-    
-    return managers.filter(function(m){
-      return activeNames.indexOf(m.nome.toLowerCase().trim()) >= 0 || m.superior === reg.id;
-    }).filter(function(m,idx,arr){
-      // Deduplicate
-      return arr.findIndex(function(x){return x.id===m.id;}) === idx;
-    }).filter(function(m){
-      // Exclude if explicitly desligado in equipes
-      var inEquipe = (eq[regKey]||[]).find(function(e){return e&&e.nome&&e.nome.toLowerCase().trim()===m.nome.toLowerCase().trim();});
-      return !inEquipe || inEquipe.ativo !== false;
-    }).map(function(m){
-      var t = totaisForFn(m);
-      return '<button onclick="openModalPessoaEdit(\''+m.id+'\')" ><span>'+initials(m.nome)+'</span><div><strong>'+m.nome+'</strong><small>'+t.op+' OP · '+t.ven+' VEN</small></div></button>';
+  var rk = /rene/i.test(reg.nome) ? 'rene' : /cah/i.test(reg.nome) ? 'cahu' : null;
+
+  // Se tem equipes salvas para esse regional, usa SOMENTE elas (lista final de ativos)
+  if(eq && rk && eq[rk] && eq[rk].length){
+    var ativos = eq[rk]
+      .filter(function(m){ return m && m.nome && m.ativo !== false; })
+      .map(function(m){ return m.nome.toLowerCase().trim(); });
+
+    // Para cada ativo, acha a pessoa correspondente em S.pessoas (ou cria card fake)
+    return ativos.map(function(nomeLower){
+      var pessoa = managers.find(function(m){
+        return m.nome.toLowerCase().trim() === nomeLower;
+      });
+      if(!pessoa){
+        // GV existe na equipe mas não em S.pessoas ainda — mostra sem link de edição
+        var nomeDisplay = eq[rk].find(function(m){ return m && m.nome && m.nome.toLowerCase().trim() === nomeLower; }).nome;
+        return '<button style="opacity:.7"><span>'+initials(nomeDisplay)+'</span><div><strong>'+nomeDisplay+'</strong><small>0 OP · 0 VEN</small></div></button>';
+      }
+      var t = totaisForFn(pessoa);
+      return '<button onclick="openModalPessoaEdit(''+pessoa.id+'')" ><span>'+initials(pessoa.nome)+'</span><div><strong>'+pessoa.nome+'</strong><small>'+t.op+' OP · '+t.ven+' VEN</small></div></button>';
     }).join('');
   }
-  
-  // Fallback: use S.pessoas.superior
-  return managers.filter(function(m){return m.superior===reg.id;}).map(function(m){
-    var t = totaisForFn(m);
-    return '<button onclick="openModalPessoaEdit(\''+m.id+'\')" ><span>'+initials(m.nome)+'</span><div><strong>'+m.nome+'</strong><small>'+t.op+' OP · '+t.ven+' VEN</small></div></button>';
-  }).join('');
+
+  // Fallback: sem config de equipes, usa S.pessoas.superior
+  return managers
+    .filter(function(m){ return m.superior === reg.id; })
+    .map(function(m){
+      var t = totaisForFn(m);
+      return '<button onclick="openModalPessoaEdit(''+m.id+'')" ><span>'+initials(m.nome)+'</span><div><strong>'+m.nome+'</strong><small>'+t.op+' OP · '+t.ven+' VEN</small></div></button>';
+    }).join('');
 }
 
 
