@@ -3315,6 +3315,11 @@ function carregarLocal(){
         salvarLocal();
       }
     }
+    // Carregar S.config (equipes, house metas, etc.) do cache local
+    try{
+      const cfg=localStorage.getItem('riva_config_cache');
+      if(cfg) S.config=Object.assign({},S.config||{},JSON.parse(cfg));
+    }catch(e){}
   }catch(e){console.error('carregarLocal:',e);}
   atualizarScopeSelect();
 }
@@ -3354,7 +3359,10 @@ function carregarSheets(){
     const d=j.data;
     if(d.pessoas&&d.pessoas.length>0){
       S.pessoas=d.pessoas;
-      S.leads=(d.leads||[]).map(l=>{return{...l,mes:normalizeMes(l.mes)};}); 
+      S.leads=(d.leads||[]).map(l=>{return{...l,mes:normalizeMes(l.mes)};});
+      // Carregar config (equipes, house metas) do Sheets
+      if(j.config){ S.config=Object.assign({},S.config||{},j.config); try{localStorage.setItem('riva_config_cache',JSON.stringify(S.config));}catch(e){} }
+      else if(j.data&&j.data.config){ S.config=Object.assign({},S.config||{},j.data.config); try{localStorage.setItem('riva_config_cache',JSON.stringify(S.config));}catch(e){} }
       salvarLocal();atualizarScopeSelect();renderPage();
       setSyncStatus('online');S.sheetsOK=true;
     } else {
