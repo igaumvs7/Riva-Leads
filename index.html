@@ -3020,7 +3020,7 @@ function openModalLead(pessoaId){
   if(pessoaId){sel.value=pessoaId;onLeadPessoaChange();}
   else{['lOp','lAg','lVis','lPas','lVen'].forEach(id=>{document.getElementById(id).value=0;});}
   updateModalConv();
-  modal.style.display='flex';
+  modal.style.display='grid';
 }
 
 function openModalLeadEdit(pessoaId){ openModalLead(pessoaId); }
