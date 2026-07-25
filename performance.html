@@ -2284,7 +2284,7 @@ function removerGV(i){
 }
 function esc(s){ return String(s||'').replace(/[<>&"]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];}); }
 function salvarEquipes(){
-  // coleta valores do draft (blur pode não ter disparado)
+  // Coleta valores do draft
   document.querySelectorAll('#eqBody input.pIn').forEach(function(inp){
     var i = parseInt(inp.dataset.idx), k = inp.dataset.k;
     if(_eqDraft[_eqTab][i]) _eqDraft[_eqTab][i][k] = inp.value.trim();
@@ -2305,8 +2305,79 @@ function salvarEquipes(){
     toast('E-mail inválido em: '+invalidos.join(', '),true);
     return;
   }
-  saveConfigMap({equipes:_eqDraft,emailsRegionais:emailsRegionais}).then(function(ok){
-    toast(ok ? 'Equipes salvas!' : 'Salvo local. Sem conexão.', !ok);
+
+  // ── Sincronizar S.config.equipes (para HIER e emails) ──
+  S.config.equipes = _eqDraft;
+  S.config.emailsRegionais = emailsRegionais;
+
+  // ── Sincronizar S.pessoas com a equipe atual ──
+  // Pega os regionais de S.pessoas para obter seus IDs
+  var regMap = {}; // nome lowercase → pessoa (Gerente Regional)
+  (S.pessoas || []).forEach(function(p){
+    if(p.cargo === 'Gerente Regional'){
+      regMap[p.nome.toLowerCase().trim()] = p;
+    }
+  });
+  // Mapas conhecidos: rene → "Rene", cahu → "Cahú"
+  var regKeys = {
+    rene: Object.keys(regMap).find(function(k){ return /rene/i.test(k); }) || '',
+    cahu: Object.keys(regMap).find(function(k){ return /cah/i.test(k); }) || ''
+  };
+
+  ['rene','cahu'].forEach(function(regKey){
+    var regNomeKey = regKeys[regKey];
+    var regPessoa  = regNomeKey ? regMap[regNomeKey] : null;
+    if(!regPessoa) return; // regional não cadastrado em S.pessoas
+    var regId = regPessoa.id;
+
+    var equipe = (_eqDraft[regKey] || []);
+    equipe.forEach(function(membro){
+      if(!membro || !membro.nome) return;
+      var nomeLower = membro.nome.toLowerCase().trim();
+      // Procurar em S.pessoas
+      var pessoa = (S.pessoas || []).find(function(p){
+        return p.nome.toLowerCase().trim() === nomeLower && p.cargo === 'Gerente de Vendas';
+      });
+      if(membro.ativo === false){
+        // Desligado: remove da equipe desse regional (limpa superior se for desse regional)
+        if(pessoa && pessoa.superior === regId){
+          pessoa.superior = '';
+        }
+      } else {
+        if(pessoa){
+          // Já existe: atualiza superior
+          pessoa.superior = regId;
+        } else {
+          // Novo membro: cria em S.pessoas
+          var novoId = 'gv_' + Date.now() + '_' + Math.random().toString(36).slice(2,6);
+          S.pessoas.push({
+            id: novoId,
+            nome: membro.nome.trim(),
+            cargo: 'Gerente de Vendas',
+            superior: regId
+          });
+        }
+      }
+    });
+
+    // Remove de S.pessoas qualquer GV que não está mais na equipe desse regional
+    var nomesAtivos = equipe
+      .filter(function(m){ return m && m.nome && m.ativo !== false; })
+      .map(function(m){ return m.nome.toLowerCase().trim(); });
+
+    (S.pessoas || []).forEach(function(p){
+      if(p.cargo === 'Gerente de Vendas' && p.superior === regId){
+        var estaNaEquipe = nomesAtivos.indexOf(p.nome.toLowerCase().trim()) >= 0;
+        if(!estaNaEquipe){
+          p.superior = ''; // remove do regional mas mantém cadastrado
+        }
+      }
+    });
+  });
+
+  // Persiste
+  saveConfigMap({equipes:_eqDraft, emailsRegionais:emailsRegionais}).then(function(ok){
+    toast(ok ? 'Equipes salvas e hierarquia atualizada!' : 'Salvo local. Sem conexão.', !ok);
   });
 }
 
