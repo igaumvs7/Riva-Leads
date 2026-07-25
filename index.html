@@ -1993,7 +1993,7 @@ document.addEventListener('DOMContentLoaded', () => {
   carregarLocal();
   renderPage();
   atualizarSidebar();
-  setTimeout(carregarSheets, 800);
+  setTimeout(carregarConfig,800);setTimeout(carregarSheets, 800);
   setInterval(salvarLocal, 90000);
   setInterval(() => { if(S.sheetsOK) carregarSheets(); }, 90000);
 });
@@ -3375,6 +3375,26 @@ function carregarSheets(){
   sc.onerror=function(){setSyncStatus('local');const s=document.getElementById('_sTag');if(s)s.parentNode.removeChild(s);};
   document.head.appendChild(sc);
 }
+
+
+// ── Carrega S.config (equipes, metas) do Sheets e atualiza hierarquia ──
+function carregarConfig(){
+  window._cfgCB = function(j){
+    var sc = document.getElementById('_cfgTag'); if(sc) sc.parentNode.removeChild(sc);
+    if(j && j.status === 'ok' && j.config){
+      S.config = Object.assign({}, S.config || {}, j.config);
+      try{ localStorage.setItem('riva_config_cache', JSON.stringify(S.config)); }catch(e){}
+      // Re-renderiza se estiver na aba de hierarquia
+      if(S.page === 'team' || S.page === 'hierarchy') renderPage();
+    }
+  };
+  var sc = document.createElement('script');
+  sc.id = '_cfgTag';
+  sc.src = SHEETS_URL + '?action=getConfig&callback=_cfgCB&t=' + Date.now();
+  sc.onerror = function(){ var s=document.getElementById('_cfgTag'); if(s) s.parentNode.removeChild(s); };
+  document.head.appendChild(sc);
+}
+
 
 function salvarSheets(){
   if(!S.sheetsOK)return;
