@@ -2573,6 +2573,41 @@ function filterLeadsTable(q){
 // ═══════════════════════════════════════════
 // TEAM PAGE
 // ═══════════════════════════════════════════
+function renderManagerChips(reg, managers, totaisForFn){
+  // Primary: use S.config.equipes if available (reflects latest team edits)
+  var eq = S.config && S.config.equipes;
+  var regNomeLower = reg.nome.toLowerCase();
+  var regKey = /rene/i.test(regNomeLower) ? 'rene' : /cah/i.test(regNomeLower) ? 'cahu' : null;
+  
+  if(eq && regKey && (eq[regKey]||[]).some(function(m){return m&&m.nome&&m.ativo!==false;})){
+    // Use equipes config as source of truth
+    var activeNames = (eq[regKey]||[])
+      .filter(function(m){return m&&m.nome&&m.ativo!==false;})
+      .map(function(m){return m.nome.toLowerCase().trim();});
+    
+    return managers.filter(function(m){
+      return activeNames.indexOf(m.nome.toLowerCase().trim()) >= 0 || m.superior === reg.id;
+    }).filter(function(m,idx,arr){
+      // Deduplicate
+      return arr.findIndex(function(x){return x.id===m.id;}) === idx;
+    }).filter(function(m){
+      // Exclude if explicitly desligado in equipes
+      var inEquipe = (eq[regKey]||[]).find(function(e){return e&&e.nome&&e.nome.toLowerCase().trim()===m.nome.toLowerCase().trim();});
+      return !inEquipe || inEquipe.ativo !== false;
+    }).map(function(m){
+      var t = totaisForFn(m);
+      return '<button onclick="openModalPessoaEdit(\''+m.id+'\')" ><span>'+initials(m.nome)+'</span><div><strong>'+m.nome+'</strong><small>'+t.op+' OP · '+t.ven+' VEN</small></div></button>';
+    }).join('');
+  }
+  
+  // Fallback: use S.pessoas.superior
+  return managers.filter(function(m){return m.superior===reg.id;}).map(function(m){
+    var t = totaisForFn(m);
+    return '<button onclick="openModalPessoaEdit(\''+m.id+'\')" ><span>'+initials(m.nome)+'</span><div><strong>'+m.nome+'</strong><small>'+t.op+' OP · '+t.ven+' VEN</small></div></button>';
+  }).join('');
+}
+
+
 function renderTeamPage(){
   const directors=S.pessoas.filter(p=>p.cargo==='Diretor de Vendas');
   const regionals=S.pessoas.filter(p=>p.cargo==='Gerente Regional');
@@ -2605,10 +2640,10 @@ function renderTeamPage(){
                   <button class="hierarchyPerson regional" onclick="openModalPessoaEdit('${reg.id}')">
                     <span>${initials(reg.nome)}</span>
                     <div><small>Gerente regional</small><strong>${reg.nome}</strong></div>
-                    <em>${totaisFor(reg).ven} vendas</em>
+                    <em>${totaisFor(reg).ven} vendas</em><small style="opacity:.6;font-size:9px;margin-left:6px">${(()=>{var eq=S.config&&S.config.equipes;var rk=/rene/i.test(reg.nome)?'rene':/cah/i.test(reg.nome)?'cahu':null;return rk&&eq&&eq[rk]?(eq[rk].filter(function(m){return m&&m.nome&&m.ativo!==false;}).length+' GVs'):managers.filter(m=>m.superior===reg.id).length+' GVs';})()}</small>
                   </button>
                   <div class="managerChips">
-                    ${managers.filter(m=>m.superior===reg.id).map(m=>{const t=totaisFor(m);return`<button onclick="openModalPessoaEdit('${m.id}')" ><span>${initials(m.nome)}</span><div><strong>${m.nome}</strong><small>${t.op} OP · ${t.ven} VEN</small></div></button>`;}).join('')}
+                    ${renderManagerChips(reg, managers, totaisFor)}
                   </div>
                 </div>`).join('')}
             </div>
