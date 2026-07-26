@@ -324,7 +324,20 @@ function removerUser(i){
   toast('Acesso removido.');
 }
 
-function salvarUser(){
+async function postAdmin(payload){
+  var resposta=await fetch(SHEETS_URL,{
+    method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    cache:'no-store',
+    body:JSON.stringify(payload)
+  });
+  if(!resposta.ok) throw new Error('Falha HTTP '+resposta.status);
+  var retorno=await resposta.json();
+  if(!retorno||retorno.status!=='ok') throw new Error((retorno&&retorno.msg)||'Servidor recusou a gravação');
+  return retorno;
+}
+
+async function salvarUser(){
   var sel=document.getElementById('fPessoa').value;
   if(!sel){toast('Selecione uma pessoa.',true);return;}
   var parts=sel.split('|');
@@ -336,17 +349,21 @@ function salvarUser(){
   if(!usuario){toast('Digite o nome de usuário.',true);return;}
   var idx=editIdx!==''?parseInt(editIdx):usuarios.findIndex(function(u){return u.pessoaId===pessoaId;});
   var entry={pessoaId:pessoaId,usuario:usuario,cargo:cargo,ativo:ativo,senha:senha||undefined};
-  if(idx>=0)usuarios[idx]=Object.assign(usuarios[idx],entry);
-  else usuarios.push(entry);
-  localStorage.setItem('riva_admin_users',JSON.stringify(usuarios));
-  // Enviar para Sheets
-  fetch(SHEETS_URL,{method:'POST',body:JSON.stringify({usuario:{pessoaId:pessoaId,usuario:usuario,senha:senha||'',cargo:cargo,ativo:ativo}}),headers:{'Content-Type':'text/plain'},mode:'no-cors'}).catch(function(){});
-  renderUsuarios();
-  document.getElementById('fPessoa').value='';
-  document.getElementById('fUsuario').value='';
-  document.getElementById('fSenha').value='';
-  document.getElementById('fEditId').value='';
-  toast('✅ Usuário salvo!');
+  try{
+    await postAdmin({usuario:{pessoaId:pessoaId,usuario:usuario,senha:senha||'',cargo:cargo,ativo:ativo}});
+    if(idx>=0)usuarios[idx]=Object.assign(usuarios[idx],entry);
+    else usuarios.push(entry);
+    localStorage.setItem('riva_admin_users',JSON.stringify(usuarios));
+    renderUsuarios();
+    document.getElementById('fPessoa').value='';
+    document.getElementById('fUsuario').value='';
+    document.getElementById('fSenha').value='';
+    document.getElementById('fEditId').value='';
+    if(window.RivaDraft) RivaDraft.clear('admin_usuario');
+    toast('✅ Usuário salvo e confirmado na nuvem!');
+  }catch(e){
+    toast('O usuário NÃO foi salvo. Os campos foram mantidos: '+(e.message||'verifique a conexão.'),true);
+  }
 }
 
 // ══ PERMISSÕES ════════════════════════════════════════════
@@ -410,7 +427,7 @@ function renderPermissoes(){
   }).join('');
 }
 
-function salvarPermissoes(){
+async function salvarPermissoes(){
   var novas=permissoes.map(function(p,i){
     return {
       acao:p.acao, label:p.label,
@@ -419,19 +436,23 @@ function salvarPermissoes(){
       gerente: document.getElementById('pg_'+i).checked,
     };
   });
-  permissoes=novas;
-  // Salvar no Sheets
-  fetch(SHEETS_URL,{method:'POST',body:JSON.stringify({permissoes:novas}),headers:{'Content-Type':'text/plain'},mode:'no-cors'})
-  .then(function(){toast('✅ Permissões salvas!');})
-  .catch(function(){toast('Erro ao salvar.',true);});
-  // Salvar local como cache
-  localStorage.setItem('riva_permissoes',JSON.stringify(novas));
-  toast('✅ Permissões salvas!');
+  try{
+    await postAdmin({permissoes:novas});
+    permissoes=novas;
+    localStorage.setItem('riva_permissoes',JSON.stringify(novas));
+    toast('✅ Permissões salvas e confirmadas na nuvem!');
+  }catch(e){
+    toast('As permissões NÃO foram salvas: '+(e.message||'verifique a conexão.'),true);
+  }
 }
 
 // ── INIT ──────────────────────────────────────────────────
 usuarios = []; // Sempre buscar frescos do Sheets
 localStorage.removeItem('riva_admin_users');
+if(window.RivaDraft){
+  RivaDraft.bind('admin_usuario',['fPessoa','fUsuario','fAtivo']);
+  RivaDraft.restore('admin_usuario',['fPessoa','fUsuario','fAtivo']);
+}
 if(window.location.hash === '#permissoes'){
   showTab('permissoes');
 } else {
