@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- RIVA V16.2: formulários protegidos e gravações unitárias confirmadas -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -1903,7 +1904,7 @@ tfoot td { color: #fff; border: 0; font-weight: 800; }
       </div>
       <footer>
         <button class="secondaryButton" onclick="closeModal('modalLead')">Cancelar</button>
-        <button class="primaryButton" onclick="salvarLead()">Salvar resultados</button>
+        <button class="primaryButton" id="salvarLeadBtn" onclick="salvarLead()">Salvar resultados</button>
       </footer>
     </section>
   </div>
@@ -1936,7 +1937,7 @@ tfoot td { color: #fff; border: 0; font-weight: 800; }
       </div>
       <footer>
         <button class="secondaryButton" onclick="closeModal('modalPessoa')">Cancelar</button>
-        <button class="primaryButton" onclick="salvarPessoa()">Salvar</button>
+        <button class="primaryButton" id="salvarPessoaBtn" onclick="salvarPessoa()">Salvar</button>
       </footer>
     </section>
   </div>
@@ -1982,6 +1983,8 @@ let S = {
   sidebarOpen: window.innerWidth > 760,
   sheetsOK: false,
   syncTimer: null,
+  loadingSheets: false,
+  pendingWrites: 0,
   charts: {},
 };
 
@@ -1993,9 +1996,15 @@ document.addEventListener('DOMContentLoaded', () => {
   carregarLocal();
   renderPage();
   atualizarSidebar();
+  if(window.RivaDraft){
+    RivaDraft.bind('lead',['leadPessoa','leadMes','leadAno','lOp','lAg','lVis','lPas','lVen']);
+    RivaDraft.bind('pessoa',['pessoaEditId','pessoaNome','pessoaCargo','pessoaSuperior']);
+  }
   setTimeout(carregarSheets, 800);
   setInterval(salvarLocal, 90000);
-  setInterval(() => { if(S.sheetsOK) carregarSheets(); }, 90000);
+  setInterval(() => {
+    if(S.sheetsOK && !formularioEmEdicao() && S.pendingWrites===0) carregarSheets();
+  }, 90000);
 });
 
 // ═══════════════════════════════════════════
@@ -2011,6 +2020,16 @@ function normalizeMes(m){
   if(!m) return '';
   if(m.length>7){ const d=new Date(m); if(!isNaN(d)) return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); }
   return m;
+}
+
+function formularioEmEdicao(){
+  const lead=document.getElementById('modalLead');
+  const pessoa=document.getElementById('modalPessoa');
+  if((lead&&lead.style.display&&lead.style.display!=='none') ||
+     (pessoa&&pessoa.style.display&&pessoa.style.display!=='none')) return true;
+  const ativo=document.activeElement;
+  return !!(ativo&&/^(INPUT|TEXTAREA|SELECT)$/.test(ativo.tagName)&&
+    ativo.closest&&ativo.closest('.modalOverlay'));
 }
 
 function soma(arr){
@@ -3054,6 +3073,7 @@ function openModalLead(pessoaId){
   // Se veio com pessoaId, preencher
   if(pessoaId){sel.value=pessoaId;onLeadPessoaChange();}
   else{['lOp','lAg','lVis','lPas','lVen'].forEach(id=>{document.getElementById(id).value=0;});}
+  if(!pessoaId&&window.RivaDraft) RivaDraft.restore('lead',['leadPessoa','leadMes','leadAno','lOp','lAg','lVis','lPas','lVen']);
   updateModalConv();
   modal.style.display='grid';
 }
@@ -3111,23 +3131,64 @@ document.addEventListener('DOMContentLoaded',()=>{
   });
 });
 
-function salvarLead(){
+async function postActionBI(payload){
+  S.pendingWrites++;
+  setSyncStatus('saving');
+  try{
+    const resposta=await fetch(SHEETS_URL,{
+      method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      cache:'no-store',
+      body:JSON.stringify(payload)
+    });
+    if(!resposta.ok) throw new Error('Falha HTTP '+resposta.status);
+    const retorno=await resposta.json();
+    if(!retorno||retorno.status!=='ok') throw new Error((retorno&&retorno.msg)||'Servidor recusou a gravação');
+    S.sheetsOK=true;
+    setSyncStatus('online');
+    return retorno;
+  }catch(e){
+    setSyncStatus('local');
+    throw e;
+  }finally{
+    S.pendingWrites=Math.max(0,S.pendingWrites-1);
+  }
+}
+
+async function salvarLead(){
   const pid=document.getElementById('leadPessoa').value;
   if(!pid){toast('Selecione uma pessoa.',true);return;}
   const mes=document.getElementById('leadAno').value+'-'+document.getElementById('leadMes').value;
   const lead={pessoaId:pid,mes,op:+document.getElementById('lOp').value||0,ag:+document.getElementById('lAg').value||0,vis:+document.getElementById('lVis').value||0,pas:+document.getElementById('lPas').value||0,ven:+document.getElementById('lVen').value||0};
-  const idx=S.leads.findIndex(l=>l.pessoaId===pid&&l.mes===mes);
-  if(idx>=0)S.leads[idx]=lead;else S.leads.push(lead);
-  salvarLocal();sincSheets();
-  closeModal('modalLead');
-  renderPage();
-  toast('Resultados salvos com sucesso.');
+  const botao=document.getElementById('salvarLeadBtn');
+  const texto=botao&&botao.textContent;
+  if(botao){botao.disabled=true;botao.textContent='Salvando na nuvem...';}
+  try{
+    const retorno=await postActionBI({action:'salvarLead',lead});
+    const salvo=retorno.lead||lead;
+    const idx=S.leads.findIndex(l=>String(l.pessoaId)===String(pid)&&normalizeMes(l.mes)===mes);
+    if(idx>=0)S.leads[idx]=salvo;else S.leads.push(salvo);
+    salvarLocal();
+    if(window.RivaDraft) window.RivaDraft.clear('lead');
+    closeModal('modalLead');
+    renderPage();
+    toast('Resultados gravados e confirmados na nuvem.');
+  }catch(e){
+    toast('Os resultados NÃO foram salvos. Os campos foram mantidos: '+(e.message||'verifique a conexão.'),true);
+  }finally{
+    if(botao){botao.disabled=false;botao.textContent=texto||'Salvar resultados';}
+  }
 }
 
-function excluirLead(pid){
+async function excluirLead(pid){
   if(!confirm('Excluir leads desta pessoa neste mês?'))return;
-  S.leads=S.leads.filter(l=>!(l.pessoaId===pid&&l.mes===S.mes));
-  salvarLocal();sincSheets();renderPage();toast('Lançamento removido.');
+  try{
+    await postActionBI({action:'excluirLead',pessoaId:pid,mes:S.mes});
+    S.leads=S.leads.filter(l=>!(String(l.pessoaId)===String(pid)&&normalizeMes(l.mes)===S.mes));
+    salvarLocal();renderPage();toast('Lançamento removido da nuvem.');
+  }catch(e){
+    toast('O lançamento não foi removido: '+(e.message||'verifique a conexão.'),true);
+  }
 }
 
 function openModalPessoa(){
@@ -3136,6 +3197,11 @@ function openModalPessoa(){
   document.getElementById('pessoaCargo').value='Gerente de Vendas';
   document.getElementById('modalPessoaTitle').textContent='Cadastrar pessoa';
   onCargoChange();
+  if(window.RivaDraft){
+    RivaDraft.restore('pessoa',['pessoaEditId','pessoaNome','pessoaCargo','pessoaSuperior']);
+    onCargoChange();
+    RivaDraft.restore('pessoa',['pessoaEditId','pessoaNome','pessoaCargo','pessoaSuperior']);
+  }
   document.getElementById('modalPessoa').style.display='flex';
 }
 
@@ -3164,33 +3230,48 @@ function onCargoChange(){
   S.pessoas.filter(p=>p.cargo===supCargo).forEach(p=>{const o=document.createElement('option');o.value=p.id;o.textContent=p.nome;sel.appendChild(o);});
 }
 
-function salvarPessoa(){
+async function salvarPessoa(){
   const nome=document.getElementById('pessoaNome').value.trim();
   const cargo=document.getElementById('pessoaCargo').value;
   const superior=document.getElementById('pessoaSuperior').value;
   const editId=document.getElementById('pessoaEditId').value;
   if(!nome){toast('Digite o nome.',true);return;}
   if(['Gerente Regional','Gerente de Vendas'].includes(cargo)&&!superior){toast('Selecione o superior.',true);return;}
-  if(editId){
-    const idx=S.pessoas.findIndex(p=>p.id===editId);
-    if(idx>=0)S.pessoas[idx]={id:editId,nome,cargo,superior};
-  } else {
-    S.pessoas.push({id:Date.now().toString(),nome,cargo,superior});
+  const pessoa={id:editId||('p_'+Date.now()+'_'+Math.random().toString(36).slice(2,8)),nome,cargo,superior};
+  const botao=document.getElementById('salvarPessoaBtn');
+  const texto=botao&&botao.textContent;
+  if(botao){botao.disabled=true;botao.textContent='Salvando na nuvem...';}
+  try{
+    const retorno=await postActionBI({action:'salvarPessoa',pessoa});
+    const salva=retorno.pessoa||pessoa;
+    const idx=S.pessoas.findIndex(p=>String(p.id)===String(salva.id));
+    if(idx>=0)S.pessoas[idx]=salva;else S.pessoas.push(salva);
+    salvarLocal();
+    if(window.RivaDraft) window.RivaDraft.clear('pessoa');
+    closeModal('modalPessoa');
+    atualizarScopeSelect();
+    renderPage();
+    toast(editId?'Cadastro atualizado e confirmado.':'Pessoa cadastrada e confirmada.');
+  }catch(e){
+    toast('O cadastro NÃO foi salvo. Os campos foram mantidos: '+(e.message||'verifique a conexão.'),true);
+  }finally{
+    if(botao){botao.disabled=false;botao.textContent=texto||'Salvar';}
   }
-  salvarLocal();sincSheets();
-  closeModal('modalPessoa');
-  atualizarScopeSelect();
-  renderPage();
-  toast(editId?'Cadastro atualizado.':'Pessoa cadastrada com sucesso.');
 }
 
-function excluirPessoa(id){
+async function excluirPessoa(id){
   const ids=getDesc(id);
   const msg=ids.size>1?'Excluir esta pessoa, sua equipe e todos os lançamentos?':'Excluir esta pessoa e todos os seus lançamentos?';
   if(!confirm(msg))return;
-  S.pessoas=S.pessoas.filter(p=>!ids.has(p.id));
-  S.leads=S.leads.filter(l=>!ids.has(l.pessoaId));
-  salvarLocal();sincSheets();atualizarScopeSelect();renderPage();toast('Cadastro removido.');
+  try{
+    const retorno=await postActionBI({action:'excluirPessoa',id});
+    const removidos=new Set((retorno.idsRemovidos||Array.from(ids)).map(String));
+    S.pessoas=S.pessoas.filter(p=>!removidos.has(String(p.id)));
+    S.leads=S.leads.filter(l=>!removidos.has(String(l.pessoaId)));
+    salvarLocal();atualizarScopeSelect();renderPage();toast('Cadastro removido da nuvem.');
+  }catch(e){
+    toast('O cadastro não foi removido: '+(e.message||'verifique a conexão.'),true);
+  }
 }
 
 function closeModal(id){ document.getElementById(id).style.display='none'; }
@@ -3355,7 +3436,7 @@ function buscarConfigEquipes(){
       if(!S.config) S.config={};
       if(j.config.equipes) S.config.equipes=j.config.equipes;
       // Re-renderiza SOMENTE se estiver na aba de equipe/hierarquia
-      if(S.page==='team'||S.page==='hierarchy') renderPage();
+      if((S.page==='team'||S.page==='hierarchy')&&!formularioEmEdicao()) renderPage();
     }
   };
   var sc=document.createElement('script');
@@ -3367,43 +3448,44 @@ function buscarConfigEquipes(){
 
 
 function carregarSheets(){
+  if(S.loadingSheets||S.pendingWrites>0)return;
+  S.loadingSheets=true;
   setSyncStatus('loading');
   window._sCB=function(j){
     const sc=document.getElementById('_sTag');if(sc)sc.parentNode.removeChild(sc);
+    S.loadingSheets=false;
     if(!j||j.status!=='ok'||!j.data){setSyncStatus('local');return;}
     const d=j.data;
     if(d.pessoas&&d.pessoas.length>0){
       S.pessoas=d.pessoas;
       S.leads=(d.leads||[]).map(l=>{return{...l,mes:normalizeMes(l.mes)};});
-      salvarLocal();atualizarScopeSelect();renderPage();
+      salvarLocal();atualizarScopeSelect();
+      if(!formularioEmEdicao()) renderPage();
       // Busca config (equipes) em background após carregar dados principais
       buscarConfigEquipes();
       setSyncStatus('online');S.sheetsOK=true;
     } else {
       setSyncStatus('online');S.sheetsOK=true;
-      salvarSheets();
     }
   };
   const sc=document.createElement('script');sc.id='_sTag';
   sc.src=SHEETS_URL+'?callback=_sCB&t='+Date.now();
-  sc.onerror=function(){setSyncStatus('local');const s=document.getElementById('_sTag');if(s)s.parentNode.removeChild(s);};
+  sc.onerror=function(){S.loadingSheets=false;setSyncStatus('local');const s=document.getElementById('_sTag');if(s)s.parentNode.removeChild(s);};
   document.head.appendChild(sc);
 }
 
 
 
 function salvarSheets(){
-  if(!S.sheetsOK)return;
-  setSyncStatus('saving');
-  fetch(SHEETS_URL,{method:'POST',body:JSON.stringify({pessoas:S.pessoas,leads:S.leads}),headers:{'Content-Type':'text/plain'},mode:'no-cors'})
-  .then(()=>setSyncStatus('online'))
-  .catch(()=>setSyncStatus('local'));
+  return carregarSheets();
 }
 
 function sincSheets(force){
-  if(force){S.sheetsOK=true;salvarSheets();return;}
-  if(S.syncTimer)clearTimeout(S.syncTimer);
-  S.syncTimer=setTimeout(salvarSheets,1500);
+  if(formularioEmEdicao()||S.pendingWrites>0){
+    setSyncStatus(S.sheetsOK?'online':'local');
+    return;
+  }
+  carregarSheets();
 }
 
 // Print CSS override
