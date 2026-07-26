@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- RIVA V16.2 2026-07-26: persistência atômica + datas normalizadas + formulários protegidos -->
+<!-- RIVA V17 2026-07-26: edição de vendas + visão mensal para todos + responsividade global -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Gestão de Vendas — Riva Vendas CE</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTMiIGZpbGw9IiNmZmYiLz4KICA8cGF0aCBkPSJNMTQgOHY0OGg5VjM1aDEwbDExIDE4aDEwTDQyIDMxYzUtMyA4LTggOC0xNCAwLTctNS0xMC0xMy0xMEgxNHptOSA5aDEyYzQgMCA2IDIgNiA1cy0yIDUtNiA1SDIzVjE3eiIgZmlsbD0iIzBkMWY2ZCIvPgogIDxwYXRoIGQ9Ik0yNSAyOXYxNmwxMy04LTEzLTh6IiBmaWxsPSIjZGMyNjI2Ii8+CiAgPGNpcmNsZSBjeD0iOCIgY3k9IjIyIiByPSIyLjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzE2NDhkOCIgc3Ryb2tlLXdpZHRoPSIxLjYiLz4KICA8Y2lyY2xlIGN4PSI4IiBjeT0iMzIiIHI9IjIuOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMTY0OGQ4IiBzdHJva2Utd2lkdGg9IjEuNiIvPgogIDxjaXJjbGUgY3g9IjgiIGN5PSI0MiIgcj0iMi44IiBmaWxsPSJub25lIiBzdHJva2U9IiMxNjQ4ZDgiIHN0cm9rZS13aWR0aD0iMS42Ii8+CiAgPGxpbmUgeDE9IjEwLjgiIHkxPSIyMiIgeDI9IjE0IiB5Mj0iMjIiIHN0cm9rZT0iIzE2NDhkOCIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxsaW5lIHgxPSIxMC44IiB5MT0iMzIiIHgyPSIxNCIgeTI9IjMyIiBzdHJva2U9IiMxNjQ4ZDgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8bGluZSB4MT0iMTAuOCIgeTE9IjQyIiB4Mj0iMTQiIHkyPSI0MiIgc3Ryb2tlPSIjMTY0OGQ4IiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPGxpbmUgeDE9IjgiIHkxPSIyNC44IiB4Mj0iOCIgeTI9IjI5LjIiIHN0cm9rZT0iIzE2NDhkOCIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxsaW5lIHgxPSI4IiB5MT0iMzQuOCIgeDI9IjgiIHkyPSIzOS4yIiBzdHJva2U9IiMxNjQ4ZDgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9zdmc+">
 <meta name="theme-color" content="#0d1f6d">
@@ -16,6 +16,7 @@
 
 <!-- Design system compartilhado (mesmo shell do Leads Online) -->
 <link rel="stylesheet" href="riva-shell.css">
+<link rel="stylesheet" href="riva-responsive.css">
 
 <style>
 /* ══════════════════════════════════════════════════════════════
@@ -154,6 +155,33 @@ tfoot td{padding:12px 14px;color:var(--royal-deep);font-weight:800;background:#e
 .qcNotice{margin-bottom:14px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border:1px solid #f4d58d;border-radius:12px;background:#fff9e8;color:#7c5b12;font-size:11px;font-weight:650}
 .qcNotice button{height:34px;padding:0 12px;border:1px solid #e8c46c;border-radius:9px;background:#fff;color:#72510a;font-size:10px;font-weight:800;cursor:pointer}
 
+/* VENDAS DO MÊS */
+.monthlySummary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:14px}
+.monthlyStat{min-width:0;padding:16px 17px;border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:0 6px 18px rgba(17,42,101,.05)}
+.monthlyStat span{display:block;color:var(--muted);font-size:9px;font-weight:850;letter-spacing:.08em;text-transform:uppercase}
+.monthlyStat strong{display:block;margin-top:7px;color:var(--royal-deep);font-size:23px;line-height:1;font-weight:900;overflow-wrap:anywhere}
+.monthlyStat small{display:block;margin-top:5px;color:#9aa5b9;font-size:9px}
+.monthlyToolbar{padding:12px 18px;display:flex;align-items:center;gap:9px;flex-wrap:wrap;border-bottom:1px solid #edf1f7}
+.monthlyToolbar .searchField{flex:1;min-width:240px}
+.monthlyTable table{min-width:1040px}
+.monthlyTable td.obsCell{max-width:220px;overflow:hidden;text-overflow:ellipsis}
+.saleMobileList{display:none;padding:12px}
+.saleMobileCard{padding:14px;border:1px solid var(--line);border-radius:13px;background:#fff;box-shadow:0 6px 16px rgba(17,42,101,.05)}
+.saleMobileCard+.saleMobileCard{margin-top:10px}
+.saleMobileHead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.saleMobileHead strong{font-size:13px;color:var(--ink);overflow-wrap:anywhere}
+.saleMobileHead small{display:block;margin-top:3px;color:var(--muted);font-size:10px}
+.saleMobileValue{margin:13px 0 11px;color:var(--royal-deep);font-size:21px;font-weight:900}
+.saleMobileMeta{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.saleMobileMeta div{min-width:0;padding:9px 10px;border-radius:9px;background:#f4f7fb}
+.saleMobileMeta span{display:block;color:var(--muted);font-size:8px;font-weight:800;text-transform:uppercase}
+.saleMobileMeta strong{display:block;margin-top:3px;color:var(--ink);font-size:10px;overflow-wrap:anywhere}
+.saleMobileObs{margin-top:9px;padding:9px 10px;border-left:3px solid #aebff1;border-radius:8px;background:#f8faff;color:#5a6780;font-size:10px;line-height:1.45;overflow-wrap:anywhere}
+.saleMobileActions{display:flex;gap:7px;margin-top:11px;flex-wrap:wrap}
+.saleMobileActions button{flex:1;min-width:92px;min-height:40px;padding:7px 10px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--royal-dark);font-size:10px;font-weight:800}
+.editModeBanner{margin-bottom:12px;padding:11px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #aebff1;border-radius:10px;background:#edf2ff;color:#173eaa;font-size:10px;font-weight:750}
+.editModeBanner button{border:0;background:transparent;color:#173eaa;font-size:10px;font-weight:850;text-decoration:underline;cursor:pointer}
+
 /* MODAL */
 .modalOverlay{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(4,14,45,.5);backdrop-filter:blur(3px)}
 .modalCard{width:100%;max-width:440px;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 30px 70px rgba(4,12,40,.4)}
@@ -197,10 +225,17 @@ tfoot td{padding:12px 14px;color:var(--royal-deep);font-weight:800;background:#e
 [data-theme="dark"] .qcRegionalTag.cahu{background:#321820;color:#ff8b96}
 [data-theme="dark"] .qcNotice{border-color:#665321;background:#2c2614;color:#f6dc91}
 [data-theme="dark"] .qcNotice button{border-color:#80672a;background:#181d2a;color:#f6dc91}
+[data-theme="dark"] .monthlyStat,[data-theme="dark"] .saleMobileCard{background:#12151f;border-color:#292f3e}
+[data-theme="dark"] .monthlyStat strong,[data-theme="dark"] .saleMobileHead strong,[data-theme="dark"] .saleMobileMeta strong{color:#eef2fb}
+[data-theme="dark"] .monthlyToolbar{border-color:#242b3b}
+[data-theme="dark"] .saleMobileMeta div,[data-theme="dark"] .saleMobileObs{background:#0d1018;color:#b5bdcd}
+[data-theme="dark"] .saleMobileActions button{background:#181d2a;border-color:#303748;color:#c6cee0}
+[data-theme="dark"] .editModeBanner{border-color:#274781;background:#17243d;color:#a9c1ff}
+[data-theme="dark"] .editModeBanner button{color:#a9c1ff}
 
-@media(max-width:1100px){.chartGrid{grid-template-columns:1fr}.kpiGrid,.qcKpiGrid{grid-template-columns:1fr 1fr}.dualGrid{grid-template-columns:1fr}}
-@media(max-width:760px){.kpiGrid{grid-template-columns:1fr 1fr}.chartGrid,.dualGrid{grid-template-columns:1fr}table{min-width:520px}.fRow{flex-direction:column}}
-@media(max-width:480px){.kpiGrid,.qcKpiGrid{grid-template-columns:1fr}}
+@media(max-width:1100px){.chartGrid{grid-template-columns:1fr}.kpiGrid,.qcKpiGrid,.monthlySummary{grid-template-columns:1fr 1fr}.dualGrid{grid-template-columns:1fr}}
+@media(max-width:760px){.kpiGrid{grid-template-columns:1fr 1fr}.chartGrid,.dualGrid{grid-template-columns:1fr}table{min-width:520px}.fRow{flex-direction:column}.monthlyDesktop{display:none}.saleMobileList{display:block}.monthlyToolbar .searchField{min-width:100%;order:1}.monthlyToolbar .filterSel{flex:1}.saleMobileMeta{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.kpiGrid,.qcKpiGrid,.monthlySummary{grid-template-columns:1fr}.saleMobileMeta{grid-template-columns:1fr}.saleMobileActions button{min-width:100%}}
 @media print{.sidebar,.topbar,.sidebarBackdrop,.toastMessage,.acts{display:none!important}}
 
 /* Profile Dropdown */
@@ -315,6 +350,10 @@ tfoot td{padding:12px 14px;color:var(--royal-deep);font-weight:800;background:#e
         <span class="navIcon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
         <span class="navLabel">Visão Geral</span>
         <span class="activeRail"></span>
+      </button>
+      <button class="navItem" data-page="monthly" onclick="navTo('monthly')">
+        <span class="navIcon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 9h18M7 13h3M14 13h3M7 17h3"/></svg></span>
+        <span class="navLabel">Vendas do Mês</span>
       </button>
       <button class="navItem" data-page="sales" onclick="navTo('sales')">
         <span class="navIcon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>
@@ -442,17 +481,19 @@ var MS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto'
 var MS3 = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 var LSV = 'riva_vendas_v1', LSC = 'riva_corretores_v1', LSM = 'riva_metas_v1';
 var LVD = 'riva_venda_rascunho_v1';
+var LVM = 'riva_vendas_mes_selecionado_v1';
 
 var HIER = {
   rene: { nome:'Rene', gvs:['Lima','Aloisio','Pereira','Carol'] },
   cahu: { nome:'Cahú', gvs:['Priscila','Mikaella','Daniel','Claudio'] }
 };
 
-var PAGE_TITLES = { overview:'Visão Geral', sales:'Lançar Vendas', team:'Corretores', workforce:'Quadro Comercial', hierarchy:'Hierarquia', settings:'Configurações' };
+var PAGE_TITLES = { overview:'Visão Geral', monthly:'Vendas do Mês', sales:'Lançar Vendas', team:'Corretores', workforce:'Quadro Comercial', hierarchy:'Hierarquia', settings:'Configurações' };
 
-var S = { page:'overview', mes:'', ano:0, vendas:[], pessoas:[], quadroComercial:[], user:{}, canEdit:false, sheetsOK:false, sidebarOpen:true, ch:{}, config:{}, loadingSheets:false, pendingWrites:0, formDirty:false, needsRender:false };
+var S = { page:'overview', mes:'', ano:0, vendas:[], pessoas:[], quadroComercial:[], user:{}, canEdit:false, sheetsOK:false, sidebarOpen:true, ch:{}, config:{}, loadingSheets:false, pendingWrites:0, formDirty:false, needsRender:false, editingSaleId:'' };
 var _metas = {}, _filtLan = 'tod', _filtReg = null;
 var _rankRegStatus = 'com', _rankGVStatus = 'com', _rankGVReg = '';
+var _filtMensal = 'tod', _buscaMensal = '';
 
 // ─── INIT ───
 document.addEventListener('DOMContentLoaded', function() {
@@ -471,10 +512,15 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('profileCargo').textContent = S.user.cargo||'';
 
   var now = new Date();
-  S.ano = now.getFullYear();
-  S.mes = S.ano+'-'+String(now.getMonth()+1).padStart(2,'0');
-  document.getElementById('selMes').value = String(now.getMonth()+1).padStart(2,'0');
-  document.getElementById('selMesCurrent').textContent = MS3[now.getMonth()];
+  var mesInicial = '';
+  try { mesInicial = localStorage.getItem(LVM) || ''; } catch(e) {}
+  if(!/^\d{4}-\d{2}$/.test(mesInicial)){
+    mesInicial = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  }
+  S.ano = parseInt(mesInicial.slice(0,4),10);
+  S.mes = mesInicial;
+  document.getElementById('selMes').value = mesInicial.slice(5,7);
+  document.getElementById('selMesCurrent').textContent = MS3[parseInt(mesInicial.slice(5,7),10)-1];
   document.getElementById('selAno').value = String(S.ano);
   
 
@@ -529,11 +575,24 @@ function closeMobileMenu(){
   document.getElementById('menuToggle').classList.remove('isOpen');
 }
 function onMesChange(){
-  if(S.page==='sales') salvarRascunhoVenda();
+  var mesAnterior=S.mes;
+  if(S.page==='sales'&&S.editingSaleId){
+    var novoMes=document.getElementById('selAno').value+'-'+document.getElementById('selMes').value;
+    if(novoMes!==mesAnterior&&!confirm('Você está editando uma venda. Deseja sair da edição sem salvar?')){
+      selecionarMesVenda(mesAnterior);
+      return;
+    }
+    if(novoMes!==mesAnterior){
+      try{ localStorage.removeItem(chaveRascunhoVenda()); }catch(e){}
+      S.editingSaleId='';
+    }
+  }else if(S.page==='sales'){
+    salvarRascunhoVenda();
+  }
   var m=document.getElementById('selMes').value, a=document.getElementById('selAno').value;
   S.mes = a+'-'+m; S.ano = parseInt(a);
   document.getElementById('selMesCurrent').textContent = MS3[parseInt(m)-1];
-  
+  try{ localStorage.setItem(LVM,S.mes); }catch(e){}
   renderPage();
 }
 
@@ -571,7 +630,9 @@ function normalizarVenda(v){
     obs:v.obs||'',
     mes:normalizarMesVenda(v.mes)||normalizarMesVenda(v.data)||S.mes,
     criadoEm:v.criadoEm||'',
-    criadoPor:v.criadoPor||''
+    criadoPor:v.criadoPor||'',
+    atualizadoEm:v.atualizadoEm||'',
+    atualizadoPor:v.atualizadoPor||''
   };
 }
 function arrayResposta(j,chave){
@@ -640,6 +701,8 @@ async function loadSheets(opcoes){
   finally{ S.loadingSheets=false; }
 }
 async function postAction(payload){
+  payload=Object.assign({},payload||{});
+  if(S.user&&S.user.token&&!payload.token) payload.token=S.user.token;
   S.pendingWrites++;
   setSyn('loading');
   try{
@@ -759,6 +822,7 @@ function renderPage(){
   // Se não pode editar e tentou ir para sales, redirecionar para overview
   if(S.page==='sales' && !S.canEdit){ S.page='overview'; navTo('overview'); return; }
   if(S.page==='overview'){ el.innerHTML = viewOverview(); afterOverview(); }
+  else if(S.page==='monthly'){ el.innerHTML = viewMonthlySales(); afterMonthlySales(); }
   else if(S.page==='sales'){ el.innerHTML = viewSales(); afterSales(); }
   else if(S.page==='team'){ el.innerHTML = viewTeam(); afterTeam(); }
   else if(S.page==='workforce'){ el.innerHTML = viewWorkforce(); afterWorkforce(); }
@@ -994,6 +1058,164 @@ function renderMeta(){
 }
 
 // ═══════════════════════════════════════════════════════════════
+//  VENDAS DO MÊS — VISÍVEL PARA TODOS OS PERFIS
+// ═══════════════════════════════════════════════════════════════
+function nomeMesSelecionado(){
+  var partes=String(S.mes||'').split('-');
+  return (MS[parseInt(partes[1],10)-1]||'Mês')+' de '+(partes[0]||S.ano);
+}
+function viewMonthlySales(){
+  return ''
+    + '<div style="margin-bottom:18px"><span style="color:var(--royal);font-size:10px;font-weight:850;letter-spacing:.14em;text-transform:uppercase">CONSULTA GERAL</span><h1 style="margin:5px 0 3px;font-size:clamp(24px,2.5vw,34px);line-height:1;letter-spacing:-.04em">Vendas do Mês</h1><p style="margin:0;color:var(--muted);font-size:13px">Todas as vendas lançadas em '+escHtml(nomeMesSelecionado())+'. Esta visualização está disponível para todos os usuários.</p></div>'
+    + '<div class="monthlySummary">'
+    +   '<div class="monthlyStat"><span>Vendas lançadas</span><strong id="msTotal">0</strong><small>todos os status</small></div>'
+    +   '<div class="monthlyStat"><span>VGV lançado</span><strong id="msVgv">R$ 0,00</strong><small>valor total do período</small></div>'
+    +   '<div class="monthlyStat"><span>Comunicadas</span><strong id="msCom">0</strong><small id="msComPct">0% do total</small></div>'
+    +   '<div class="monthlyStat"><span>Não comunicadas</span><strong id="msNao">0</strong><small>aguardando comunicação</small></div>'
+    + '</div>'
+    + '<div class="panel">'
+    +   '<div class="panelHeader"><div><span class="eyebrow">LISTAGEM COMPLETA</span><h3>'+escHtml(nomeMesSelecionado())+'</h3></div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="countPill" id="msCount">0 vendas</span>'+(S.canEdit?'<button class="secondaryButton" style="height:34px;font-size:10px;padding:0 12px" onclick="exportXLS()">Exportar</button>':'')+'</div></div>'
+    +   '<div class="monthlyToolbar">'
+    +     '<label class="searchField" aria-label="Buscar venda"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="msBusca" type="search" autocomplete="off" placeholder="Buscar corretor, empreendimento ou responsável" oninput="filtrarVendasMes()"></label>'
+    +     '<select id="msStatus" class="filterSel" onchange="filtrarVendasMes()"><option value="tod">Todos os status</option><option value="com">Comunicadas</option><option value="nao">Não comunicadas</option><option value="can">Canceladas</option></select>'
+    +   '</div>'
+    +   '<div class="tableWrap monthlyTable monthlyDesktop"><table><thead><tr><th>Corretor</th><th>Empreendimento</th><th>VGV</th><th>Data</th><th>Status</th><th>Lançado por</th><th>Observação</th><th>Ações</th></tr></thead><tbody id="msTb"></tbody></table></div>'
+    +   '<div class="saleMobileList" id="msCards"></div>'
+    +   '<div class="emptyState" id="msEmpty" style="display:none"><strong>Nenhuma venda encontrada</strong><small>Altere a busca, o status ou o mês selecionado.</small></div>'
+    + '</div>';
+}
+function afterMonthlySales(){
+  var busca=document.getElementById('msBusca');
+  var status=document.getElementById('msStatus');
+  if(busca) busca.value=_buscaMensal;
+  if(status) status.value=_filtMensal;
+  renderMonthlySales();
+}
+function filtrarVendasMes(){
+  var busca=document.getElementById('msBusca');
+  var status=document.getElementById('msStatus');
+  _buscaMensal=busca?busca.value:'';
+  _filtMensal=status?status.value:'tod';
+  renderMonthlySales();
+}
+function vendasMesFiltradas(){
+  var busca=normTxt(_buscaMensal);
+  return S.vendas.filter(function(v){
+    if(v.mes!==S.mes) return false;
+    if(_filtMensal==='com'&&!isCom(v)) return false;
+    if(_filtMensal==='nao'&&!(v.status==='nao_comunicada'||v.status==='pendente')) return false;
+    if(_filtMensal==='can'&&v.status!=='cancelado') return false;
+    if(!busca) return true;
+    return normTxt([
+      v.corretor,v.empreendimento,v.obs,v.criadoPor,v.atualizadoPor,
+      isCom(v)?'comunicada':v.status
+    ].join(' ')).indexOf(busca)>=0;
+  }).sort(function(a,b){
+    var dataA=String(a.data||'')+' '+String(a.criadoEm||'');
+    var dataB=String(b.data||'')+' '+String(b.criadoEm||'');
+    return dataB.localeCompare(dataA);
+  });
+}
+function codigoIdVenda(id){ return encodeURIComponent(String(id||'')); }
+function idVendaDoCodigo(codigo){
+  try{ return decodeURIComponent(String(codigo||'')); }catch(e){ return String(codigo||''); }
+}
+function botoesVendaMensal(v,classe){
+  if(!S.canEdit) return '<span class="qcPermission read">Somente leitura</span>';
+  var codigo=codigoIdVenda(v.id), comunicada=isCom(v);
+  return '<div class="'+(classe||'acts')+'">'
+    + '<button onclick="editarVendaCod(\''+codigo+'\')">Editar</button>'
+    + '<button onclick="toggleComCod(this,\''+codigo+'\','+(!comunicada)+')" style="'+(comunicada?'color:#0f6b4a;border-color:#c3eed9':'color:#854d0e;border-color:#f5e5a0')+'">'+(comunicada?'Desmarcar':'Comunicar')+'</button>'
+    + '<button class="dl" onclick="delVCod(this,\''+codigo+'\')">Excluir</button>'
+    + '</div>';
+}
+function renderMonthlySales(){
+  var todas=S.vendas.filter(function(v){ return v.mes===S.mes; });
+  var comunicadas=todas.filter(isCom);
+  var nao=todas.filter(function(v){ return !isCom(v)&&v.status!=='cancelado'; });
+  var totalVgv=todas.filter(function(v){ return v.status!=='cancelado'; }).reduce(function(s,v){ return s+(numeroBRL(v.vgv)||0); },0);
+  var lista=vendasMesFiltradas();
+  var totalEl=document.getElementById('msTotal'); if(totalEl) totalEl.textContent=todas.length;
+  var vgvEl=document.getElementById('msVgv'); if(vgvEl) vgvEl.textContent=brlCompleto(totalVgv);
+  var comEl=document.getElementById('msCom'); if(comEl) comEl.textContent=comunicadas.length;
+  var pctEl=document.getElementById('msComPct'); if(pctEl) pctEl.textContent=(todas.length?Math.round(comunicadas.length/todas.length*100):0)+'% do total';
+  var naoEl=document.getElementById('msNao'); if(naoEl) naoEl.textContent=nao.length;
+  var count=document.getElementById('msCount'); if(count) count.textContent=lista.length+' venda'+(lista.length!==1?'s':'');
+
+  var tb=document.getElementById('msTb');
+  var cards=document.getElementById('msCards');
+  var empty=document.getElementById('msEmpty');
+  if(!tb||!cards) return;
+  if(!lista.length){
+    tb.innerHTML=''; cards.innerHTML='';
+    if(empty) empty.style.display='flex';
+    return;
+  }
+  if(empty) empty.style.display='none';
+  tb.innerHTML=lista.map(function(v){
+    return '<tr>'
+      +'<td><strong style="font-size:11px;color:var(--ink)">'+escHtml(v.corretor||'—')+'</strong></td>'
+      +'<td>'+escHtml(v.empreendimento||'—')+'</td>'
+      +'<td class="vgv">'+brlCompleto(v.vgv)+'</td>'
+      +'<td>'+fdt(v.data)+'</td>'
+      +'<td>'+bdg(v.status)+'</td>'
+      +'<td>'+escHtml(v.criadoPor||'—')+'</td>'
+      +'<td class="obsCell" title="'+escHtml(v.obs||'Sem observação')+'">'+escHtml(v.obs||'—')+'</td>'
+      +'<td>'+botoesVendaMensal(v,'acts')+'</td>'
+      +'</tr>';
+  }).join('');
+  cards.innerHTML=lista.map(function(v){
+    return '<article class="saleMobileCard">'
+      +'<div class="saleMobileHead"><div><strong>'+escHtml(v.corretor||'—')+'</strong><small>'+escHtml(v.empreendimento||'—')+'</small></div>'+bdg(v.status)+'</div>'
+      +'<div class="saleMobileValue">'+brlCompleto(v.vgv)+'</div>'
+      +'<div class="saleMobileMeta"><div><span>Data</span><strong>'+fdt(v.data)+'</strong></div><div><span>Lançado por</span><strong>'+escHtml(v.criadoPor||'—')+'</strong></div></div>'
+      +(v.obs?'<div class="saleMobileObs">'+escHtml(v.obs)+'</div>':'')
+      +botoesVendaMensal(v,'saleMobileActions')
+      +'</article>';
+  }).join('');
+}
+function editarVendaCod(codigo){ editarVenda(idVendaDoCodigo(codigo)); }
+function toggleComCod(botao,codigo,com){ toggleCom(botao,idVendaDoCodigo(codigo),com); }
+function delVCod(botao,codigo){ delV(botao,idVendaDoCodigo(codigo)); }
+function editarVenda(id){
+  if(!S.canEdit){ toast('Seu perfil possui somente visualização das vendas.',true); return; }
+  var venda=S.vendas.find(function(v){ return String(v.id)===String(id); });
+  if(!venda){ toast('Venda não encontrada. Sincronize e tente novamente.',true); return; }
+  selecionarMesVenda(venda.mes||normalizarMesVenda(venda.data));
+  S.editingSaleId=String(venda.id);
+  try{
+    localStorage.setItem(chaveRascunhoVenda(),JSON.stringify({
+      editingSaleId:S.editingSaleId,
+      corretor:venda.corretor||'',
+      empreendimento:venda.empreendimento||'',
+      vgv:brlCompleto(venda.vgv),
+      data:venda.data||'',
+      status:venda.status||'nao_comunicada',
+      obs:venda.obs||'',
+      criadoEm:venda.criadoEm||'',
+      criadoPor:venda.criadoPor||'',
+      atualizadoEm:new Date().toISOString()
+    }));
+  }catch(e){}
+  navTo('sales');
+  document.getElementById('pageTitle').textContent='Editar Venda';
+  toast('Venda carregada para edição.');
+}
+function selecionarMesVenda(mes){
+  mes=normalizarMesVenda(mes);
+  if(!mes) return;
+  S.mes=mes;
+  S.ano=parseInt(mes.slice(0,4),10);
+  var campoMes=document.getElementById('selMes');
+  var campoAno=document.getElementById('selAno');
+  var rotulo=document.getElementById('selMesCurrent');
+  if(campoMes) campoMes.value=mes.slice(5,7);
+  if(campoAno) campoAno.value=String(S.ano);
+  if(rotulo) rotulo.textContent=MS3[parseInt(mes.slice(5,7),10)-1];
+  try{ localStorage.setItem(LVM,mes); }catch(e){}
+}
+
+// ═══════════════════════════════════════════════════════════════
 //  LANÇAR VENDAS
 // ═══════════════════════════════════════════════════════════════
 function chaveRascunhoVenda(){
@@ -1009,18 +1231,24 @@ function lerRascunhoVenda(){
 function capturarRascunhoVenda(){
   var cor=document.getElementById('lvCor');
   if(!cor) return null;
+  var original=S.editingSaleId
+    ?S.vendas.find(function(v){ return String(v.id)===String(S.editingSaleId); })
+    :null;
   return {
+    editingSaleId:S.editingSaleId||'',
     corretor:cor.value||'',
     empreendimento:(document.getElementById('lvEmInput')||{}).value||'',
     vgv:(document.getElementById('lvVG')||{}).value||'',
     data:(document.getElementById('lvDt')||{}).value||'',
     status:(document.getElementById('lvSt')||{}).value||'nao_comunicada',
     obs:(document.getElementById('lvOb')||{}).value||'',
+    criadoEm:original&&original.criadoEm||'',
+    criadoPor:original&&original.criadoPor||'',
     atualizadoEm:new Date().toISOString()
   };
 }
 function rascunhoVendaTemConteudo(r){
-  return !!(r&&(r.corretor||r.empreendimento||r.vgv||r.obs||r.status==='comunicada'));
+  return !!(r&&(r.editingSaleId||r.corretor||r.empreendimento||r.vgv||r.obs||r.status==='comunicada'));
 }
 function salvarRascunhoVenda(){
   var r=capturarRascunhoVenda();
@@ -1033,6 +1261,7 @@ function salvarRascunhoVenda(){
 function restaurarRascunhoVenda(){
   var r=lerRascunhoVenda();
   if(!r||!rascunhoVendaTemConteudo(r)) return false;
+  if(r.editingSaleId) S.editingSaleId=String(r.editingSaleId);
   fillSelCor(r.corretor||'');
   var campos={lvEmInput:r.empreendimento,lvDt:r.data,lvSt:r.status,lvOb:r.obs};
   Object.keys(campos).forEach(function(id){
@@ -1079,7 +1308,7 @@ function prepararRascunhoVenda(){
   fillSelCor();
   var dt=document.getElementById('lvDt');
   var st=document.getElementById('lvSt');
-  if(dt&&!dt.value) dt.value=dataHojeLocal();
+  if(dt&&!dt.value) dt.value=dataPadraoMesSelecionado();
   if(st&&!st.value) st.value='nao_comunicada';
   restaurarRascunhoVenda();
   document.querySelectorAll('#lvCor,#lvEmInput,#lvVG,#lvDt,#lvSt,#lvOb').forEach(function(el){
@@ -1087,19 +1316,27 @@ function prepararRascunhoVenda(){
     el.addEventListener('change',salvarRascunhoVenda);
   });
 }
+function dataPadraoMesSelecionado(){
+  var hoje=dataHojeLocal();
+  return normalizarMesVenda(hoje)===S.mes?hoje:(S.mes+'-01');
+}
 function viewSales(){
+  var rascunho=lerRascunhoVenda();
+  if(!S.editingSaleId&&rascunho&&rascunho.editingSaleId) S.editingSaleId=String(rascunho.editingSaleId);
+  var editando=!!S.editingSaleId;
   return ''
-    + '<div style="margin-bottom:18px"><span style="color:var(--royal);font-size:10px;font-weight:850;letter-spacing:.14em;text-transform:uppercase">REGISTRO</span><h1 style="margin:5px 0 3px;font-size:clamp(24px,2.5vw,34px);line-height:1;letter-spacing:-.04em">Lançar Vendas</h1><p style="margin:0;color:var(--muted);font-size:13px">Registre e acompanhe as vendas do mês.</p></div>'
+    + '<div style="margin-bottom:18px"><span style="color:var(--royal);font-size:10px;font-weight:850;letter-spacing:.14em;text-transform:uppercase">'+(editando?'EDIÇÃO SEGURA':'REGISTRO')+'</span><h1 style="margin:5px 0 3px;font-size:clamp(24px,2.5vw,34px);line-height:1;letter-spacing:-.04em">'+(editando?'Editar Venda':'Lançar Vendas')+'</h1><p style="margin:0;color:var(--muted);font-size:13px">'+(editando?'Altere os dados e salve para atualizar a mesma venda na nuvem.':'Registre e acompanhe as vendas do mês.')+'</p></div>'
     + '<div class="dualGrid" style="grid-template-columns:420px 1fr;align-items:start">'
-    +   '<div class="panel"><div class="panelHeader"><div><span class="eyebrow">NOVA VENDA</span><h3>Registrar</h3></div></div>'
+    +   '<div class="panel"><div class="panelHeader"><div><span class="eyebrow">'+(editando?'VENDA JÁ LANÇADA':'NOVA VENDA')+'</span><h3>'+(editando?'Editar registro':'Registrar')+'</h3></div></div>'
     +     '<div style="padding:18px" class="formCard">'
+    +       (editando?'<div class="editModeBanner"><span>Você está editando uma venda existente.</span><button onclick="cancelarEdicaoVenda()">Cancelar edição</button></div>':'')
     +       '<div class="fFld"><label>Corretor</label><select id="lvCor"></select></div>'
     +       '<div class="fFld"><label>Empreendimento</label><input type="text" id="lvEmInput" placeholder="Ex.: Riva Parangaba"></div>'
     +       '<div class="fRow"><div class="fFld"><label>VGV (R$)</label><input type="text" id="lvVG" inputmode="numeric" autocomplete="off" placeholder="R$ 0,00" onfocus="iniciarEdicaoVGV(this)" oninput="mascaraVGV(this)" onpaste="colarVGV(event,this)" onblur="finalizarVGV(this)"></div><div class="fFld"><label>Data</label><input type="date" id="lvDt"></div></div>'
     +       '<div class="fFld"><label>Status</label><select id="lvSt"><option value="nao_comunicada">Não Comunicada</option><option value="comunicada">Comunicada</option></select></div>'
     +       '<div class="fFld"><label>Observação (opcional)</label><textarea id="lvOb" placeholder="Detalhes..."></textarea></div>'
     +       '<div style="margin:-2px 0 12px;padding:9px 11px;border-radius:9px;background:#edf7ff;color:#31527c;font-size:10px;line-height:1.45">Rascunho protegido automaticamente. Se a conexão oscilar ou a página atualizar, os campos preenchidos serão recuperados.</div>'
-    +       '<div style="display:flex;gap:10px;margin-top:4px"><button class="primaryButton" id="lvSalvarBtn" onclick="salvarV()">Registrar Venda</button><button class="secondaryButton" onclick="limForm()">Limpar</button></div>'
+    +       '<div style="display:flex;gap:10px;margin-top:4px;flex-wrap:wrap"><button class="primaryButton" id="lvSalvarBtn" onclick="salvarV()">'+(editando?'Salvar Alterações':'Registrar Venda')+'</button><button class="secondaryButton" onclick="'+(editando?'cancelarEdicaoVenda()':'limForm()')+'">'+(editando?'Cancelar':'Limpar')+'</button></div>'
     +     '</div>'
     +   '</div>'
     +   '<div class="panel"><div class="panelHeader"><div><span class="eyebrow">DO MÊS</span><h3>Vendas Lançadas</h3></div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="countPill" id="lvN">0</span>'+(S.canEdit?'<button class="secondaryButton" style="height:34px;font-size:10px;padding:0 12px" onclick="exportXLS()">Exportar</button>':'')+'</div></div>'
@@ -1128,8 +1365,15 @@ function fillSelCor(valorSelecionado){
 function limForm(){
   ['lvCor','lvEmInput','lvVG','lvOb'].forEach(function(id){ var e=document.getElementById(id); if(e) e.value=''; });
   var st=document.getElementById('lvSt'); if(st) st.value='nao_comunicada';
-  var dt=document.getElementById('lvDt'); if(dt) dt.value=dataHojeLocal();
+  var dt=document.getElementById('lvDt'); if(dt) dt.value=dataPadraoMesSelecionado();
   try{ localStorage.removeItem(chaveRascunhoVenda()); }catch(e){}
+}
+function cancelarEdicaoVenda(){
+  S.editingSaleId='';
+  try{ localStorage.removeItem(chaveRascunhoVenda()); }catch(e){}
+  document.getElementById('pageTitle').textContent=PAGE_TITLES.sales;
+  renderPage();
+  toast('Edição cancelada. A venda original não foi alterada.');
 }
 function novoIdVenda(){
   if(window.crypto&&typeof window.crypto.randomUUID==='function') return 'v_'+window.crypto.randomUUID();
@@ -1146,8 +1390,13 @@ async function salvarV(){
   if(!em){ toast('Informe o empreendimento',true); return; }
   if(vg<=0){ toast('VGV deve ser maior que zero',true); return; }
   if(!dt){ toast('Informe a data',true); return; }
+  var eraEdicao=!!S.editingSaleId;
+  var original=eraEdicao
+    ?S.vendas.find(function(v){ return String(v.id)===String(S.editingSaleId); })
+    :null;
+  if(eraEdicao&&!original){ toast('A venda original não foi encontrada. Sincronize e tente novamente.',true); return; }
   var venda={
-    id:novoIdVenda(),
+    id:eraEdicao?String(original.id):novoIdVenda(),
     corretor:cor,
     empreendimento:em,
     vgv:vg,
@@ -1155,13 +1404,15 @@ async function salvarV(){
     status:st,
     data:normalizarDataVenda(dt),
     obs:ob,
-    mes:normalizarMesVenda(S.mes)||normalizarMesVenda(dt),
-    criadoEm:new Date().toISOString(),
-    criadoPor:S.user&&S.user.usuario||''
+    mes:normalizarMesVenda(dt),
+    criadoEm:original&&original.criadoEm||new Date().toISOString(),
+    criadoPor:original&&original.criadoPor||(S.user&&S.user.usuario||''),
+    atualizadoEm:new Date().toISOString(),
+    atualizadoPor:S.user&&S.user.usuario||''
   };
   var botao=document.getElementById('lvSalvarBtn');
   var texto=botao&&botao.textContent;
-  if(botao){ botao.disabled=true; botao.textContent='Gravando na nuvem...'; }
+  if(botao){ botao.disabled=true; botao.textContent=eraEdicao?'Atualizando na nuvem...':'Gravando na nuvem...'; }
   salvarRascunhoVenda();
   try{
     var retorno=await postAction({action:'salvarVenda',venda:venda});
@@ -1170,9 +1421,17 @@ async function salvarV(){
     if(idx>=0) S.vendas[idx]=salva;
     else S.vendas.push(salva);
     saveLocal();
-    limForm();
-    renderLan();
-    toast('Venda gravada e confirmada na nuvem!');
+    if(eraEdicao){
+      try{ localStorage.removeItem(chaveRascunhoVenda()); }catch(e){}
+      S.editingSaleId='';
+      selecionarMesVenda(salva.mes);
+      navTo('monthly');
+      toast('Venda atualizada e confirmada na nuvem!');
+    }else{
+      limForm();
+      renderLan();
+      toast('Venda gravada e confirmada na nuvem!');
+    }
   }catch(e){
     salvarRascunhoVenda();
     toast('A venda NÃO foi salva. Seus campos foram mantidos: '+(e.message||'verifique a conexão.'),true);
@@ -1200,18 +1459,23 @@ function renderLan(){
   if(em) em.style.display='none';
   tb.innerHTML=vds.map(function(v){
     var c=isCom(v);
-    var btnCom='<button onclick="toggleCom(this,\''+v.id+'\','+(!c)+')" style="'+(c?'color:#15a46f;border-color:#c3eed9':'color:#eab308;border-color:#f5e5a0')+'">'+(c?'✓ Com.':'○ Comunicar')+'</button>';
-    return '<tr><td><strong style="font-size:11px">'+escHtml(v.corretor||'--')+'</strong></td><td>'+escHtml(v.empreendimento||'--')+'</td><td class="vgv">'+brlCompleto(v.vgv)+'</td><td style="color:#687695">'+fdt(v.data)+'</td><td>'+bdg(v.status)+'</td><td><div class="acts">'+btnCom+(S.canEdit?'<button class="dl" onclick="delV(this,\''+v.id+'\')">Excluir</button>':'')+'</div></td></tr>';
+    var codigo=codigoIdVenda(v.id);
+    var btnCom='<button onclick="toggleComCod(this,\''+codigo+'\','+(!c)+')" style="'+(c?'color:#15a46f;border-color:#c3eed9':'color:#eab308;border-color:#f5e5a0')+'">'+(c?'✓ Com.':'○ Comunicar')+'</button>';
+    return '<tr><td><strong style="font-size:11px">'+escHtml(v.corretor||'--')+'</strong></td><td>'+escHtml(v.empreendimento||'--')+'</td><td class="vgv">'+brlCompleto(v.vgv)+'</td><td style="color:#687695">'+fdt(v.data)+'</td><td>'+bdg(v.status)+'</td><td><div class="acts">'+(S.canEdit?'<button onclick="editarVendaCod(\''+codigo+'\')">Editar</button>':'')+btnCom+(S.canEdit?'<button class="dl" onclick="delVCod(this,\''+codigo+'\')">Excluir</button>':'')+'</div></td></tr>';
   }).join('');
 }
+function atualizarListasVendasVisiveis(){
+  if(document.getElementById('lvTb')) renderLan();
+  if(document.getElementById('msTb')) renderMonthlySales();
+}
 async function toggleCom(botao,id,com){
-  var idx=S.vendas.findIndex(function(v){ return v.id===id; }); if(idx===-1) return;
-  var atual=Object.assign({},S.vendas[idx],{status:com?'comunicada':'nao_comunicada'});
+  var idx=S.vendas.findIndex(function(v){ return String(v.id)===String(id); }); if(idx===-1) return;
+  var atual=Object.assign({},S.vendas[idx],{status:com?'comunicada':'nao_comunicada',atualizadoEm:new Date().toISOString(),atualizadoPor:S.user&&S.user.usuario||''});
   if(botao) botao.disabled=true;
   try{
     var retorno=await postAction({action:'salvarVenda',venda:atual});
     S.vendas[idx]=normalizarVenda(retorno.venda||atual);
-    saveLocal(); renderLan();
+    saveLocal(); atualizarListasVendasVisiveis();
     toast(com?'Marcada como Comunicada!':'Marcada como Não Comunicada');
   }catch(e){
     if(botao) botao.disabled=false;
@@ -1223,8 +1487,9 @@ async function delV(botao,id){
   if(botao) botao.disabled=true;
   try{
     await postAction({action:'excluirVenda',id:id});
-    S.vendas=S.vendas.filter(function(v){ return v.id!==id; });
-    saveLocal(); renderLan();
+    S.vendas=S.vendas.filter(function(v){ return String(v.id)!==String(id); });
+    if(String(S.editingSaleId)===String(id)) S.editingSaleId='';
+    saveLocal(); atualizarListasVendasVisiveis();
     toast('Venda excluída da nuvem');
   }catch(e){
     if(botao) botao.disabled=false;
