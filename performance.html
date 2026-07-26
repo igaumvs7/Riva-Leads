@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- RIVA CORREÇÃO FINAL 2026-07-26: acompanhamento semanal totalmente manual -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -68,7 +69,6 @@
 .pTable input.pIn:focus{outline:0;border-color:var(--royal);background:#fff;box-shadow:0 0 0 2px rgba(22,72,216,.1)}
 .pSyncCell{display:inline-flex;align-items:center;justify-content:flex-end;gap:6px;min-width:76px;padding:5px 7px;border-radius:6px;background:#eef7ff;color:#1648d8;font-weight:800;font-variant-numeric:tabular-nums}
 .pSyncCell::before{content:'●';font-size:7px;color:#15a46f}
-.dataSourceNotice{margin-bottom:16px;padding:11px 14px;border:1px solid #b9d5ff;border-radius:11px;background:#eef7ff;color:#31527c;font-size:11px;font-weight:650;line-height:1.5}
 [data-theme="dark"] .pTable thead th{background:#0d1018;color:#858ea3;border-color:#242b3b}
 [data-theme="dark"] .pTable tbody td{border-color:#242b3b;color:#b5bdcd}
 [data-theme="dark"] .pTable tbody td.strong{color:#eef2fb}
@@ -77,7 +77,6 @@
 [data-theme="dark"] .pTable input.pIn:hover{border-color:#292f3e;background:#181d2a}
 [data-theme="dark"] .pTable input.pIn:focus{background:#181d2a;border-color:#7ea3ff}
 [data-theme="dark"] .pSyncCell{background:#17243d;color:#8eafff}
-[data-theme="dark"] .dataSourceNotice{border-color:#2b4c7d;background:#17243d;color:#b7ccf3}
 .pBad{color:#dc2626;font-weight:700}
 .pGood{color:#15a46f;font-weight:700}
 .pWarn{color:#eab308;font-weight:700}
@@ -770,7 +769,7 @@ function setHouseView(v){
   renderHouse();
 }
 
-var S = { page:'rene', mes:'', ano:0, vendas:[], corretores:[], pessoas:[], quadroComercial:[], metas:{}, user:{}, canEdit:false, sheetsOK:false, sidebarOpen:window.innerWidth>1450, sT:null, config:{}, loadingRemote:false };
+var S = { page:'rene', mes:'', ano:0, vendas:[], corretores:[], pessoas:[], quadroComercial:[], metas:{}, user:{}, canEdit:false, sheetsOK:false, sidebarOpen:window.innerWidth>1450, sT:null, config:{}, loadingRemote:false, needsRender:false };
 var PERF_CACHE_VERSION = 'v2';
 
 function perfStorageKey(tipo) {
@@ -795,6 +794,20 @@ function arrayResposta(j,chave){
   if(j&&j.data&&Array.isArray(j.data[chave])) return j.data[chave];
   return [];
 }
+function normalizarMesVendaExec(valor){
+  if(!valor) return '';
+  var texto=String(valor).trim(), iso=texto.match(/^(\d{4})-(\d{2})/);
+  if(iso) return iso[1]+'-'+iso[2];
+  var data=new Date(valor);
+  return isNaN(data.getTime())?'':data.getFullYear()+'-'+String(data.getMonth()+1).padStart(2,'0');
+}
+function normalizarDataVendaExec(valor){
+  if(!valor) return '';
+  var texto=String(valor).trim(), iso=texto.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if(iso) return iso[1]+'-'+iso[2]+'-'+iso[3];
+  var data=new Date(valor);
+  return isNaN(data.getTime())?'':data.getFullYear()+'-'+String(data.getMonth()+1).padStart(2,'0')+'-'+String(data.getDate()).padStart(2,'0');
+}
 function normalizarVendaExecutiva(v){
   return {
     id:v.id||'',
@@ -802,10 +815,10 @@ function normalizarVendaExecutiva(v){
     empreendimento:v.empreendimento||'',
     vgv:parseFloat(v.vgv||v.valor)||0,
     valor:parseFloat(v.valor||v.vgv)||0,
-    data:v.data||'',
+    data:normalizarDataVendaExec(v.data),
     obs:v.obs||'',
     status:v.status||'nao_comunicada',
-    mes:v.mes||'',
+    mes:normalizarMesVendaExec(v.mes)||normalizarMesVendaExec(v.data),
     criadoPor:v.criadoPor||'',
     criadoEm:v.criadoEm||''
   };
@@ -832,7 +845,7 @@ function persistGestaoCache(){
 function performanceEmEdicao(){
   var ativo=document.activeElement;
   var conteudo=document.getElementById('pageContent');
-  if(window._houseDirty||window._regionalDirty||Object.keys(pendingConfig()).length) return true;
+  if(window._houseDirty||window._regionalDirty||window._equipesDirty||Object.keys(pendingConfig()).length) return true;
   return !!(ativo&&conteudo&&conteudo.contains(ativo)&&/^(INPUT|TEXTAREA|SELECT)$/.test(ativo.tagName));
 }
 function pendingConfig() { return readLocalObject(perfStorageKey('pending')); }
@@ -963,7 +976,8 @@ async function loadRemote(){
     });
     S.config = merged;
     persistConfigCache();
-    renderPage();
+    if(performanceEmEdicao()) S.needsRender=true;
+    else { S.needsRender=false; renderPage(); }
 
     var pendentes = Object.keys(pending);
     if (pendentes.length) {
@@ -1075,13 +1089,6 @@ function mesVendaExec(v){
   var d=new Date(data);
   return isNaN(d.getTime())?'':d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
 }
-function semanaVendaExec(v){
-  var data=String(v&&v.data||'');
-  var achou=data.match(/^\d{4}-\d{2}-(\d{2})/);
-  var dia=achou?parseInt(achou[1],10):new Date(data).getDate();
-  if(!isFinite(dia)||dia<1) return 1;
-  return Math.min(5,Math.floor((dia-1)/7)+1);
-}
 function regKeyExec(valor){
   var n=normExec(valor);
   if(n.indexOf('rene')>=0) return 'rene';
@@ -1101,20 +1108,6 @@ function infoVendaExecutiva(v){
     });
   }
   return {gv:gv,reg:reg,corretor:corretor};
-}
-function aplicarVendasGestaoRegional(d,reg){
-  for(var i=1;i<=5;i++){
-    d['s'+i].vd=0;
-    d['s'+i].vgv=0;
-  }
-  (S.vendas||[]).forEach(function(venda){
-    if(!vendaComunicadaExec(venda)||mesVendaExec(venda)!==S.mes) return;
-    if(infoVendaExecutiva(venda).reg!==reg) return;
-    var semana=semanaVendaExec(venda);
-    d['s'+semana].vd++;
-    d['s'+semana].vgv+=num(venda.vgv||venda.valor);
-  });
-  return d;
 }
 function aplicarRealizadoGestaoHouse(d){
   var ativos={};
@@ -1179,7 +1172,7 @@ function dadosRegional(reg){
   var d = {};
   for(var i=1;i<=5;i++) d['s'+i] = Object.assign({c:0,a:0,v:0,pt:0,pa:0,vd:0,vgv:0},salvo['s'+i]||{});
   d.meta = Object.assign({c:0,a:0,v:0,pt:0,pa:0,vd:0,vgv:0},salvo.meta||{});
-  return aplicarVendasGestaoRegional(d,reg);
+  return d;
 }
 
 function viewRegional(reg){
@@ -1203,8 +1196,6 @@ function viewRegional(reg){
     +   '</div>'
     + '</div>'
 
-    + '<div class="dataSourceNotice">Venda e VGV são preenchidos automaticamente com as vendas <strong>Comunicadas</strong> da Gestão de Vendas. Cadastro, agendamento, visita, pastas e metas continuam editáveis nesta tela.</div>'
-
     // Barra VGV Semanal (destaque)
     + '<div class="vgvBar" id="vgvBar"></div>'
 
@@ -1213,7 +1204,7 @@ function viewRegional(reg){
 
     // Tabela LANÇAMENTO SEMANAL
     + '<div class="pPanel">'
-    +   '<div class="pPanelHead"><div><span class="eyebrow">LANÇAMENTO SEMANAL</span><h3>Volume por Semana</h3></div><small style="color:var(--muted);font-size:11px">Azul = Gestão de Vendas · demais células são editáveis</small></div>'
+    +   '<div class="pPanelHead"><div><span class="eyebrow">LANÇAMENTO SEMANAL</span><h3>Volume por Semana</h3></div><small style="color:var(--muted);font-size:11px">Preenchimento totalmente manual · digite os valores das semanas e metas</small></div>'
     +   '<div class="pTable"><table>'
     +     '<thead><tr><th>Semana</th><th class="right">Cadastro</th><th class="right">Agendamento</th><th class="right">Visita</th><th class="right">Pasta Total</th><th class="right">Pasta Aprovada</th><th class="right">Venda</th><th class="right">VGV da Semana</th></tr></thead>'
     +     '<tbody id="regSemBody"></tbody>'
@@ -1266,11 +1257,7 @@ function renderRegional(reg){
     COLS.forEach(function(k){
       var v = num(d['s'+s][k]);
       var vv = k==='vgv' ? (v?brlFull(v):'') : (v||'');
-      if(k==='vd'||k==='vgv'){
-        html += '<td class="right"><span class="pSyncCell" title="Sincronizado da Gestão de Vendas">'+(k==='vgv'?brlFull(v):v)+'</span></td>';
-      }else{
-        html += '<td class="right"><input class="pIn" type="text" data-reg="'+reg+'" data-sem="'+s+'" data-k="'+k+'" value="'+vv+'"></td>';
-      }
+      html += '<td class="right"><input class="pIn" type="text" data-reg="'+reg+'" data-sem="'+s+'" data-k="'+k+'" value="'+vv+'"'+(k==='vgv'?' data-brl="1"':'')+'></td>';
     });
     html += '</tr>';
   }
@@ -2363,8 +2350,8 @@ function viewEquipes(){
     + '<div class="pPanel">'
     +   '<div class="pPanelHead"><div><span class="eyebrow">CONVOCAÇÕES DA AGENDA</span><h3>E-mails dos Gerentes Regionais</h3></div><small style="color:var(--muted);font-size:11px">Usados ao convocar Rene, Cahú ou os dois</small></div>'
     +   '<div class="regionalEmailGrid">'
-    +     '<div class="regionalEmailField"><label for="eqEmailRene">Regional Rene</label><input type="email" id="eqEmailRene" placeholder="rene@empresa.com"></div>'
-    +     '<div class="regionalEmailField"><label for="eqEmailCahu">Regional Cahú</label><input type="email" id="eqEmailCahu" placeholder="cahu@empresa.com"></div>'
+    +     '<div class="regionalEmailField"><label for="eqEmailRene">Regional Rene</label><input type="email" id="eqEmailRene" placeholder="rene@empresa.com" oninput="window._equipesDirty=true"></div>'
+    +     '<div class="regionalEmailField"><label for="eqEmailCahu">Regional Cahú</label><input type="email" id="eqEmailCahu" placeholder="cahu@empresa.com" oninput="window._equipesDirty=true"></div>'
     +   '</div>'
     + '</div>'
     + '<div class="pPanel">'
@@ -2413,9 +2400,10 @@ function renderEquipes(){
 
   // hook nos inputs
   document.querySelectorAll('#eqBody input.pIn').forEach(function(inp){
-    inp.addEventListener('blur', function(){
+    inp.addEventListener('input', function(){
       var i = parseInt(this.dataset.idx), k = this.dataset.k;
       _eqDraft[_eqTab][i][k] = this.value.trim();
+      window._equipesDirty=true;
     });
   });
 
@@ -2437,6 +2425,7 @@ function renderEquipes(){
 }
 function toggleAtivo(i, checked){
   _eqDraft[_eqTab][i].ativo = checked;
+  window._equipesDirty=true;
   renderEquipes();
 }
 function adicionarGV(){
@@ -2444,12 +2433,14 @@ function adicionarGV(){
   if(!nome || !nome.trim()) return;
   if(!_eqDraft[_eqTab]) _eqDraft[_eqTab] = [];
   _eqDraft[_eqTab].push({nome:nome.trim(), email:'', ativo:true});
+  window._equipesDirty=true;
   renderEquipes();
 }
 function removerGV(i){
   var p = _eqDraft[_eqTab][i];
   if(!confirm('Remover DEFINITIVAMENTE '+p.nome+'? (para preservar histórico, prefira marcar como Desligado)')) return;
   _eqDraft[_eqTab].splice(i, 1);
+  window._equipesDirty=true;
   renderEquipes();
 }
 function esc(s){ return String(s||'').replace(/[<>&"]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];}); }
@@ -2547,6 +2538,7 @@ function salvarEquipes(){
 
   // Persiste
   saveConfigMap({equipes:_eqDraft, emailsRegionais:emailsRegionais}).then(function(ok){
+    if(ok) window._equipesDirty=false;
     toast(ok ? 'Equipes salvas e hierarquia atualizada!' : 'Salvo local. Sem conexão.', !ok);
   });
 }
