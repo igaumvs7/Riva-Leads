@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- RIVA V18.1 2026-07-26: posição das barras preservada durante sincronização -->
+<!-- RIVA V19 2026-07-26: House unificada, edição mensal segura e painéis sem rolagem instável -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -632,6 +632,156 @@
   .hManagerSelect{width:100%;max-width:none}
 }
 
+/* ═══ V19 · HOUSE — DESEMPENHO SEM TABELA LARGA ════════════════ */
+.hv19Page{display:flex;flex-direction:column;gap:16px;color:var(--h-text)}
+.hv19Toolbar{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  padding:15px 17px;border:1px solid var(--h-border);border-radius:15px;
+  background:var(--h-surface-raised);box-shadow:var(--h-shadow)
+}
+.hv19ToolbarCopy{min-width:220px;flex:1}
+.hv19Eyebrow{display:block;margin-bottom:4px;color:var(--h-primary);font-size:9px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+.hv19Toolbar h2{margin:0;color:var(--h-text);font-size:clamp(18px,2vw,24px);letter-spacing:-.025em}
+.hv19Toolbar p{margin:5px 0 0;color:var(--h-muted);font-size:11px}
+.hv19Year{display:flex;align-items:center;gap:8px;color:var(--h-muted);font-size:10px;font-weight:850}
+.hv19Year input{width:94px;height:38px;padding:0 10px;border:1px solid var(--h-border);border-radius:9px;background:var(--h-surface);color:var(--h-text);font:850 12px/1 inherit;text-align:center}
+.hv19Tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:5px;border:1px solid var(--h-border);border-radius:14px;background:var(--h-surface-alt)}
+.hv19Tabs button{min-height:42px;padding:8px 10px;border:0;border-radius:10px;background:transparent;color:var(--h-muted);cursor:pointer;font:850 11px/1.2 inherit;transition:.16s}
+.hv19Tabs button:hover{background:var(--h-surface-hover);color:var(--h-text)}
+.hv19Tabs button.active{background:var(--h-surface-raised);color:var(--h-primary);box-shadow:0 4px 14px rgba(17,42,101,.13)}
+.hv19Global{display:grid;grid-template-columns:minmax(230px,.8fr) minmax(0,2.2fr);gap:12px}
+.hv19MetaRiva{
+  padding:17px;border-radius:15px;background:linear-gradient(135deg,#1648d8,#0d2fa3);
+  color:#fff;box-shadow:0 12px 28px rgba(22,72,216,.25)
+}
+.hv19MetaRiva label{display:block;color:rgba(255,255,255,.75);font-size:9px;font-weight:900;letter-spacing:.11em;text-transform:uppercase}
+.hv19MetaRivaRow{display:flex;align-items:center;gap:8px;margin-top:9px}
+.hv19MetaRiva input{min-width:0;flex:1;height:42px;padding:0 11px;border:1px solid rgba(255,255,255,.35);border-radius:9px;background:rgba(255,255,255,.14);color:#fff;font:900 17px/1 inherit;outline:0}
+.hv19MetaRiva input:focus{border-color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.13)}
+.hv19MetaRiva button{height:42px;padding:0 13px;border:0;border-radius:9px;background:#fff;color:#123cae;cursor:pointer;font:850 10px/1 inherit}
+.hv19MetaRiva small{display:block;margin-top:7px;color:rgba(255,255,255,.76);font-size:9px}
+.hv19Kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.hv19Kpi{min-width:0;padding:15px 16px;border:1px solid var(--h-border);border-top:3px solid var(--h-primary);border-radius:14px;background:var(--h-surface-raised);box-shadow:var(--h-shadow)}
+.hv19Kpi.success{border-top-color:var(--h-success)}
+.hv19Kpi.danger{border-top-color:var(--h-danger)}
+.hv19Kpi span{display:block;color:var(--h-muted);font-size:8px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.hv19Kpi strong{display:block;margin-top:7px;overflow:hidden;color:var(--h-text);font-size:clamp(17px,1.8vw,23px);font-weight:900;letter-spacing:-.025em;text-overflow:ellipsis;white-space:nowrap}
+.hv19Kpi small{display:block;margin-top:5px;color:var(--h-muted);font-size:9px}
+.hv19Panel{overflow:hidden;border:1px solid var(--h-border);border-radius:16px;background:var(--h-surface-raised);box-shadow:var(--h-shadow)}
+.hv19PanelHead{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:16px 18px;border-bottom:1px solid var(--h-border)}
+.hv19PanelHead h3{margin:0;color:var(--h-text);font-size:15px}
+.hv19PanelHead p{margin:4px 0 0;color:var(--h-muted);font-size:10px}
+.hv19Controls{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.hv19Select{min-width:210px;max-width:330px;height:39px;padding:0 32px 0 11px;border:1px solid var(--h-border);border-radius:9px;background:var(--h-surface-raised);color:var(--h-text);font:800 11px/1 inherit}
+.hv19Action{height:38px;padding:0 13px;border:1px solid var(--h-border);border-radius:9px;background:var(--h-surface-alt);color:var(--h-primary);cursor:pointer;font:850 10px/1 inherit}
+.hv19Action.primary{border-color:transparent;background:linear-gradient(135deg,#1648d8,#0d2fa3);color:#fff}
+.hv19Summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:14px 14px 0}
+.hv19Summary .hv19Kpi{box-shadow:none}
+.hv19SectionLabel{padding:17px 16px 0;color:var(--h-muted);font-size:9px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
+.hv19MonthGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:14px 14px 16px}
+.hv19Month{
+  min-width:0;padding:13px;border:1px solid var(--h-border);border-radius:13px;
+  background:var(--h-surface-alt);color:var(--h-text);cursor:pointer;text-align:left;
+  font-family:inherit;transition:transform .15s,border-color .15s,box-shadow .15s
+}
+.hv19Month:hover{transform:translateY(-2px);border-color:#9cb7ff;box-shadow:0 9px 20px rgba(22,72,216,.12)}
+.hv19Month.current{border-color:#ff6b77;box-shadow:0 0 0 2px rgba(255,30,30,.08)}
+.hv19MonthHead{display:flex;align-items:center;justify-content:space-between;gap:7px}
+.hv19MonthHead strong{font-size:12px}
+.hv19Pill{display:inline-flex;align-items:center;min-height:20px;padding:0 7px;border-radius:999px;background:var(--h-surface-accent);color:var(--h-primary);font-size:7px;font-weight:900;letter-spacing:.04em;text-transform:uppercase}
+.hv19Pill.manual{background:#fff2dd;color:#a75c00}
+.hv19Pill.auto{background:var(--h-surface-success);color:var(--h-success)}
+.hv19MonthValue{display:block;margin-top:11px;font-size:17px;font-weight:900;letter-spacing:-.02em}
+.hv19MonthMeta{display:block;margin-top:4px;color:var(--h-muted);font-size:9px}
+.hv19MonthFoot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:9px;color:var(--h-muted);font-size:8px;font-weight:800}
+.hv19Progress{height:5px;margin-top:7px;overflow:hidden;border-radius:999px;background:var(--h-border)}
+.hv19Progress i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#1648d8,#15a46f)}
+.hv19QuarterGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:14px 14px 16px}
+.hv19Quarter{min-width:0;padding:16px;border:1px solid var(--h-border);border-radius:14px;background:var(--h-surface-alt);color:var(--h-text);cursor:pointer;text-align:left;font-family:inherit;transition:.15s}
+.hv19Quarter:hover{transform:translateY(-2px);border-color:#9cb7ff;box-shadow:0 9px 20px rgba(22,72,216,.11)}
+.hv19Quarter h4{margin:0;font-size:13px}
+.hv19Quarter strong{display:block;margin-top:12px;font-size:19px;font-weight:900}
+.hv19Quarter small{display:block;margin-top:5px;color:var(--h-muted);font-size:9px}
+.hv19QuarterMonths{display:flex;gap:4px;margin-top:10px;flex-wrap:wrap}
+.hv19QuarterMonths span{padding:4px 6px;border-radius:6px;background:var(--h-surface-raised);color:var(--h-muted);font-size:8px;font-weight:800}
+.hv19Empty{padding:34px 18px;text-align:center;color:var(--h-muted);font-size:11px}
+.hv19Modal{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(4,12,40,.62);backdrop-filter:blur(4px)}
+.hv19Modal.open{display:flex}
+.hv19ModalCard{width:min(560px,100%);max-height:min(86vh,760px);overflow:auto;border:1px solid var(--h-border);border-radius:18px;background:var(--h-surface-raised);box-shadow:0 28px 80px rgba(3,10,34,.38)}
+.hv19ModalHead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:18px 19px;border-bottom:1px solid var(--h-border)}
+.hv19ModalHead h3{margin:0;color:var(--h-text);font-size:17px}
+.hv19ModalHead p{margin:5px 0 0;color:var(--h-muted);font-size:10px}
+.hv19Close{width:34px;height:34px;border:0;border-radius:9px;background:var(--h-surface-alt);color:var(--h-muted);cursor:pointer;font-size:20px}
+.hv19ModalBody{display:grid;gap:13px;padding:18px 19px}
+.hv19Field{display:flex;flex-direction:column;gap:6px}
+.hv19Field label{color:var(--h-muted);font-size:9px;font-weight:900;letter-spacing:.07em;text-transform:uppercase}
+.hv19Field input{height:42px;padding:0 11px;border:1px solid var(--h-border);border-radius:9px;background:var(--h-surface);color:var(--h-text);font:800 12px/1 inherit;outline:0}
+.hv19Field input:focus{border-color:#6f94f4;box-shadow:0 0 0 3px rgba(22,72,216,.12)}
+.hv19Field input:disabled{opacity:.65;background:var(--h-surface-alt);cursor:not-allowed}
+.hv19Switch{display:flex;align-items:center;gap:9px;padding:11px;border:1px solid var(--h-border);border-radius:10px;background:var(--h-surface-alt);color:var(--h-text);font-size:10px;font-weight:800}
+.hv19Switch input{width:18px;height:18px;accent-color:#1648d8}
+.hv19AutoHint{padding:10px 11px;border-radius:9px;background:var(--h-surface-success);color:var(--h-success);font-size:9px;font-weight:750}
+.hv19QuarterRows{display:grid;gap:10px}
+.hv19QuarterRow{display:grid;grid-template-columns:70px minmax(0,1fr) minmax(0,1fr);gap:8px;align-items:end;padding:11px;border:1px solid var(--h-border);border-radius:11px;background:var(--h-surface-alt)}
+.hv19QuarterRow>strong{align-self:center;color:var(--h-text);font-size:11px}
+.hv19QuarterRow .hv19Field{gap:4px}
+.hv19QuarterRow .hv19Field input{height:38px}
+.hv19QuarterManual{grid-column:2/4;display:flex;align-items:center;gap:7px;color:var(--h-muted);font-size:9px;font-weight:750}
+.hv19QuarterManual input{accent-color:#1648d8}
+.hv19ModalActions{display:flex;align-items:center;justify-content:flex-end;gap:9px;padding:14px 19px;border-top:1px solid var(--h-border)}
+.hv19ModalState{margin-right:auto;color:var(--h-muted);font-size:9px}
+.hv19Btn{height:40px;padding:0 16px;border:1px solid var(--h-border);border-radius:9px;background:var(--h-surface-alt);color:var(--h-text);cursor:pointer;font:850 10px/1 inherit}
+.hv19Btn.primary{border:0;background:linear-gradient(135deg,#1648d8,#0d2fa3);color:#fff}
+.hv19Btn:disabled{opacity:.6;cursor:wait}
+
+/* RIVA — Consolidado V19: gráfico responsivo, sem barra horizontal */
+.rivaV19Chart{padding:16px;border:1px solid var(--h-border);border-radius:16px;background:var(--h-surface-raised);box-shadow:var(--h-shadow)}
+.rivaV19ChartHead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:14px}
+.rivaV19ChartHead h3{margin:0;color:var(--h-text);font-size:14px}
+.rivaV19ChartHead p{margin:4px 0 0;color:var(--h-muted);font-size:9px}
+.rivaV19Bars{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:7px;align-items:end;height:245px}
+.rivaV19Bar{min-width:0;height:100%;display:grid;grid-template-rows:24px 1fr 17px;gap:5px;align-items:end;text-align:center}
+.rivaV19BarValue{overflow:hidden;color:var(--h-muted);font-size:7px;font-weight:850;text-overflow:ellipsis;white-space:nowrap}
+.rivaV19Track{position:relative;width:100%;height:100%;overflow:hidden;border-radius:7px 7px 3px 3px;background:var(--h-surface-alt)}
+.rivaV19Fill{position:absolute;left:0;right:0;bottom:0;min-height:2px;border-radius:7px 7px 3px 3px;background:linear-gradient(180deg,#4d78ed,#1648d8);transition:height .25s}
+.rivaV19Bar.current .rivaV19Fill{background:linear-gradient(180deg,#ff717b,#dc2626)}
+.rivaV19Bar.future{opacity:.48}
+.rivaV19BarLabel{color:var(--h-muted);font-size:8px;font-weight:850;text-transform:uppercase}
+.rivaV19QuarterGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.rivaV19Quarter{padding:15px;border:1px solid var(--h-border);border-radius:14px;background:var(--h-surface-raised);box-shadow:var(--h-shadow)}
+.rivaV19Quarter span{color:var(--h-muted);font-size:8px;font-weight:900;letter-spacing:.07em;text-transform:uppercase}
+.rivaV19Quarter strong{display:block;margin-top:7px;color:var(--h-text);font-size:18px;font-weight:900}
+.rivaV19Quarter small{display:block;margin-top:5px;color:var(--h-muted);font-size:9px}
+
+@media(max-width:1000px){
+  .hv19Global{grid-template-columns:1fr}
+  .hv19Summary,.hv19MonthGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .hv19QuarterGrid,.rivaV19QuarterGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .rivaV19Bars{grid-template-columns:repeat(6,minmax(0,1fr));height:auto}
+  .rivaV19Bar{height:180px}
+}
+@media(max-width:700px){
+  .hv19Tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hv19Kpis,.hv19Summary{grid-template-columns:1fr}
+  .hv19MonthGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hv19PanelHead{align-items:flex-start}
+  .hv19Controls{width:100%;justify-content:stretch}
+  .hv19Select{width:100%;max-width:none;min-width:0;flex:1}
+}
+@media(max-width:480px){
+  .hv19Toolbar{align-items:flex-start}
+  .hv19Year{width:100%;justify-content:space-between}
+  .hv19MonthGrid,.hv19QuarterGrid,.rivaV19QuarterGrid{grid-template-columns:1fr}
+  .rivaV19Bars{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .rivaV19Bar{height:155px}
+  .hv19QuarterRow{grid-template-columns:58px minmax(0,1fr)}
+  .hv19QuarterRow .hv19Field:nth-of-type(2){grid-column:2}
+  .hv19QuarterManual{grid-column:1/3}
+  .hv19ModalActions{flex-wrap:wrap}
+  .hv19ModalState{width:100%;margin-right:0}
+  .hv19Btn{flex:1}
+}
+
 </style>
 </head>
 <body>
@@ -662,10 +812,6 @@
       </button>
       <button class="navItem" data-page="house" onclick="navTo('house')">
         <span class="navIcon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="1"/><rect x="12" y="8" width="3" height="10" rx="1"/><rect x="17" y="5" width="3" height="13" rx="1"/></svg></span>
-        <span class="navLabel">House — Metas</span>
-      </button>
-      <button class="navItem" data-page="house2" onclick="navTo('house2')">
-        <span class="navIcon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 5-5"/></svg></span>
         <span class="navLabel">House — Desempenho</span>
       </button>
       <button class="navItem" data-page="riva" onclick="navTo('riva')">
@@ -747,7 +893,7 @@
 var SU = 'https://script.google.com/macros/s/AKfycbz1_ohqAABk-RhPb-i67e6eITzk9ve5hNnCI9qICtEuudSCl0Pu3pHtlV0cxMGUsZyKAg/exec';
 var MS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 var LSV = 'riva_vendas_v1', LSC = 'riva_corretores_v1', LSM = 'riva_metas_v1';
-var PAGE_TITLES = { rene:'Regional Rene', cahu:'Regional Cahú', house:'House — Metas', house2:'House — Desempenho', riva:'RIVA — Consolidado', equipes:'Gestão de Equipes', settings:'Configurações' };
+var PAGE_TITLES = { rene:'Regional Rene', cahu:'Regional Cahú', house:'House — Desempenho', riva:'RIVA — Consolidado', equipes:'Gestão de Equipes', settings:'Configurações' };
 
 var HIER_GVS = {
   rene: ['Aloisio','Flavia','Sergio','Pereira','Lima','Carol','Paulo','Lemos'],
@@ -904,6 +1050,7 @@ function performanceEmEdicao(){
   var ativo=document.activeElement;
   var conteudo=document.getElementById('pageContent');
   if(S.scrollPointerActive||Date.now()<S.scrollBusyUntil) return true;
+  if(document.querySelector('.hv19Modal.open')) return true;
   if(window._houseDirty||window._regionalDirty||window._equipesDirty||Object.keys(pendingConfig()).length) return true;
   return !!(ativo&&conteudo&&conteudo.contains(ativo)&&/^(INPUT|TEXTAREA|SELECT)$/.test(ativo.tagName));
 }
@@ -945,7 +1092,7 @@ function perfRestoreScroll(estado){
 function perfFlushRenderPendente(){
   if(!S.needsRender||performanceEmEdicao()) return;
   S.needsRender=false;
-  renderPage();
+  perfApplyRemoteRender();
 }
 function perfMarcarInteracaoScroll(espera){
   espera=espera||700;
@@ -1074,6 +1221,18 @@ function setSyn(st){
   else if(st==='ok'){ p.classList.add('online'); l.textContent='Sincronizado'; S.sheetsOK=true; }
   else { p.classList.add('offline'); l.textContent='Offline'; S.sheetsOK=false; }
 }
+function perfApplyRemoteRender(){
+  if(S.page==='house'&&document.getElementById('hV19Body')){
+    houseV19RenderActive();
+    houseV19RenderGlobal();
+    return;
+  }
+  if(S.page==='riva'&&document.getElementById('rivaV19Content')){
+    rivaV19RenderContent();
+    return;
+  }
+  renderPage();
+}
 async function loadRemote(){
   if(S.loadingRemote) return;
   S.loadingRemote=true;
@@ -1099,8 +1258,9 @@ async function loadRemote(){
     });
     S.config = merged;
     persistConfigCache();
+    if (typeof houseV19RetryPending === 'function') await houseV19RetryPending();
     if(performanceEmEdicao()) S.needsRender=true;
-    else { S.needsRender=false; renderPage(); }
+    else { S.needsRender=false; perfApplyRemoteRender(); }
 
     var pendentes = Object.keys(pending);
     if (pendentes.length) {
@@ -1120,7 +1280,7 @@ async function loadRemote(){
     loadCachedConfig();
     loadCachedGestao();
     if(performanceEmEdicao()) S.needsRender=true;
-    else { S.needsRender=false; renderPage(); }
+    else { S.needsRender=false; perfApplyRemoteRender(); }
     setSyn('offline');
   } finally { S.loadingRemote=false; }
 }
@@ -2596,6 +2756,855 @@ function h2Regionais() {
 // backwards-compat aliases
 function h2BuildKpis() { h2Kpis(); }
 function h2SetTab(t)   { h2Tab(t); }
+
+// ═══════════════════════════════════════════════════════════════
+//  RIVA V19 — HOUSE — DESEMPENHO UNIFICADA
+//  A tela usa cartões responsivos, sem tabela horizontal.
+//  Cada mês preserva meta, valor automático e substituição manual.
+// ═══════════════════════════════════════════════════════════════
+
+var HOUSE_V19 = {
+  tab:'gv',
+  gerente:'',
+  diretor:'',
+  regional:'rene'
+};
+
+function houseV19Linha(valor) {
+  var row = valor && typeof valor === 'object' && !Array.isArray(valor) ? valor : {};
+  return {
+    meta:hParse(row.meta),
+    realizado:hParse(row.realizado),
+    manual:row.manual === true,
+    automatico:0
+  };
+}
+
+function dadosHouse() {
+  var saved = S.config[chaveHouse()];
+  if (!saved || typeof saved !== 'object' || Array.isArray(saved)) saved = {};
+  var gestores = {};
+  getAllGVs(false).forEach(function(item) {
+    var nome = typeof item === 'object' ? item.nome : item;
+    if (nome) gestores[nome] = true;
+  });
+  Object.keys((saved && saved.gvs) || {}).forEach(function(nome) { gestores[nome] = true; });
+  gestores.Desligados = true;
+
+  var d = {
+    metaRiva:hParse(saved.metaRiva),
+    gvs:{},
+    diretores:{},
+    dirNames:Array.isArray(saved.dirNames) ? saved.dirNames.filter(Boolean) : [],
+    regionais:{rene:{},cahu:{}}
+  };
+
+  Object.keys(gestores).forEach(function(nome) {
+    d.gvs[nome] = {};
+    for (var m = 1; m <= 12; m++) {
+      var mk = String(m).padStart(2,'0');
+      d.gvs[nome][mk] = houseV19Linha(saved.gvs && saved.gvs[nome] && saved.gvs[nome][mk]);
+    }
+  });
+
+  ['rene','cahu'].forEach(function(regional) {
+    for (var m = 1; m <= 12; m++) {
+      var mk = String(m).padStart(2,'0');
+      d.regionais[regional][mk] = houseV19Linha(
+        saved.regionais && saved.regionais[regional] && saved.regionais[regional][mk]
+      );
+    }
+  });
+
+  Object.keys((saved && saved.diretores) || {}).forEach(function(nome) {
+    d.diretores[nome] = {};
+    for (var m = 1; m <= 12; m++) {
+      var mk = String(m).padStart(2,'0');
+      var antigo = saved.diretores[nome] && saved.diretores[nome][mk];
+      d.diretores[nome][mk] = hParse(
+        antigo && typeof antigo === 'object' ? antigo.realizado : antigo
+      );
+    }
+  });
+  if (!d.dirNames.length) d.dirNames = Object.keys(d.diretores);
+  if (!d.dirNames.length) {
+    d.dirNames = ['Humberto','Diretor 02','Edvan','Mercado'];
+    d.dirNames.forEach(function(nome) { d.diretores[nome] = {}; });
+  }
+
+  return aplicarRealizadoGestaoHouse(d);
+}
+
+function aplicarRealizadoGestaoHouse(d) {
+  var ativos = {};
+  getAllGVs(false).forEach(function(item) {
+    var nome = typeof item === 'object' ? item.nome : item;
+    if (nome) ativos[normExec(nome)] = nome;
+  });
+  if (!d.gvs.Desligados) d.gvs.Desligados = {};
+
+  Object.keys(d.gvs).forEach(function(nome) {
+    for (var m = 1; m <= 12; m++) {
+      var mk = String(m).padStart(2,'0');
+      if (!d.gvs[nome][mk]) d.gvs[nome][mk] = houseV19Linha();
+      d.gvs[nome][mk].automatico = 0;
+      if (!d.gvs[nome][mk].manual) d.gvs[nome][mk].realizado = 0;
+    }
+  });
+  ['rene','cahu'].forEach(function(regional) {
+    if (!d.regionais[regional]) d.regionais[regional] = {};
+    for (var m = 1; m <= 12; m++) {
+      var mk = String(m).padStart(2,'0');
+      if (!d.regionais[regional][mk]) d.regionais[regional][mk] = houseV19Linha();
+      d.regionais[regional][mk].automatico = 0;
+      if (!d.regionais[regional][mk].manual) d.regionais[regional][mk].realizado = 0;
+    }
+  });
+
+  (S.vendas || []).forEach(function(venda) {
+    if (!vendaComunicadaExec(venda)) return;
+    var mes = mesVendaExec(venda);
+    if (mes.slice(0,4) !== String(S.ano)) return;
+    var mk = mes.slice(5,7);
+    if (!/^\d{2}$/.test(mk)) return;
+    var info = infoVendaExecutiva(venda);
+    var gerente = ativos[normExec(info.gv)] || 'Desligados';
+    if (!d.gvs[gerente]) d.gvs[gerente] = {};
+    if (!d.gvs[gerente][mk]) d.gvs[gerente][mk] = houseV19Linha();
+    var valor = num(venda.vgv || venda.valor);
+    d.gvs[gerente][mk].automatico += valor;
+    if (!d.gvs[gerente][mk].manual) d.gvs[gerente][mk].realizado += valor;
+
+    if (info.reg && d.regionais[info.reg]) {
+      if (!d.regionais[info.reg][mk]) d.regionais[info.reg][mk] = houseV19Linha();
+      d.regionais[info.reg][mk].automatico += valor;
+      if (!d.regionais[info.reg][mk].manual) d.regionais[info.reg][mk].realizado += valor;
+    }
+  });
+  return d;
+}
+
+function houseV19Serializar(d) {
+  var limpo = {
+    metaRiva:hParse(d.metaRiva),
+    gvs:{},
+    diretores:{},
+    dirNames:(d.dirNames || []).slice(),
+    regionais:{rene:{},cahu:{}}
+  };
+  Object.keys(d.gvs || {}).forEach(function(nome) {
+    limpo.gvs[nome] = {};
+    for (var m = 1; m <= 12; m++) {
+      var mk = String(m).padStart(2,'0');
+      var row = d.gvs[nome][mk] || {};
+      limpo.gvs[nome][mk] = {
+        meta:hParse(row.meta),
+        realizado:hParse(row.realizado),
+        manual:row.manual === true
+      };
+    }
+  });
+  ['rene','cahu'].forEach(function(regional) {
+    for (var m = 1; m <= 12; m++) {
+      var mk = String(m).padStart(2,'0');
+      var row = d.regionais[regional][mk] || {};
+      limpo.regionais[regional][mk] = {
+        meta:hParse(row.meta),
+        realizado:hParse(row.realizado),
+        manual:row.manual === true
+      };
+    }
+  });
+  Object.keys(d.diretores || {}).forEach(function(nome) {
+    limpo.diretores[nome] = {};
+    for (var m = 1; m <= 12; m++) {
+      var mk = String(m).padStart(2,'0');
+      limpo.diretores[nome][mk] = hParse(d.diretores[nome][mk]);
+    }
+  });
+  return limpo;
+}
+
+function houseV19Gerentes() {
+  var nomes = getAllGVs(false).map(function(item) {
+    return typeof item === 'object' ? item.nome : item;
+  }).filter(Boolean);
+  if (nomes.indexOf('Desligados') < 0) nomes.push('Desligados');
+  return nomes.filter(function(nome, indice, lista) { return lista.indexOf(nome) === indice; });
+}
+
+function houseV19Diretores(d) {
+  var nomes = (d.dirNames || []).filter(Boolean);
+  Object.keys(d.diretores || {}).forEach(function(nome) {
+    if (nomes.indexOf(nome) < 0) nomes.push(nome);
+  });
+  if (!nomes.length) nomes = ['Humberto','Diretor 02','Edvan','Mercado'];
+  return nomes;
+}
+
+function houseV19Selecionado(tipo, lista) {
+  var chave = tipo === 'gv' ? 'gerente' : (tipo === 'dir' ? 'diretor' : 'regional');
+  var atual = HOUSE_V19[chave];
+  if (!atual || lista.indexOf(atual) < 0) {
+    atual = lista[0] || '';
+    HOUSE_V19[chave] = atual;
+  }
+  return atual;
+}
+
+function houseV19LinhaTipo(d, tipo, nome, mk) {
+  if (tipo === 'dir') {
+    return {meta:0, realizado:hParse(d.diretores[nome] && d.diretores[nome][mk]), manual:true, automatico:0};
+  }
+  var grupo = tipo === 'gv' ? d.gvs : d.regionais;
+  return houseV19LinhaEfetiva(grupo[nome] && grupo[nome][mk]);
+}
+
+function houseV19LinhaEfetiva(row) {
+  row = row || {};
+  return {
+    meta:hParse(row.meta),
+    realizado:hParse(row.realizado),
+    manual:row.manual === true,
+    automatico:hParse(row.automatico)
+  };
+}
+
+function houseV19Totais(d, tipo, nome, indices) {
+  indices = indices || _MS3.map(function(_,i) { return i; });
+  return indices.reduce(function(total, indice) {
+    var mk = String(indice + 1).padStart(2,'0');
+    var row = houseV19LinhaTipo(d,tipo,nome,mk);
+    total.meta += row.meta;
+    total.realizado += row.realizado;
+    if (row.manual) total.manuais++;
+    return total;
+  },{meta:0,realizado:0,manuais:0});
+}
+
+function houseV19Resumo(totais, tipo) {
+  var percentual = hP(totais.realizado, totais.meta);
+  var saldo = hSaldo(totais.meta, totais.realizado);
+  return '<div class="hv19Summary">'
+    + '<article class="hv19Kpi"><span>'+(tipo === 'dir' ? 'Realizado no ano' : 'Meta acumulada')+'</span><strong>'
+    + hFmt(tipo === 'dir' ? totais.realizado : totais.meta)+'</strong><small>'+S.ano+'</small></article>'
+    + (tipo === 'dir' ? '' : '<article class="hv19Kpi success"><span>Realizado</span><strong>'+hFmt(totais.realizado)+'</strong><small>'+percentual+'% da meta</small></article>')
+    + (tipo === 'dir' ? '' : '<article class="hv19Kpi '+(totais.realizado >= totais.meta && totais.meta ? 'success' : 'danger')+'"><span>'+saldo.label+'</span><strong>'+saldo.valor+'</strong><small>Saldo anual</small></article>')
+    + '<article class="hv19Kpi"><span>Origem dos valores</span><strong>'+totais.manuais+'</strong><small>mês'+(totais.manuais !== 1 ? 'es' : '')+' preenchido'+(totais.manuais !== 1 ? 's' : '')+' manualmente</small></article>'
+    + '</div>';
+}
+
+function houseV19MonthCard(d,tipo,nome,indice) {
+  var mk = String(indice + 1).padStart(2,'0');
+  var row = houseV19LinhaTipo(d,tipo,nome,mk);
+  var percentual = hP(row.realizado,row.meta);
+  var agora = new Date();
+  var atual = Number(S.ano) === agora.getFullYear() && indice === agora.getMonth();
+  var origem = tipo === 'dir' ? 'manual' : (row.manual ? 'manual' : 'auto');
+  var status = tipo === 'dir' ? 'EDITÁVEL' : (row.manual ? 'MANUAL' : 'AUTOMÁTICO');
+  return '<button type="button" class="hv19Month'+(atual?' current':'')+'" data-type="'+tipo+'" data-name="'+hEsc(nome)+'" data-mes="'+mk+'" onclick="houseV19OpenMonth(this.dataset.type,this.dataset.name,this.dataset.mes)">'
+    + '<span class="hv19MonthHead"><strong>'+MS[indice]+'</strong><span class="hv19Pill '+origem+'">'+status+'</span></span>'
+    + '<span class="hv19MonthValue">'+hFmt(row.realizado)+'</span>'
+    + '<span class="hv19MonthMeta">'+(tipo === 'dir' ? 'Clique para informar o realizado' : 'Meta '+hFmt(row.meta))+'</span>'
+    + (tipo === 'dir' ? '' : '<span class="hv19MonthFoot"><span>'+percentual+'% da meta</span><span>'+hSaldo(row.meta,row.realizado).valor+'</span></span><span class="hv19Progress"><i style="width:'+Math.min(100,percentual)+'%"></i></span>')
+    + '</button>';
+}
+
+function houseV19MonthGrid(d,tipo,nome) {
+  return '<div class="hv19SectionLabel">Todos os meses de '+S.ano+' · clique em um mês para editar</div>'
+    + '<div class="hv19MonthGrid">'+_MS3.map(function(_,indice) {
+      return houseV19MonthCard(d,tipo,nome,indice);
+    }).join('')+'</div>';
+}
+
+function houseV19QuarterCard(d,tipo,nome,trimestre,clicavel) {
+  var inicio = trimestre * 3;
+  var indices = [inicio,inicio+1,inicio+2];
+  var totais = houseV19Totais(d,tipo,nome,indices);
+  var percentual = hP(totais.realizado,totais.meta);
+  var tag = clicavel ? 'button' : 'article';
+  var attrs = clicavel
+    ? ' type="button" data-type="'+tipo+'" data-name="'+hEsc(nome)+'" data-q="'+trimestre+'" onclick="houseV19OpenQuarter(this.dataset.type,this.dataset.name,Number(this.dataset.q))"'
+    : '';
+  return '<'+tag+' class="hv19Quarter"'+attrs+'>'
+    + '<h4>'+(trimestre+1)+'º Trimestre</h4><strong>'+hFmt(totais.realizado)+'</strong>'
+    + '<small>'+(tipo === 'dir' ? 'Realizado no trimestre' : 'Meta '+hFmt(totais.meta)+' · '+percentual+'%')+'</small>'
+    + (tipo === 'dir' ? '' : '<span class="hv19Progress"><i style="width:'+Math.min(100,percentual)+'%"></i></span>')
+    + '<span class="hv19QuarterMonths">'+indices.map(function(i){ return '<span>'+_MS3[i]+'</span>'; }).join('')+'</span>'
+    + '</'+tag+'>';
+}
+
+function houseV19QuarterGrid(d,tipo,nome,clicavel) {
+  return '<div class="hv19SectionLabel">Visão trimestral</div><div class="hv19QuarterGrid">'
+    + [0,1,2,3].map(function(q) { return houseV19QuarterCard(d,tipo,nome,q,clicavel); }).join('')
+    + '</div>';
+}
+
+function houseV19Options(lista,selecionado) {
+  return lista.map(function(nome) {
+    return '<option value="'+hEsc(nome)+'"'+(nome === selecionado ? ' selected' : '')+'>'+hEsc(nome)+'</option>';
+  }).join('');
+}
+
+function houseV19PainelGerentes(trimestral) {
+  var d = dadosHouse();
+  var lista = houseV19Gerentes();
+  var nome = houseV19Selecionado('gv',lista);
+  if (!nome) return '<div class="hv19Empty">Nenhum gerente cadastrado em Gestão de Equipes.</div>';
+  var totais = houseV19Totais(d,'gv',nome);
+  return '<section class="hv19Panel"><header class="hv19PanelHead"><div><h3>'
+    +(trimestral ? 'Trimestral por Gerente' : 'Gerentes de Vendas')+'</h3><p>'
+    +(trimestral ? 'Os quatro trimestres usam as metas e valores definidos em cada mês.' : 'Selecione um gerente e acompanhe os doze meses sem rolagem lateral.')
+    +'</p></div><div class="hv19Controls"><select class="hv19Select" onchange="houseV19SetEntity(\'gv\',this.value)">'
+    +houseV19Options(lista,nome)+'</select></div></header>'
+    +houseV19Resumo(totais,'gv')
+    +(trimestral ? houseV19QuarterGrid(d,'gv',nome,true) : houseV19MonthGrid(d,'gv',nome))
+    +'</section>';
+}
+
+function houseV19PainelDiretores() {
+  var d = dadosHouse();
+  var lista = houseV19Diretores(d);
+  var nome = houseV19Selecionado('dir',lista);
+  if (!d.diretores[nome]) d.diretores[nome] = {};
+  var totais = houseV19Totais(d,'dir',nome);
+  return '<section class="hv19Panel"><header class="hv19PanelHead"><div><h3>Diretores</h3><p>Mensal, trimestral e anual no mesmo painel. Clique no mês para informar o valor.</p></div>'
+    +'<div class="hv19Controls"><select class="hv19Select" onchange="houseV19SetEntity(\'dir\',this.value)">'
+    +houseV19Options(lista,nome)+'</select><button class="hv19Action" onclick="houseV19AddDirector()">+ Diretoria</button>'
+    +'<button class="hv19Action" onclick="houseV19RenameDirector()">Renomear</button>'
+    +'<button class="hv19Action" onclick="houseV19RemoveDirector()">Excluir</button></div></header>'
+    +houseV19Resumo(totais,'dir')
+    +houseV19QuarterGrid(d,'dir',nome,false)
+    +houseV19MonthGrid(d,'dir',nome)
+    +'</section>';
+}
+
+function houseV19PainelRegionais() {
+  var d = dadosHouse();
+  var lista = ['rene','cahu'];
+  var regional = houseV19Selecionado('reg',lista);
+  var nome = regional === 'rene' ? 'Regional Rene' : 'Regional Cahú';
+  var totais = houseV19Totais(d,'reg',regional);
+  return '<section class="hv19Panel"><header class="hv19PanelHead"><div><h3>Regionais</h3><p>Meta e realizado mensal, trimestral e anual; o valor manual substitui o automático somente quando marcado.</p></div>'
+    +'<div class="hv19Controls"><select class="hv19Select" onchange="houseV19SetEntity(\'reg\',this.value)">'
+    +'<option value="rene"'+(regional === 'rene' ? ' selected' : '')+'>Regional Rene</option>'
+    +'<option value="cahu"'+(regional === 'cahu' ? ' selected' : '')+'>Regional Cahú</option></select></div></header>'
+    +houseV19Resumo(totais,'reg')
+    +houseV19QuarterGrid(d,'reg',regional,false)
+    +houseV19MonthGrid(d,'reg',regional)
+    +'<div class="hv19SectionLabel" style="padding-bottom:16px">'+hEsc(nome)+' · dados compartilhados pela nuvem</div></section>';
+}
+
+function viewHouse() {
+  var d = dadosHouse();
+  return '<div class="hPage hv19Page">'
+    +'<section class="hv19Toolbar"><div class="hv19ToolbarCopy"><span class="hv19Eyebrow">ANÁLISE EXECUTIVA</span><h2>House — Desempenho</h2>'
+    +'<p>Metas, realizado automático e substituições manuais em uma única tela.</p></div>'
+    +'<label class="hv19Year">Ano de referência<input id="houseAno" type="number" min="2020" max="2099" value="'+S.ano+'"></label></section>'
+    +'<section class="hv19Global"><div class="hv19MetaRiva"><label>Meta RIVA · Ano '+S.ano+'</label>'
+    +'<div class="hv19MetaRivaRow"><input id="hMetaRiva" type="text" inputmode="numeric" value="'+(d.metaRiva ? hEsc(hFmt(d.metaRiva)) : '')+'" placeholder="R$ 0">'
+    +'<button onclick="houseV19SaveMetaRiva()">Salvar</button></div><small>Usada no percentual consolidado anual da House.</small></div>'
+    +'<div class="hv19Kpis" id="hv19Global"></div></section>'
+    +'<nav class="hv19Tabs" aria-label="Visões House">'
+    +'<button id="hv19tab-gv" onclick="houseV19SetTab(\'gv\')">Gerentes</button>'
+    +'<button id="hv19tab-tri" onclick="houseV19SetTab(\'tri\')">Trimestral</button>'
+    +'<button id="hv19tab-dir" onclick="houseV19SetTab(\'dir\')">Diretores</button>'
+    +'<button id="hv19tab-reg" onclick="houseV19SetTab(\'reg\')">Regionais</button></nav>'
+    +'<div id="hV19Body"></div>'
+    +'<div class="hv19Modal" id="hv19Modal" onclick="if(event.target===this)houseV19CloseModal()"></div>'
+    +'</div>';
+}
+
+function afterHouse() {
+  var ano = document.getElementById('houseAno');
+  if (ano) ano.onchange = function() {
+    var novo = Math.max(2020,Math.min(2099,parseInt(this.value,10) || S.ano));
+    S.ano = novo;
+    S.mes = novo+'-'+String(new Date().getMonth()+1).padStart(2,'0');
+    renderPage();
+  };
+  var meta = document.getElementById('hMetaRiva');
+  if (meta) {
+    meta.onfocus = function(){ this.select(); };
+    meta.onkeydown = function(ev){ if (ev.key === 'Enter') houseV19SaveMetaRiva(); };
+  }
+  houseV19RenderGlobal();
+  houseV19RenderActive();
+}
+
+function hKpis() { houseV19RenderGlobal(); }
+function hTab(tab) { houseV19SetTab(tab); }
+
+function houseV19RenderGlobal() {
+  var el = document.getElementById('hv19Global');
+  if (!el) return;
+  var d = dadosHouse();
+  var metaInput = document.getElementById('hMetaRiva');
+  if (metaInput && document.activeElement !== metaInput) {
+    metaInput.value = d.metaRiva ? hFmt(d.metaRiva) : '';
+  }
+  var nomes = houseV19Gerentes();
+  var totais = nomes.reduce(function(total,nome) {
+    var t = houseV19Totais(d,'gv',nome);
+    total.meta += t.meta;
+    total.realizado += t.realizado;
+    return total;
+  },{meta:0,realizado:0});
+  var referencia = d.metaRiva || totais.meta;
+  var percentual = hP(totais.realizado,referencia);
+  var saldo = hSaldo(referencia,totais.realizado);
+  el.innerHTML = '<article class="hv19Kpi success"><span>Realizado House</span><strong>'+hFmt(totais.realizado)+'</strong><small>'+percentual+'% da meta de referência</small></article>'
+    +'<article class="hv19Kpi"><span>Soma das metas</span><strong>'+hFmt(totais.meta)+'</strong><small>Metas mensais dos gerentes</small></article>'
+    +'<article class="hv19Kpi '+(totais.realizado >= referencia && referencia ? 'success' : 'danger')+'"><span>'+saldo.label+'</span><strong>'+saldo.valor+'</strong><small>Resultado do ano</small></article>';
+}
+
+function houseV19RenderActive() {
+  ['gv','tri','dir','reg'].forEach(function(tab) {
+    var btn = document.getElementById('hv19tab-'+tab);
+    if (btn) btn.classList.toggle('active',HOUSE_V19.tab === tab);
+  });
+  var el = document.getElementById('hV19Body');
+  if (!el) return;
+  if (HOUSE_V19.tab === 'gv') el.innerHTML = houseV19PainelGerentes(false);
+  else if (HOUSE_V19.tab === 'tri') el.innerHTML = houseV19PainelGerentes(true);
+  else if (HOUSE_V19.tab === 'dir') el.innerHTML = houseV19PainelDiretores();
+  else el.innerHTML = houseV19PainelRegionais();
+}
+
+function houseV19SetTab(tab) {
+  if (['gv','tri','dir','reg'].indexOf(tab) < 0) return;
+  HOUSE_V19.tab = tab;
+  window._hTab = tab;
+  houseV19RenderActive();
+}
+
+function houseV19SetEntity(tipo,valor) {
+  if (tipo === 'gv') HOUSE_V19.gerente = valor;
+  else if (tipo === 'dir') HOUSE_V19.diretor = valor;
+  else HOUSE_V19.regional = valor;
+  houseV19RenderActive();
+}
+
+function houseV19PendingKey() {
+  return perfStorageKey('house_patches');
+}
+
+function houseV19PendingList() {
+  try {
+    var lista = JSON.parse(localStorage.getItem(houseV19PendingKey()) || '[]');
+    return Array.isArray(lista) ? lista : [];
+  } catch(e) { return []; }
+}
+
+function houseV19SetPendingList(lista) {
+  try { localStorage.setItem(houseV19PendingKey(),JSON.stringify(lista || [])); } catch(e) {}
+}
+
+function houseV19QueuePatch(pacote) {
+  var lista = houseV19PendingList();
+  pacote.id = pacote.id || ('house-'+Date.now()+'-'+Math.random().toString(36).slice(2,8));
+  lista.push(pacote);
+  houseV19SetPendingList(lista);
+}
+
+async function houseV19PostPatch(pacote) {
+  var resposta = await fetchWithTimeout(SU,{
+    method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify({
+      action:'salvarHousePatch',
+      ano:pacote.ano,
+      patch:pacote.patch || {},
+      removerDiretores:pacote.removerDiretores || [],
+      token:S.user.token || ''
+    })
+  },15000);
+  if (!resposta.ok) throw new Error('Falha HTTP '+resposta.status);
+  var texto = await resposta.text();
+  var retorno = {};
+  try { retorno = texto ? JSON.parse(texto) : {}; } catch(e) {}
+  if (retorno.status && retorno.status !== 'ok') {
+    throw new Error(retorno.msg || retorno.message || retorno.error || 'Servidor recusou a alteração da House.');
+  }
+  if (retorno.house && typeof retorno.house === 'object') {
+    S.config['house_'+pacote.ano] = retorno.house;
+    persistConfigCache();
+  }
+  return retorno;
+}
+
+async function houseV19RetryPending() {
+  var lista = houseV19PendingList();
+  if (!lista.length) return true;
+  var restantes = [];
+  for (var i = 0; i < lista.length; i++) {
+    try {
+      await houseV19PostPatch(lista[i]);
+    } catch(e) {
+      restantes = lista.slice(i);
+      break;
+    }
+  }
+  houseV19SetPendingList(restantes);
+  return !restantes.length;
+}
+
+async function houseV19Persistir(d,botao,patch,removerDiretores) {
+  var limpo = houseV19Serializar(d);
+  S.config[chaveHouse()] = limpo;
+  persistConfigCache();
+  window._houseDirty = true;
+  if (botao) {
+    botao.disabled = true;
+    botao.dataset.original = botao.textContent;
+    botao.textContent = 'Salvando...';
+  }
+  var estado = document.getElementById('hv19ModalState');
+  if (estado) estado.textContent = 'Confirmando os dados na nuvem...';
+  var pacote = {
+    ano:S.ano,
+    patch:patch || limpo,
+    removerDiretores:removerDiretores || []
+  };
+  var ok = false;
+  setSyn('loading');
+  try {
+    await houseV19PostPatch(pacote);
+    ok = true;
+    setSyn('ok');
+  } catch(e) {
+    houseV19QueuePatch(pacote);
+    setSyn('offline');
+  }
+  if (botao) {
+    botao.disabled = false;
+    botao.textContent = botao.dataset.original || 'Salvar';
+  }
+  if (ok) {
+    window._houseDirty = false;
+    if (estado) estado.textContent = 'Dados confirmados.';
+    try {
+      window.dispatchEvent(new CustomEvent('riva:house-atualizada',{detail:{ano:S.ano}}));
+    } catch(e) {}
+    return true;
+  }
+  window._houseDirty = false;
+  if (estado) estado.textContent = 'Sem conexão. Os dados ficaram guardados neste dispositivo.';
+  toast('Sem conexão. Os dados foram preservados para sincronizar depois.',true);
+  return false;
+}
+
+async function houseV19SaveMetaRiva() {
+  var input = document.getElementById('hMetaRiva');
+  if (!input) return;
+  var d = dadosHouse();
+  d.metaRiva = hParse(input.value);
+  input.value = d.metaRiva ? hFmt(d.metaRiva) : '';
+  var botao = input.parentNode.querySelector('button');
+  var ok = await houseV19Persistir(d,botao,{metaRiva:d.metaRiva});
+  if (ok) {
+    houseV19RenderGlobal();
+    toast('Meta RIVA salva e confirmada!');
+  }
+}
+
+function houseV19OpenMonth(tipo,nome,mk) {
+  var d = dadosHouse();
+  var row = houseV19LinhaTipo(d,tipo,nome,mk);
+  var indice = Math.max(0,parseInt(mk,10)-1);
+  var tituloNome = tipo === 'reg' ? (nome === 'rene' ? 'Regional Rene' : 'Regional Cahú') : nome;
+  var modal = document.getElementById('hv19Modal');
+  if (!modal) return;
+  modal.dataset.type = tipo;
+  modal.dataset.name = nome;
+  modal.dataset.mes = mk;
+  var campos = tipo === 'dir'
+    ? '<div class="hv19Field"><label>Valor realizado no mês</label><input id="hv19Realizado" type="text" inputmode="numeric" value="'+(row.realizado ? hEsc(hFmt(row.realizado)) : '')+'" placeholder="R$ 0"></div>'
+    : '<div class="hv19Field"><label>Meta do mês</label><input id="hv19Meta" type="text" inputmode="numeric" value="'+(row.meta ? hEsc(hFmt(row.meta)) : '')+'" placeholder="R$ 0"></div>'
+      +'<label class="hv19Switch"><input id="hv19Manual" type="checkbox"'+(row.manual?' checked':'')+' onchange="houseV19ToggleManual()">Preencher o realizado manualmente</label>'
+      +'<div class="hv19AutoHint" id="hv19AutoHint">Valor automático das vendas comunicadas: '+hFmt(row.automatico)+'</div>'
+      +'<div class="hv19Field"><label>Valor realizado</label><input id="hv19Realizado" type="text" inputmode="numeric" value="'+(row.realizado ? hEsc(hFmt(row.realizado)) : '')+'" placeholder="R$ 0"'+(row.manual?'':' disabled')+'></div>';
+  modal.innerHTML = '<article class="hv19ModalCard"><header class="hv19ModalHead"><div><h3>'+hEsc(MS[indice])+' · '+hEsc(tituloNome)+'</h3>'
+    +'<p>'+S.ano+' · '+(tipo === 'dir' ? 'preenchimento do realizado' : 'meta, valor automático e substituição manual')+'</p></div>'
+    +'<button class="hv19Close" onclick="houseV19CloseModal()" aria-label="Fechar">&times;</button></header>'
+    +'<div class="hv19ModalBody">'+campos+'</div>'
+    +'<footer class="hv19ModalActions"><span class="hv19ModalState" id="hv19ModalState">A tela só fecha depois da confirmação da nuvem.</span>'
+    +'<button class="hv19Btn" onclick="houseV19CloseModal()">Cancelar</button><button class="hv19Btn primary" id="hv19SaveMonth" onclick="houseV19SaveMonth()">Salvar mês</button></footer></article>';
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(function(){
+    var campo = tipo === 'dir' ? document.getElementById('hv19Realizado') : document.getElementById('hv19Meta');
+    if (campo) { campo.focus(); campo.select(); }
+  },0);
+}
+
+function houseV19ToggleManual() {
+  var check = document.getElementById('hv19Manual');
+  var valor = document.getElementById('hv19Realizado');
+  if (!check || !valor) return;
+  valor.disabled = !check.checked;
+  if (check.checked) { valor.focus(); valor.select(); }
+}
+
+function houseV19CloseModal() {
+  var modal = document.getElementById('hv19Modal');
+  if (modal) {
+    modal.classList.remove('open');
+    modal.innerHTML = '';
+  }
+  document.body.style.overflow = '';
+}
+
+async function houseV19SaveMonth() {
+  var modal = document.getElementById('hv19Modal');
+  if (!modal) return;
+  var tipo = modal.dataset.type;
+  var nome = modal.dataset.name;
+  var mk = modal.dataset.mes;
+  var d = dadosHouse();
+  var realizado = hParse((document.getElementById('hv19Realizado') || {}).value);
+  var patch = {};
+  if (tipo === 'dir') {
+    if (!d.diretores[nome]) d.diretores[nome] = {};
+    d.diretores[nome][mk] = realizado;
+    if (d.dirNames.indexOf(nome) < 0) d.dirNames.push(nome);
+    patch.diretores = {};
+    patch.diretores[nome] = {};
+    patch.diretores[nome][mk] = realizado;
+    patch.dirNames = d.dirNames.slice();
+  } else {
+    var grupo = tipo === 'gv' ? d.gvs : d.regionais;
+    if (!grupo[nome]) grupo[nome] = {};
+    if (!grupo[nome][mk]) grupo[nome][mk] = houseV19Linha();
+    grupo[nome][mk].meta = hParse((document.getElementById('hv19Meta') || {}).value);
+    grupo[nome][mk].manual = !!(document.getElementById('hv19Manual') || {}).checked;
+    grupo[nome][mk].realizado = grupo[nome][mk].manual ? realizado : hParse(grupo[nome][mk].automatico);
+    var chaveGrupo = tipo === 'gv' ? 'gvs' : 'regionais';
+    patch[chaveGrupo] = {};
+    patch[chaveGrupo][nome] = {};
+    patch[chaveGrupo][nome][mk] = {
+      meta:grupo[nome][mk].meta,
+      realizado:grupo[nome][mk].realizado,
+      manual:grupo[nome][mk].manual
+    };
+  }
+  var ok = await houseV19Persistir(d,document.getElementById('hv19SaveMonth'),patch);
+  if (ok) {
+    houseV19CloseModal();
+    houseV19RenderGlobal();
+    houseV19RenderActive();
+    toast('Mês salvo e confirmado na nuvem!');
+  }
+}
+
+function houseV19OpenQuarter(tipo,nome,trimestre) {
+  var d = dadosHouse();
+  var inicio = trimestre * 3;
+  var tituloNome = tipo === 'reg' ? (nome === 'rene' ? 'Regional Rene' : 'Regional Cahú') : nome;
+  var linhas = [inicio,inicio+1,inicio+2].map(function(indice) {
+    var mk = String(indice+1).padStart(2,'0');
+    var row = houseV19LinhaTipo(d,tipo,nome,mk);
+    return '<div class="hv19QuarterRow" data-v19-month="'+mk+'"><strong>'+_MS3[indice]+'</strong>'
+      +'<div class="hv19Field"><label>Meta</label><input class="hv19QMeta" type="text" inputmode="numeric" value="'+(row.meta?hEsc(hFmt(row.meta)):'')+'" placeholder="R$ 0"></div>'
+      +'<div class="hv19Field"><label>Realizado</label><input class="hv19QReal" type="text" inputmode="numeric" value="'+(row.realizado?hEsc(hFmt(row.realizado)):'')+'" placeholder="R$ 0"'+(row.manual?'':' disabled')+'></div>'
+      +'<label class="hv19QuarterManual"><input class="hv19QManual" type="checkbox"'+(row.manual?' checked':'')+' onchange="houseV19ToggleQuarterRow(this)">Preencher manualmente · automático '+hFmt(row.automatico)+'</label></div>';
+  }).join('');
+  var modal = document.getElementById('hv19Modal');
+  if (!modal) return;
+  modal.dataset.type = tipo;
+  modal.dataset.name = nome;
+  modal.dataset.q = String(trimestre);
+  modal.innerHTML = '<article class="hv19ModalCard"><header class="hv19ModalHead"><div><h3>'+(trimestre+1)+'º Trimestre · '+hEsc(tituloNome)+'</h3>'
+    +'<p>Edite os três meses; o trimestre e o ano serão recalculados automaticamente.</p></div><button class="hv19Close" onclick="houseV19CloseModal()">&times;</button></header>'
+    +'<div class="hv19ModalBody"><div class="hv19QuarterRows">'+linhas+'</div></div>'
+    +'<footer class="hv19ModalActions"><span class="hv19ModalState" id="hv19ModalState">A tela só fecha depois da confirmação da nuvem.</span>'
+    +'<button class="hv19Btn" onclick="houseV19CloseModal()">Cancelar</button><button class="hv19Btn primary" id="hv19SaveQuarter" onclick="houseV19SaveQuarter()">Salvar trimestre</button></footer></article>';
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function houseV19ToggleQuarterRow(check) {
+  var linha = check.closest('[data-v19-month]');
+  var input = linha && linha.querySelector('.hv19QReal');
+  if (input) {
+    input.disabled = !check.checked;
+    if (check.checked) { input.focus(); input.select(); }
+  }
+}
+
+async function houseV19SaveQuarter() {
+  var modal = document.getElementById('hv19Modal');
+  if (!modal) return;
+  var tipo = modal.dataset.type;
+  var nome = modal.dataset.name;
+  var d = dadosHouse();
+  var grupo = tipo === 'gv' ? d.gvs : d.regionais;
+  var chaveGrupo = tipo === 'gv' ? 'gvs' : 'regionais';
+  var patch = {};
+  patch[chaveGrupo] = {};
+  patch[chaveGrupo][nome] = {};
+  Array.prototype.forEach.call(modal.querySelectorAll('[data-v19-month]'),function(linha) {
+    var mk = linha.dataset.v19Month;
+    if (!grupo[nome]) grupo[nome] = {};
+    if (!grupo[nome][mk]) grupo[nome][mk] = houseV19Linha();
+    var row = grupo[nome][mk];
+    row.meta = hParse(linha.querySelector('.hv19QMeta').value);
+    row.manual = linha.querySelector('.hv19QManual').checked;
+    row.realizado = row.manual ? hParse(linha.querySelector('.hv19QReal').value) : hParse(row.automatico);
+    patch[chaveGrupo][nome][mk] = {
+      meta:row.meta,
+      realizado:row.realizado,
+      manual:row.manual
+    };
+  });
+  var ok = await houseV19Persistir(d,document.getElementById('hv19SaveQuarter'),patch);
+  if (ok) {
+    houseV19CloseModal();
+    houseV19RenderGlobal();
+    houseV19RenderActive();
+    toast('Trimestre salvo e recalculado!');
+  }
+}
+
+async function houseV19AddDirector() {
+  var nome = prompt('Nome da nova diretoria:');
+  if (!nome || !nome.trim()) return;
+  nome = nome.trim();
+  var d = dadosHouse();
+  var lista = houseV19Diretores(d);
+  if (lista.some(function(item){ return normExec(item) === normExec(nome); })) {
+    toast('Essa diretoria já existe.',true);
+    return;
+  }
+  d.diretores[nome] = {};
+  d.dirNames.push(nome);
+  HOUSE_V19.diretor = nome;
+  var patch = {diretores:{},dirNames:d.dirNames.slice()};
+  patch.diretores[nome] = {};
+  if (await houseV19Persistir(d,null,patch)) {
+    houseV19RenderActive();
+    toast('Diretoria adicionada!');
+  }
+}
+
+async function houseV19RenameDirector() {
+  var d = dadosHouse();
+  var antigo = houseV19Selecionado('dir',houseV19Diretores(d));
+  var novo = prompt('Novo nome da diretoria:',antigo);
+  if (!novo || !novo.trim() || novo.trim() === antigo) return;
+  novo = novo.trim();
+  if (houseV19Diretores(d).some(function(item){ return item !== antigo && normExec(item) === normExec(novo); })) {
+    toast('Já existe uma diretoria com esse nome.',true);
+    return;
+  }
+  d.diretores[novo] = d.diretores[antigo] || {};
+  delete d.diretores[antigo];
+  d.dirNames = houseV19Diretores(d).map(function(item){ return item === antigo ? novo : item; })
+    .filter(function(item,indice,lista){ return lista.indexOf(item) === indice; });
+  HOUSE_V19.diretor = novo;
+  var patch = {diretores:{},dirNames:d.dirNames.slice()};
+  patch.diretores[novo] = Object.assign({},d.diretores[novo] || {});
+  if (await houseV19Persistir(d,null,patch,[antigo])) {
+    houseV19RenderActive();
+    toast('Diretoria renomeada!');
+  }
+}
+
+async function houseV19RemoveDirector() {
+  var d = dadosHouse();
+  var lista = houseV19Diretores(d);
+  var antigo = houseV19Selecionado('dir',lista);
+  if (lista.length <= 1) {
+    toast('Mantenha pelo menos uma diretoria cadastrada.',true);
+    return;
+  }
+  if (!antigo || !confirm('Excluir a diretoria "'+antigo+'" e seus valores?')) return;
+  delete d.diretores[antigo];
+  d.dirNames = (d.dirNames || []).filter(function(item){ return item !== antigo; });
+  HOUSE_V19.diretor = '';
+  if (await houseV19Persistir(d,null,{dirNames:d.dirNames.slice()},[antigo])) {
+    houseV19RenderActive();
+    toast('Diretoria excluída!');
+  }
+}
+
+function hAddDir() { houseV19AddDirector(); }
+function hRemDir() { houseV19RemoveDirector(); }
+
+// ═══════════════════════════════════════════════════════════════
+//  RIVA — CONSOLIDADO V19 · gráfico sem canvas e sem scroll
+// ═══════════════════════════════════════════════════════════════
+
+function rivaV19Body() {
+  var meses = dadosRivaAno();
+  var indiceMes = Math.max(0,Math.min(11,parseInt(String(S.mes || '').split('-')[1],10)-1 || 0));
+  var indiceTri = Math.floor(indiceMes/3);
+  var mes = meses[indiceMes];
+  var tri = somarRivaPeriodo(meses.slice(indiceTri*3,indiceTri*3+3));
+  var ano = somarRivaPeriodo(meses);
+  var agora = new Date();
+  var maximo = Math.max.apply(null,meses.map(function(item){ return item.vgv; }).concat([1]));
+  var barras = meses.map(function(item) {
+    var futuro = Number(S.ano) > agora.getFullYear() || (Number(S.ano) === agora.getFullYear() && item.indice > agora.getMonth());
+    var atual = Number(S.ano) === agora.getFullYear() && item.indice === agora.getMonth();
+    var altura = futuro ? 0 : Math.max(2,Math.round(item.vgv/maximo*100));
+    return '<div class="rivaV19Bar'+(atual?' current':'')+(futuro?' future':'')+'" title="'+hEsc(item.nome+' · '+hFmt(item.vgv))+'">'
+      +'<span class="rivaV19BarValue">'+(futuro?'—':brl(item.vgv))+'</span><span class="rivaV19Track"><i class="rivaV19Fill" style="height:'+altura+'%"></i></span>'
+      +'<span class="rivaV19BarLabel">'+item.nome+'</span></div>';
+  }).join('');
+  var cardsMes = meses.map(function(item) {
+    var futuro = Number(S.ano) > agora.getFullYear() || (Number(S.ano) === agora.getFullYear() && item.indice > agora.getMonth());
+    var atual = Number(S.ano) === agora.getFullYear() && item.indice === agora.getMonth();
+    var percentual = item.meta > 0 ? Math.round(item.vgv/item.meta*100) : 0;
+    return '<article class="rivaMonthCard'+(atual?' current':'')+(futuro?' future':'')+'"><header><strong>'+item.nome+'</strong><span>'
+      +(atual?'PARCIAL':futuro?'EM ABERTO':item.vendas+' venda'+(item.vendas !== 1 ? 's' : ''))+'</span></header>'
+      +'<strong>'+hFmt(item.vgv)+'</strong><small>'+(item.meta?'Meta '+hFmt(item.meta)+' · '+percentual+'%':'Meta não definida')+'</small>'
+      +'<div class="rivaProgress"><i style="width:'+Math.min(100,percentual)+'%"></i></div></article>';
+  }).join('');
+  var quarters = [0,1,2,3].map(function(q) {
+    var dados = somarRivaPeriodo(meses.slice(q*3,q*3+3));
+    var percentual = dados.meta > 0 ? Math.round(dados.vgv/dados.meta*100) : 0;
+    return '<article class="rivaV19Quarter"><span>'+(q+1)+'º Trimestre · '+_MS3[q*3]+' a '+_MS3[q*3+2]+'</span>'
+      +'<strong>'+hFmt(dados.vgv)+'</strong><small>'+dados.vendas+' venda'+(dados.vendas !== 1 ? 's' : '')+(dados.meta?' · Meta '+hFmt(dados.meta)+' · '+percentual+'%':'')+'</small>'
+      +'<div class="rivaProgress"><i style="width:'+Math.min(100,percentual)+'%"></i></div></article>';
+  }).join('');
+  return '<div class="rivaPeriodGrid">'
+    +rivaPeriodoCard('Mês · '+MS[indiceMes],mes,'acompanhamento mensal')
+    +rivaPeriodoCard((indiceTri+1)+'º Trimestre',tri,_MS3[indiceTri*3]+' a '+_MS3[indiceTri*3+2])
+    +rivaPeriodoCard('Ano '+S.ano,ano,'acumulado anual')+'</div>'
+    +'<section class="rivaV19Chart"><header class="rivaV19ChartHead"><div><h3>Evolução mensal do VGV comunicado</h3><p>Janeiro a dezembro · adapta-se à largura da tela sem barra horizontal</p></div><span class="hCardBadge">'+S.ano+'</span></header>'
+    +'<div class="rivaV19Bars">'+barras+'</div></section>'
+    +'<section class="hCard"><header class="hCardHead"><div><div class="hCardTitle">RIVA Vendas por mês</div><div class="hCardSub">O mês atual é parcial; meses futuros permanecem em aberto</div></div></header>'
+    +'<div class="rivaMonthGrid">'+cardsMes+'</div></section>'
+    +'<section><div class="hv19SectionLabel" style="padding:0 0 10px">Consolidado trimestral</div><div class="rivaV19QuarterGrid">'+quarters+'</div></section>';
+}
+
+function viewRivaConsolidado() {
+  var indiceMes = Math.max(0,Math.min(11,parseInt(String(S.mes || '').split('-')[1],10)-1 || 0));
+  return '<div class="hPage hv19Page"><section class="hv19Toolbar"><div class="hv19ToolbarCopy"><span class="hv19Eyebrow">VISÃO GERAL</span><h2>RIVA — Consolidado</h2>'
+    +'<p>Resultados mensais, trimestrais e anuais das vendas comunicadas.</p></div><div class="rivaControls">'
+    +'<label>Ano<input id="rivaAno" type="number" min="2020" max="2099" value="'+S.ano+'"></label>'
+    +'<label>Mês<select id="rivaMes">'+_MS3.map(function(nome,indice){ return '<option value="'+String(indice+1).padStart(2,'0')+'"'+(indice === indiceMes?' selected':'')+'>'+nome+'</option>'; }).join('')+'</select></label>'
+    +'</div></section><div id="rivaV19Content">'+rivaV19Body()+'</div></div>';
+}
+
+function afterRivaConsolidado() {
+  var ano = document.getElementById('rivaAno');
+  var mes = document.getElementById('rivaMes');
+  function atualizar() {
+    var novoAno = Math.max(2020,Math.min(2099,parseInt(ano.value,10) || S.ano));
+    S.ano = novoAno;
+    S.mes = novoAno+'-'+mes.value;
+    rivaV19RenderContent();
+  }
+  if (ano) ano.onchange = atualizar;
+  if (mes) mes.onchange = atualizar;
+}
+
+function rivaV19RenderContent() {
+  var el = document.getElementById('rivaV19Content');
+  if (el) el.innerHTML = rivaV19Body();
+}
 
 
 
