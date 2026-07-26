@@ -6,11 +6,12 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>BI — Riva Vendas CE</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTMiIGZpbGw9IiNmZmYiLz4KICA8cGF0aCBkPSJNMTQgOHY0OGg5VjM1aDEwbDExIDE4aDEwTDQyIDMxYzUtMyA4LTggOC0xNCAwLTctNS0xMC0xMy0xMEgxNHptOSA5aDEyYzQgMCA2IDIgNiA1cy0yIDUtNiA1SDIzVjE3eiIgZmlsbD0iIzBkMWY2ZCIvPgogIDxwYXRoIGQ9Ik0yNSAyOXYxNmwxMy04LTEzLTh6IiBmaWxsPSIjZGMyNjI2Ii8+CiAgPGNpcmNsZSBjeD0iOCIgY3k9IjIyIiByPSIyLjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzE2NDhkOCIgc3Ryb2tlLXdpZHRoPSIxLjYiLz4KICA8Y2lyY2xlIGN4PSI4IiBjeT0iMzIiIHI9IjIuOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMTY0OGQ4IiBzdHJva2Utd2lkdGg9IjEuNiIvPgogIDxjaXJjbGUgY3g9IjgiIGN5PSI0MiIgcj0iMi44IiBmaWxsPSJub25lIiBzdHJva2U9IiMxNjQ4ZDgiIHN0cm9rZS13aWR0aD0iMS42Ii8+CiAgPGxpbmUgeDE9IjEwLjgiIHkxPSIyMiIgeDI9IjE0IiB5Mj0iMjIiIHN0cm9rZT0iIzE2NDhkOCIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxsaW5lIHgxPSIxMC44IiB5MT0iMzIiIHgyPSIxNCIgeTI9IjMyIiBzdHJva2U9IiMxNjQ4ZDgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8bGluZSB4MT0iMTAuOCIgeTE9IjQyIiB4Mj0iMTQiIHkyPSI0MiIgc3Ryb2tlPSIjMTY0OGQ4IiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPGxpbmUgeDE9IjgiIHkxPSIyNC44IiB4Mj0iOCIgeTI9IjI5LjIiIHN0cm9rZT0iIzE2NDhkOCIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxsaW5lIHgxPSI4IiB5MT0iMzQuOCIgeDI9IjgiIHkyPSIzOS4yIiBzdHJva2U9IiMxNjQ4ZDgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9zdmc+">
 <meta name="theme-color" content="#050817">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="riva-responsive.css">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
@@ -913,7 +914,7 @@ function mostrarPortal(pessoaId,cargo){
     { titulo:'Leads Online', desc:'Oportunidades, agendamentos, visitas, pastas e vendas do Núcleo Digital.', icon:ICONS.leads, color:'', href:isDiretor?'index.html?painel=leads':'view.html', badge:isDiretor?'Acesso Total':'Visualização', badgeCls:isDiretor?'':'view', lock:false },
     ...(isDiretor?[{ titulo:'Painel Diretor', desc:'Visão executiva, rankings e alertas.', icon:ICONS.diretor, color:'red', href:'diretor.html', badge:'Diretoria', badgeCls:'diretoria', lock:false }]:[]),
     ...(isAdmin?[{ titulo:'Administração', desc:'Gerencie usuários e acessos do sistema.', icon:ICONS.admin, color:'purple', href:'admin.html', badge:'Admin', badgeCls:'admin', lock:false }]:[]),
-    { titulo:'Gestão de Vendas', desc:'Registre vendas com todos os detalhes.', icon:ICONS.vendas, color:'green', href:'vendas.html', badge:isDiretor?'Acesso Total':'Visualização', badgeCls:isDiretor?'':'view', lock:false },
+    { titulo:'Gestão de Vendas', desc:'Consulte as vendas do mês e, quando autorizado, registre ou edite lançamentos.', icon:ICONS.vendas, color:'green', href:'vendas.html', badge:isDiretor?'Acesso Total':'Visualização', badgeCls:isDiretor?'':'view', lock:false },
     ...(isDiretor?[{ titulo:'Análise Executiva', desc:'Acompanhamento semanal, funil de conversão e métricas house.', icon:ICONS.performance, color:'amber', href:'performance.html', badge:'Diretoria', badgeCls:'diretoria', lock:false }]:[]),
     ...(isDiretor?[{ titulo:'Agenda Riva', desc:'Agenda de reuniões da equipe. Convoca por escopo.', icon:ICONS.meet, color:'purple', href:'reunioes.html', badge:'Equipe', badgeCls:'sys', lock:false }]:[{ titulo:'Agenda Riva', desc:'Suas reuniões agendadas.', icon:ICONS.meet, color:'purple', href:'reunioes.html', badge:'Equipe', badgeCls:'sys', lock:false }]),
     { titulo:'Ajuda', desc:'Como usar cada painel do sistema.', icon:ICONS.help, color:'', href:'ajuda.html', badge:'Guia', badgeCls:'sys', lock:false },
