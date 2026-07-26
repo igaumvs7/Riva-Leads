@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- RIVA V16.2: formulários protegidos e gravações unitárias confirmadas -->
+<!-- RIVA V18 2026-07-26: relatórios de Leads reconciliados com o dashboard -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -2790,18 +2790,49 @@ function calcUpdate(){
 // ═══════════════════════════════════════════
 let selectedRegIds=[];
 
-function renderReportsPage(){
+function contextoRelatorioLeads(){
   const regionals=S.pessoas.filter(p=>p.cargo==='Gerente Regional');
-  if(!selectedRegIds.length) selectedRegIds=regionals.map(r=>r.id);
+  const idsValidos=new Set(regionals.map(r=>String(r.id)));
+  selectedRegIds=selectedRegIds.map(String).filter(id=>idsValidos.has(id));
+  if(!selectedRegIds.length) selectedRegIds=regionals.map(r=>String(r.id));
   const selSet=new Set(selectedRegIds);
-  const rows=S.pessoas
-    .filter(p=>p.cargo==='Gerente de Vendas'&&selSet.has(p.superior))
-    .map(p=>{const t=soma(S.leads.filter(l=>l.mes===S.mes&&l.pessoaId===p.id));const reg=S.pessoas.find(x=>x.id===p.superior);return{person:p,regional:reg,totals:t};})
-    .sort((a,b)=>pct(b.totals.ven,b.totals.op)-pct(a.totals.ven,a.totals.op)||b.totals.ven-a.totals.ven);
-  const regRows=regionals.filter(r=>selSet.has(r.id)).map(r=>{const ids=getDesc(r.id);const t=soma(S.leads.filter(l=>l.mes===S.mes&&ids.has(l.pessoaId)));return{regional:r,totals:t};}).sort((a,b)=>pct(b.totals.ven,b.totals.op)-pct(a.totals.ven,a.totals.op));
-  const tot=soma(rows.map(r=>r.totals));
-  const selectedNames=selectedRegIds.length===regionals.length?'Todos os regionais':regionals.filter(r=>selSet.has(r.id)).map(r=>r.nome).join(', ')||'—';
-  const allSel=selectedRegIds.length===regionals.length;
+  const allSel=regionals.length>0&&selectedRegIds.length===regionals.length;
+  const ids=new Set();
+  if(allSel){
+    S.pessoas.forEach(p=>ids.add(String(p.id)));
+    S.leads.filter(l=>l.mes===S.mes).forEach(l=>ids.add(String(l.pessoaId)));
+  }else{
+    regionals.filter(r=>selSet.has(String(r.id))).forEach(r=>{
+      getDesc(r.id).forEach(id=>ids.add(String(id)));
+    });
+  }
+  const leads=S.leads.filter(l=>l.mes===S.mes&&ids.has(String(l.pessoaId)));
+  const pessoaPorId=new Map(S.pessoas.map(p=>[String(p.id),p]));
+  function regionalDaPessoa(p){
+    let atual=p,limite=0;
+    while(atual&&limite++<8){
+      if(atual.cargo==='Gerente Regional') return atual;
+      atual=pessoaPorId.get(String(atual.superior||''));
+    }
+    return null;
+  }
+  const pessoasComLead=[...new Set(leads.map(l=>String(l.pessoaId)))];
+  const rows=pessoasComLead.map(id=>{
+    const person=pessoaPorId.get(id)||{id,nome:'Cadastro '+id,cargo:'Responsável',superior:''};
+    const totals=soma(leads.filter(l=>String(l.pessoaId)===id));
+    return {person,regional:regionalDaPessoa(person),totals};
+  }).sort((a,b)=>pct(b.totals.ven,b.totals.op)-pct(a.totals.ven,a.totals.op)||b.totals.ven-a.totals.ven||a.person.nome.localeCompare(b.person.nome,'pt-BR'));
+  const regRows=regionals.filter(r=>selSet.has(String(r.id))).map(r=>{
+    const desc=new Set([...getDesc(r.id)].map(String));
+    return {regional:r,totals:soma(leads.filter(l=>desc.has(String(l.pessoaId))))};
+  }).sort((a,b)=>pct(b.totals.ven,b.totals.op)-pct(a.totals.ven,a.totals.op));
+  return {regionals,selSet,allSel,leads,rows,regRows,tot:soma(leads)};
+}
+
+function renderReportsPage(){
+  const ctx=contextoRelatorioLeads();
+  const {regionals,selSet,rows,regRows,tot,allSel}=ctx;
+  const selectedNames=selectedRegIds.length===regionals.length?'Todos os regionais':regionals.filter(r=>selSet.has(String(r.id))).map(r=>r.nome).join(', ')||'—';
   return `<div class="modulePage reportsPage">
     <section class="moduleHeader">
       <div><span class="eyebrow">CENTRAL DE RELATÓRIOS</span><h1>Relatórios executivos</h1>
@@ -2860,9 +2891,9 @@ function renderReportsPage(){
           <dl><div><dt>OP</dt><dd>${r.totals.op}</dd></div><div><dt>VEN</dt><dd>${r.totals.ven}</dd></div><div><dt>VEN/OP</dt><dd>${pctStr(r.totals.ven,r.totals.op)}</dd></div></dl>
         </article>`).join('')}
       </div>
-      <div class="reportSectionTitle"><span>DETALHAMENTO POR GERENTE</span><small>${rows.length} gerentes</small></div>
+      <div class="reportSectionTitle"><span>DETALHAMENTO POR RESPONSÁVEL</span><small>${rows.length} lançamentos consolidados</small></div>
       <div class="tableWrap reportTableWrap"><table>
-        <thead><tr><th>#</th><th>Gerente</th><th>Regional</th><th>OP</th><th>AG</th><th>VIS</th><th>PAS</th><th>VEN</th><th>AG/OP</th><th>VEN/OP</th></tr></thead>
+        <thead><tr><th>#</th><th>Responsável</th><th>Estrutura</th><th>OP</th><th>AG</th><th>VIS</th><th>PAS</th><th>VEN</th><th>AG/OP</th><th>VEN/OP</th></tr></thead>
         <tbody>
           ${rows.map((r,i)=>`<tr><td><strong>${i+1}</strong></td><td><strong>${r.person.nome}</strong></td><td>${r.regional?.nome||'—'}</td>
           <td>${r.totals.op}</td><td>${r.totals.ag}</td><td>${r.totals.vis}</td><td>${r.totals.pas}</td>
@@ -2895,17 +2926,13 @@ function gerarPDF(){
 }
 
 function gerarExcel(){
-  const regionals=S.pessoas.filter(p=>p.cargo==='Gerente Regional');
-  const selSet=new Set(selectedRegIds.length?selectedRegIds:regionals.map(r=>r.id));
-  const rows=S.pessoas
-    .filter(p=>p.cargo==='Gerente de Vendas'&&selSet.has(p.superior))
-    .map(p=>{const t=soma(S.leads.filter(l=>l.mes===S.mes&&l.pessoaId===p.id));const reg=S.pessoas.find(x=>x.id===p.superior);return{person:p,regional:reg,totals:t};});
+  const ctx=contextoRelatorioLeads();
+  const {regionals,selSet,rows,tot}=ctx;
   const wb=XLSX.utils.book_new();
   const navy='0c2264',red='ff1e1e',white='FFFFFF',line='dfe6f2';
   const hdrStyle={fill:{fgColor:{rgb:navy}},font:{bold:true,color:{rgb:white},sz:9},alignment:{horizontal:'center'}};
   const titleStyle={fill:{fgColor:{rgb:navy}},font:{bold:true,color:{rgb:white},sz:13},alignment:{horizontal:'left'}};
   // Aba 1: Resumo
-  const tot=soma(rows.map(r=>r.totals));
   const ws1data=[
     ['RIVA LEADS BI — Relatório Executivo | '+fmtMes(S.mes),...Array(8).fill('')],
     [],
@@ -2917,7 +2944,7 @@ function gerarExcel(){
     ['Vendas',tot.ven,pctStr(tot.ven,tot.op)+' do OP ⭐'],
     [],
     ['Regional','OP Equipe','AG','VIS','PAS','VEN','VEN/OP'],
-    ...regionals.filter(r=>selSet.has(r.id)).map(r=>{const ids=getDesc(r.id);const t=soma(S.leads.filter(l=>l.mes===S.mes&&ids.has(l.pessoaId)));return[r.nome,t.op,t.ag,t.vis,t.pas,t.ven,pctStr(t.ven,t.op)];})
+    ...ctx.regRows.map(r=>[r.regional.nome,r.totals.op,r.totals.ag,r.totals.vis,r.totals.pas,r.totals.ven,pctStr(r.totals.ven,r.totals.op)])
   ];
   const ws1=XLSX.utils.aoa_to_sheet(ws1data);
   ws1['!cols']=[{wch:30},{wch:14},{wch:18},...Array(6).fill({wch:12})];
@@ -2927,8 +2954,8 @@ function gerarExcel(){
   XLSX.utils.book_append_sheet(wb,ws1,'Resumo');
   // Aba 2: Detalhamento
   const ws2data=[
-    ['RIVA LEADS BI — Detalhamento por Gerente | '+fmtMes(S.mes),...Array(9).fill('')],
-    ['Regional','Gerente','Cargo','OP','AG','VIS','PAS','VEN','AG/OP','VEN/OP'],
+    ['RIVA LEADS BI — Detalhamento por Responsável | '+fmtMes(S.mes),...Array(9).fill('')],
+    ['Regional','Responsável','Cargo','OP','AG','VIS','PAS','VEN','AG/OP','VEN/OP'],
     ...rows.map(r=>[r.regional?.nome||'—',r.person.nome,roleLabel(r.person.cargo),r.totals.op,r.totals.ag,r.totals.vis,r.totals.pas,r.totals.ven,pctStr(r.totals.ag,r.totals.op),pctStr(r.totals.ven,r.totals.op)]),
     ['TOTAIS','—','—',tot.op,tot.ag,tot.vis,tot.pas,tot.ven,pctStr(tot.ag,tot.op),pctStr(tot.ven,tot.op)]
   ];
