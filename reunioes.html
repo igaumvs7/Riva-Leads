@@ -382,6 +382,9 @@ document.addEventListener('DOMContentLoaded', function(){
     }catch(e){}
   }
   navTo('cal');
+  if(window.RivaDraft){
+    RivaDraft.bind('reuniao',['rTit','rData','rHora','rDur','rLocal','rDesc','rGvEspecifico']);
+  }
   // Sync remoto em background (não bloqueia UI)
   setTimeout(loadRemote, 200);
 });
@@ -913,6 +916,7 @@ function abrirNovaReuniao(dataIni){
   document.getElementById('rBtnEmail').style.display = 'none';
   limparStatusEmail();
   renderEscopo();
+  if(window.RivaDraft) RivaDraft.restore('reuniao',['rTit','rData','rHora','rDur','rLocal','rDesc','rGvEspecifico']);
   atualizarPreviaEmail();
   setModalEditable(true);
   document.getElementById('rModal').classList.add('open');
@@ -1077,7 +1081,37 @@ function onEscopoChange(atual){
   atualizarPreviaEmail(atual&&atual.indexOf('gv:')===0?atual:esc);
 }
 
-function salvarReuniao(){
+async function postAgendaAction(payload){
+  setSyn('loading');
+  var resposta=await fetch(SU,{
+    method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    cache:'no-store',
+    body:JSON.stringify(payload)
+  });
+  if(!resposta.ok) throw new Error('Falha HTTP '+resposta.status);
+  var retorno=await resposta.json();
+  if(!retorno||retorno.status!=='ok') throw new Error((retorno&&retorno.msg)||'Servidor recusou a gravação');
+  setSyn('ok');
+  return retorno;
+}
+
+function persistirAgendaLocal(){
+  var porMes={};
+  S.reunioes.forEach(function(r){
+    var chave='reunioes_'+String(r.data||'').slice(0,7);
+    if(!porMes[chave]) porMes[chave]=[];
+    porMes[chave].push(r);
+  });
+  Object.keys(S.config||{}).forEach(function(chave){
+    if(chave.indexOf('reunioes_')===0&&!porMes[chave]) porMes[chave]=[];
+  });
+  Object.assign(S.config,porMes);
+  localStorage.setItem('riva_agenda_cache',JSON.stringify({config:S.config,ts:Date.now()}));
+  localStorage.setItem('riva_agenda_updated',new Date().toISOString());
+}
+
+async function salvarReuniao(){
   if(!S.canConvoke){ toast('Você não tem permissão para marcar reuniões.',true); return; }
   if(S.editing&&!podeGerenciarReuniao(S.editing)){ toast('Somente o solicitante pode alterar esta reunião.',true); return; }
   var titulo = document.getElementById('rTit').value.trim();
@@ -1115,48 +1149,49 @@ function salvarReuniao(){
     atualizadoEm: new Date().toISOString()
   };
 
-  // OPTIMISTIC UPDATE: atualiza UI imediatamente
-  if(S.editing){
-    S.reunioes = S.reunioes.map(function(x){ return x.id===reu.id ? reu : x; });
-  } else {
-    S.reunioes.push(reu);
-  }
   var wasEditing = !!S.editing;
   var emails = emailsDoEscopo(escopo);
-  fecharModal();
-  renderPage();
-  toast('Reunião salva! Sincronizando...');
-
-  // Salva no background (não bloqueia)
-  saveReunioes().then(function(ok){
-    if(ok){
-      toast('Reunião salva!');
-      // Envio automático de email para todos do escopo
-      if(!wasEditing && emails.length){
-        setTimeout(function(){ enviarEmail(reu); }, 500);
-      }
-    } else {
-      toast('Salvo local. Sem conexão.', true);
-    }
-  });
+  var botao=document.getElementById('rBtnSave');
+  var texto=botao&&botao.textContent;
+  if(botao){botao.disabled=true;botao.textContent='Salvando na nuvem...';}
+  try{
+    var retorno=await postAgendaAction({action:'salvarReuniao',reuniao:reu});
+    reu=retorno.reuniao||reu;
+    if(wasEditing) S.reunioes=S.reunioes.map(function(x){return x.id===reu.id?reu:x;});
+    else S.reunioes.push(reu);
+    persistirAgendaLocal();
+    if(window.RivaDraft) RivaDraft.clear('reuniao');
+    fecharModal();
+    renderPage();
+    toast('Reunião gravada e confirmada na nuvem!');
+    if(!wasEditing&&emails.length) setTimeout(function(){enviarEmail(reu);},500);
+  }catch(e){
+    setSyn('offline');
+    toast('A reunião NÃO foi salva. Os campos foram mantidos: '+(e.message||'verifique a conexão.'),true);
+  }finally{
+    if(botao){botao.disabled=false;botao.textContent=texto||'Salvar';}
+  }
 }
 
-function excluirReuniao(){
+async function excluirReuniao(){
   if(!S.editing) return;
   if(!podeGerenciarReuniao(S.editing)){ toast('Você não pode excluir a reunião de outro solicitante.',true); return; }
   if(!confirm('Excluir esta reunião?')) return;
-  var idRemover = S.editing.id;
-
-  // OPTIMISTIC UPDATE
-  S.reunioes = S.reunioes.filter(function(x){ return x.id !== idRemover; });
-  fecharModal();
-  renderPage();
-  toast('Reunião excluída! Sincronizando...');
-
-  saveReunioes().then(function(ok){
-    if(ok) toast('Sincronizado!');
-    else toast('Excluído local. Sem conexão.', true);
-  });
+  var idRemover=S.editing.id;
+  var botao=document.getElementById('rBtnDel');
+  var texto=botao&&botao.textContent;
+  if(botao){botao.disabled=true;botao.textContent='Excluindo...';}
+  try{
+    await postAgendaAction({action:'excluirReuniao',id:idRemover});
+    S.reunioes=S.reunioes.filter(function(x){return x.id!==idRemover;});
+    persistirAgendaLocal();
+    fecharModal();renderPage();toast('Reunião excluída da nuvem.');
+  }catch(e){
+    setSyn('offline');
+    toast('A reunião não foi excluída: '+(e.message||'verifique a conexão.'),true);
+  }finally{
+    if(botao){botao.disabled=false;botao.textContent=texto||'Excluir';}
+  }
 }
 </script>
 </body>
