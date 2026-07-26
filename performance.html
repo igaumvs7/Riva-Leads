@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- RIVA V18 2026-07-26: consolidado RIVA, diretorias trimestrais e navegação House -->
+<!-- RIVA V18.1 2026-07-26: posição das barras preservada durante sincronização -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -826,8 +826,9 @@ function setHouseView(v){
   renderHouse();
 }
 
-var S = { page:'rene', mes:'', ano:0, vendas:[], corretores:[], pessoas:[], quadroComercial:[], metas:{}, user:{}, canEdit:false, sheetsOK:false, sidebarOpen:window.innerWidth>1450, sT:null, config:{}, loadingRemote:false, needsRender:false };
+var S = { page:'rene', mes:'', ano:0, vendas:[], corretores:[], pessoas:[], quadroComercial:[], metas:{}, user:{}, canEdit:false, sheetsOK:false, sidebarOpen:window.innerWidth>1450, sT:null, config:{}, loadingRemote:false, needsRender:false, scrollPointerActive:false, scrollBusyUntil:0, scrollRenderTimer:null };
 var PERF_CACHE_VERSION = 'v2';
+var PERF_SCROLL_SELECTOR = '.hTableWrap,.pTable,.hTabBar,.hPeriodNav';
 
 function perfStorageKey(tipo) {
   var usuario = String((S.user && S.user.usuario) || 'default').toLowerCase().replace(/[^\w-]+/g, '_');
@@ -902,8 +903,55 @@ function persistGestaoCache(){
 function performanceEmEdicao(){
   var ativo=document.activeElement;
   var conteudo=document.getElementById('pageContent');
+  if(S.scrollPointerActive||Date.now()<S.scrollBusyUntil) return true;
   if(window._houseDirty||window._regionalDirty||window._equipesDirty||Object.keys(pendingConfig()).length) return true;
   return !!(ativo&&conteudo&&conteudo.contains(ativo)&&/^(INPUT|TEXTAREA|SELECT)$/.test(ativo.tagName));
+}
+function perfScrollArea(target){
+  var conteudo=document.getElementById('pageContent');
+  if(!target||!conteudo||!conteudo.contains(target)) return null;
+  if(target.matches&&target.matches(PERF_SCROLL_SELECTOR)) return target;
+  return target.closest?target.closest(PERF_SCROLL_SELECTOR):null;
+}
+function perfCaptureScroll(){
+  var conteudo=document.getElementById('pageContent');
+  if(!conteudo) return null;
+  return {
+    page:conteudo.getAttribute('data-riva-page')||'',
+    houseTab:window._hTab||'',
+    house2Tab:window._h2Tab||'',
+    areas:Array.prototype.map.call(conteudo.querySelectorAll(PERF_SCROLL_SELECTOR),function(el){
+      return {left:el.scrollLeft||0,top:el.scrollTop||0};
+    })
+  };
+}
+function perfRestoreScroll(estado){
+  if(!estado||estado.page!==S.page) return;
+  if(S.page==='house'&&estado.houseTab!==(window._hTab||'')) return;
+  if(S.page==='house2'&&estado.house2Tab!==(window._h2Tab||'')) return;
+  function aplicar(){
+    var conteudo=document.getElementById('pageContent');
+    if(!conteudo||conteudo.getAttribute('data-riva-page')!==estado.page) return;
+    Array.prototype.forEach.call(conteudo.querySelectorAll(PERF_SCROLL_SELECTOR),function(el,i){
+      var pos=estado.areas[i];
+      if(!pos) return;
+      el.scrollLeft=pos.left;
+      el.scrollTop=pos.top;
+    });
+  }
+  aplicar();
+  if(window.requestAnimationFrame) window.requestAnimationFrame(aplicar);
+}
+function perfFlushRenderPendente(){
+  if(!S.needsRender||performanceEmEdicao()) return;
+  S.needsRender=false;
+  renderPage();
+}
+function perfMarcarInteracaoScroll(espera){
+  espera=espera||700;
+  S.scrollBusyUntil=Math.max(S.scrollBusyUntil,Date.now()+espera);
+  clearTimeout(S.scrollRenderTimer);
+  S.scrollRenderTimer=setTimeout(perfFlushRenderPendente,espera+80);
 }
 function pendingConfig() { return readLocalObject(perfStorageKey('pending')); }
 function setPendingConfig(chave, pendente) {
@@ -946,6 +994,24 @@ document.addEventListener('DOMContentLoaded', function() {
     if(document.visibilityState!=='hidden'&&!performanceEmEdicao()) loadRemote();
   },60000);
 });
+document.addEventListener('pointerdown',function(ev){
+  if(!perfScrollArea(ev.target)) return;
+  S.scrollPointerActive=true;
+  perfMarcarInteracaoScroll(900);
+},true);
+document.addEventListener('pointerup',function(){
+  if(!S.scrollPointerActive) return;
+  S.scrollPointerActive=false;
+  perfMarcarInteracaoScroll(700);
+},true);
+document.addEventListener('pointercancel',function(){
+  if(!S.scrollPointerActive) return;
+  S.scrollPointerActive=false;
+  perfMarcarInteracaoScroll(700);
+},true);
+document.addEventListener('scroll',function(ev){
+  if(perfScrollArea(ev.target)) perfMarcarInteracaoScroll(700);
+},true);
 
 function navTo(page){
   S.page = page;
@@ -1053,7 +1119,8 @@ async function loadRemote(){
   }catch(e){
     loadCachedConfig();
     loadCachedGestao();
-    renderPage();
+    if(performanceEmEdicao()) S.needsRender=true;
+    else { S.needsRender=false; renderPage(); }
     setSyn('offline');
   } finally { S.loadingRemote=false; }
 }
@@ -1210,6 +1277,7 @@ function toast(msg, err){ var t=document.getElementById('toast'); document.getEl
 // ─── ROTEADOR ───
 function renderPage(){
   var el = document.getElementById('pageContent');
+  var scrollState=perfCaptureScroll();
   if(S.page==='rene'){ el.innerHTML = viewRegional('rene'); afterRegional('rene'); }
   else if(S.page==='cahu'){ el.innerHTML = viewRegional('cahu'); afterRegional('cahu'); }
   else if(S.page==='house'){ el.innerHTML = viewHouse(); afterHouse(); }
@@ -1217,6 +1285,8 @@ function renderPage(){
   else if(S.page==='riva'){ el.innerHTML = viewRivaConsolidado(); afterRivaConsolidado(); }
   else if(S.page==='equipes'){ el.innerHTML = viewEquipes(); afterEquipes(); }
   else if(S.page==='settings'){ el.innerHTML = viewSettings(); afterSettings(); }
+  el.setAttribute('data-riva-page',S.page);
+  perfRestoreScroll(scrollState);
 }
 
 // ═══════════════════════════════════════════════════════════════
