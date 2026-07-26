@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- RIVA V17 2026-07-26: edição de vendas + visão mensal para todos + responsividade global -->
+<!-- RIVA V18 2026-07-26: VGV inteiro, contraste escuro e acompanhamento anual -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -41,6 +41,7 @@
 .chartGrid{display:grid;grid-template-columns:1fr 1.3fr;gap:14px;margin-bottom:14px}
 .chartPad{padding:18px}
 .chartBox{position:relative;width:100%;height:230px}
+.chartPeriodHint{display:block;margin-top:3px;color:var(--muted);font-size:9px;font-weight:650}
 .dualGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
 
 .primaryButton{height:43px;padding:0 18px;display:inline-flex;align-items:center;gap:8px;border-radius:11px;color:#fff;background:linear-gradient(135deg,#1648d8,#0d33a8);font-size:12px;font-weight:750;cursor:pointer;box-shadow:0 8px 20px rgba(22,72,216,.28);transition:transform .2s}
@@ -205,6 +206,10 @@ tfoot td{padding:12px 14px;color:var(--royal-deep);font-weight:800;background:#e
 [data-theme="dark"] tbody tr:hover{background:#181d2a}
 [data-theme="dark"] tfoot td{background:#0d1018;color:#79a8ff}
 [data-theme="dark"] .rnkRow{border-color:#242b3b}
+[data-theme="dark"] .rId strong{color:#f4f7ff}
+[data-theme="dark"] .rId small{color:#aeb9d2}
+[data-theme="dark"] .rV{color:#9fc0ff}
+[data-theme="dark"] .rQ{color:#c3d6ff}
 [data-theme="dark"] .gvChip{background:#181d2a;border-color:#292f3e}
 [data-theme="dark"] .gvChip:hover{background:#20263a}
 [data-theme="dark"] .vgv{color:#79a8ff}
@@ -750,6 +755,14 @@ function brlCompleto(v){
     maximumFractionDigits:2
   });
 }
+function brlInteiro(v){
+  return numeroBRL(v).toLocaleString('pt-BR',{
+    style:'currency',
+    currency:'BRL',
+    minimumFractionDigits:0,
+    maximumFractionDigits:0
+  });
+}
 function brl(v){ if(v>=1e6) return 'R$ '+(v/1e6).toFixed(1).replace('.',',')+' M'; if(v>=1e3) return 'R$ '+Math.round(v/1e3)+'K'; return 'R$ '+(v||0).toLocaleString('pt-BR'); }
 function fdt(d){
   var iso=normalizarDataVenda(d);
@@ -845,7 +858,7 @@ function viewOverview(){
     + '</div>'
     + '<div class="chartGrid">'
     +   '<div class="panel"><div class="panelHeader"><div><span class="eyebrow">EMPREENDIMENTOS</span><h3>Distribuição VGV</h3></div></div><div class="chartPad"><div class="chartBox"><canvas id="cEmpr"></canvas></div></div></div>'
-    +   '<div class="panel"><div class="panelHeader"><div><span class="eyebrow">EVOLUÇÃO</span><h3>Realizado vs Meta</h3></div></div><div class="chartPad"><div class="chartBox"><canvas id="cEvo"></canvas></div></div></div>'
+    +   '<div class="panel"><div class="panelHeader"><div><span class="eyebrow">ACOMPANHAMENTO ANUAL</span><h3>Realizado vs Meta</h3><small class="chartPeriodHint" id="cEvoHint">Ano completo · mês selecionado em destaque</small></div></div><div class="chartPad"><div class="chartBox"><canvas id="cEvo"></canvas></div></div></div>'
     + '</div>'
     + '<div class="dualGrid">'
     +   '<div class="panel"><div class="panelHeader"><div><span class="eyebrow">RANKING</span><h3>Top Corretores</h3></div></div><div class="rankingList" id="rnkList"></div></div>'
@@ -967,20 +980,24 @@ function renderCh(){
   var CL=['#1e40af','#dc2626','#15a46f','#eab308','#7c3aed','#0891b2','#ea580c'];
   var c1=document.getElementById('cEmpr'); if(S.ch.e) S.ch.e.destroy();
   if(lb.length&&c1) S.ch.e=new Chart(c1,{type:'doughnut',data:{labels:lb,datasets:[{data:dt,backgroundColor:CL.slice(0,lb.length),borderWidth:2,borderColor:dark?'#12151f':'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},padding:10,color:dark?'#8b93a7':'#687695'}},tooltip:{callbacks:{label:function(c){ return ' '+brl(c.raw); }}}},cutout:'60%'}});
-  var todosM=[];
-  // Últimos 6 meses até o mês selecionado (S.mes)
-  var sMes = parseInt((S.mes||'2026-07').split('-')[1]);
+  var sMes = Math.max(1,Math.min(12,parseInt((S.mes||'').split('-')[1],10)||1));
   var sAno = S.ano || new Date().getFullYear();
-  for(var i=5;i>=0;i--){
-    var dtRef = new Date(sAno, sMes-1-i, 1);
-    todosM.push(dtRef.getFullYear()+'-'+String(dtRef.getMonth()+1).padStart(2,'0'));
-  }
-  var l6=todosM.map(function(m){ var pt=m.split('-'); return MS3[parseInt(pt[1])-1]+'/'+String(pt[0]).slice(2); });
-  var dR=todosM.map(function(m){ return S.vendas.filter(function(v){ return v.mes===m&&isCom(v); }).reduce(function(s,v){ return s+(parseFloat(v.vgv)||0); },0); });
+  var todosM=MS3.map(function(_,i){ return sAno+'-'+String(i+1).padStart(2,'0'); });
+  var l6=todosM.map(function(m){ return MS3[parseInt(m.split('-')[1],10)-1]; });
+  var dR=todosM.map(function(m,i){
+    if(i>=sMes) return null;
+    return S.vendas.filter(function(v){ return v.mes===m&&isCom(v); }).reduce(function(s,v){ return s+(parseFloat(v.vgv)||0); },0);
+  });
   var dMt=todosM.map(function(m){ return _metas[m]||0; });
-  var maxV=Math.max.apply(null,dR.concat(dMt).concat([1]));
+  var maxV=Math.max.apply(null,dR.map(function(v){ return v==null?0:v; }).concat(dMt).concat([1]));
+  var cores=todosM.map(function(_,i){
+    if(i===sMes-1) return '#ff1e1e';
+    return i<sMes-1?'rgba(22,72,216,.82)':'rgba(148,163,184,.18)';
+  });
+  var hint=document.getElementById('cEvoHint');
+  if(hint) hint.textContent='Janeiro a dezembro de '+sAno+' · '+MS[sMes-1]+' é parcial · meses futuros permanecem abertos';
   var c2=document.getElementById('cEvo'); if(S.ch.v) S.ch.v.destroy();
-  if(c2) S.ch.v=new Chart(c2,{type:'bar',data:{labels:l6,datasets:[{label:'Realizado',data:dR,backgroundColor:'#1e40af',borderRadius:5,borderSkipped:false,order:2},{label:'Meta',data:dMt,backgroundColor:'rgba(220,38,38,.15)',borderColor:'#dc2626',borderWidth:2,borderRadius:5,borderSkipped:false,order:1}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{boxWidth:10,font:{size:10},padding:14,color:dark?'#8b93a7':'#687695'}},tooltip:{callbacks:{label:function(c){ var pct=''; if(c.datasetIndex===0&&dMt[c.dataIndex]>0) pct=' ('+Math.round(c.raw/dMt[c.dataIndex]*100)+'% da meta)'; return ' '+c.dataset.label+': '+brl(c.raw)+pct; }}}},scales:{y:{min:0,ticks:{callback:function(v){ if(maxV<=1) return ''; return brl(v); },font:{size:9},maxTicksLimit:5,color:dark?'#8b93a7':'#9aa5b9'},grid:{color:dark?'rgba(255,255,255,.05)':'#eef1f7'}},x:{ticks:{font:{size:9},color:dark?'#8b93a7':'#9aa5b9'},grid:{display:false}}}}});
+  if(c2) S.ch.v=new Chart(c2,{type:'bar',data:{labels:l6,datasets:[{label:'VGV realizado',data:dR,backgroundColor:cores,borderRadius:5,borderSkipped:false,order:2},{label:'Meta mensal',data:dMt,type:'line',backgroundColor:'rgba(220,38,38,.08)',borderColor:'#dc2626',borderWidth:2,borderDash:[5,3],pointRadius:3,pointBackgroundColor:'#dc2626',tension:.25,order:1}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{boxWidth:10,font:{size:10},padding:14,color:dark?'#c6d0e5':'#687695'}},tooltip:{callbacks:{title:function(items){ var i=items.length?items[0].dataIndex:0; return MS[i]+' de '+sAno+(i===sMes-1?' · parcial':''); },label:function(c){ if(c.raw==null) return ' '+c.dataset.label+': período em aberto'; var pct=''; if(c.datasetIndex===0&&dMt[c.dataIndex]>0) pct=' ('+Math.round(c.raw/dMt[c.dataIndex]*100)+'% da meta)'; return ' '+c.dataset.label+': '+brl(c.raw)+pct; }}}},scales:{y:{min:0,ticks:{callback:function(v){ if(maxV<=1) return ''; return brl(v); },font:{size:9},maxTicksLimit:5,color:dark?'#b8c3d9':'#74819a'},grid:{color:dark?'rgba(255,255,255,.07)':'#e5eaf2'}},x:{ticks:{font:{size:9,weight:function(ctx){ return ctx.index===sMes-1?'bold':'normal'; }},color:function(ctx){ return ctx.index===sMes-1?'#ff5b67':(dark?'#b8c3d9':'#74819a'); }},grid:{display:false}}}}});
 }
 
 // ─── META ───
@@ -1069,7 +1086,7 @@ function viewMonthlySales(){
     + '<div style="margin-bottom:18px"><span style="color:var(--royal);font-size:10px;font-weight:850;letter-spacing:.14em;text-transform:uppercase">CONSULTA GERAL</span><h1 style="margin:5px 0 3px;font-size:clamp(24px,2.5vw,34px);line-height:1;letter-spacing:-.04em">Vendas do Mês</h1><p style="margin:0;color:var(--muted);font-size:13px">Todas as vendas lançadas em '+escHtml(nomeMesSelecionado())+'. Esta visualização está disponível para todos os usuários.</p></div>'
     + '<div class="monthlySummary">'
     +   '<div class="monthlyStat"><span>Vendas lançadas</span><strong id="msTotal">0</strong><small>todos os status</small></div>'
-    +   '<div class="monthlyStat"><span>VGV lançado</span><strong id="msVgv">R$ 0,00</strong><small>valor total do período</small></div>'
+    +   '<div class="monthlyStat"><span>VGV lançado</span><strong id="msVgv">R$ 0</strong><small>valor total do período · sem centavos</small></div>'
     +   '<div class="monthlyStat"><span>Comunicadas</span><strong id="msCom">0</strong><small id="msComPct">0% do total</small></div>'
     +   '<div class="monthlyStat"><span>Não comunicadas</span><strong id="msNao">0</strong><small>aguardando comunicação</small></div>'
     + '</div>'
@@ -1136,7 +1153,7 @@ function renderMonthlySales(){
   var totalVgv=todas.filter(function(v){ return v.status!=='cancelado'; }).reduce(function(s,v){ return s+(numeroBRL(v.vgv)||0); },0);
   var lista=vendasMesFiltradas();
   var totalEl=document.getElementById('msTotal'); if(totalEl) totalEl.textContent=todas.length;
-  var vgvEl=document.getElementById('msVgv'); if(vgvEl) vgvEl.textContent=brlCompleto(totalVgv);
+  var vgvEl=document.getElementById('msVgv'); if(vgvEl) vgvEl.textContent=brlInteiro(totalVgv);
   var comEl=document.getElementById('msCom'); if(comEl) comEl.textContent=comunicadas.length;
   var pctEl=document.getElementById('msComPct'); if(pctEl) pctEl.textContent=(todas.length?Math.round(comunicadas.length/todas.length*100):0)+'% do total';
   var naoEl=document.getElementById('msNao'); if(naoEl) naoEl.textContent=nao.length;
