@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- RIVA V18 2026-07-26: contraste escuro e acompanhamento anual -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -50,6 +51,7 @@
 .chartGrid{display:grid;grid-template-columns:1.4fr 1fr;gap:14px;margin-bottom:14px}
 .chartPad{padding:18px}
 .chartBox{position:relative;width:100%;height:220px}
+.chartPeriodHint{display:block;margin-top:3px;color:var(--muted);font-size:9px;font-weight:650}
 .dualGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
 
 .secondaryButton{height:43px;padding:0 16px;display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:11px;color:var(--royal-dark);background:#fff;font-size:11px;font-weight:720;cursor:pointer;transition:transform .2s,border .2s}
@@ -111,6 +113,10 @@ tfoot td{color:#fff;border:0;font-weight:800}
 [data-theme="dark"] td{border-color:#242b3b;color:#b5bdcd}
 [data-theme="dark"] tbody tr:hover{background:#181d2a}
 [data-theme="dark"] .rankingItem{background:#12151f;border-color:#242b3b}
+[data-theme="dark"] .rankId strong{color:#f4f7ff}
+[data-theme="dark"] .rankId small{color:#aeb9d2}
+[data-theme="dark"] .rankV{color:#9fc0ff}
+[data-theme="dark"] .rankQ{color:#c3d6ff}
 [data-theme="dark"] .gvChip{background:#181d2a;border-color:#292f3e}
 [data-theme="dark"] .gvChip:hover{background:#20263a}
 [data-theme="dark"] .vgvVal{color:#79a8ff}
@@ -577,7 +583,7 @@ function viewDashboard(){
     +   '<div class="kpiCard"><span>Ticket Médio</span><strong id="kTicket">—</strong><small>por venda comunicada</small><div class="kSub"><span class="kBadge neu" id="kAtv">0 corretores ativos</span></div></div>'
     + '</div>'
     + '<div class="chartGrid">'
-    +   '<div class="panel"><div class="panelHeader"><div><span class="eyebrow">DESEMPENHO</span><h3>VGV por Mês</h3></div><span class="liveTag"><i></i> AO VIVO</span></div><div class="chartPad"><div class="chartBox"><canvas id="chBar"></canvas></div></div></div>'
+    +   '<div class="panel"><div class="panelHeader"><div><span class="eyebrow">ACOMPANHAMENTO ANUAL</span><h3>VGV por Mês</h3><small class="chartPeriodHint" id="chBarHint">Ano completo · mês selecionado em destaque</small></div><span class="liveTag"><i></i> AO VIVO</span></div><div class="chartPad"><div class="chartBox"><canvas id="chBar"></canvas></div></div></div>'
     +   '<div class="panel"><div class="panelHeader"><div><span class="eyebrow">EMPREENDIMENTOS</span><h3>Distribuição VGV</h3></div></div><div class="chartPad"><div class="chartBox"><canvas id="chDonut"></canvas></div></div></div>'
     + '</div>'
     + '<div class="dualGrid">'
@@ -613,16 +619,16 @@ function afterDashboard(){
   drawBar(); drawDonut(vds); drawMiniRnk(vds); drawRegComp(vds);
 }
 function drawBar(){
-  var labels=[],data=[],metas=[];
-  for(var i=5;i>=0;i--){
-    var d=new Date(S.ano,parseInt(S.mes.split('-')[1])-1-i,1);
-    var k=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+  var labels=MESES_SHORT.slice(),data=[],metas=[];
+  var sMes=Math.max(1,Math.min(12,parseInt(String(S.mes||'').split('-')[1],10)||1));
+  var sAno=S.ano||new Date().getFullYear();
+  labels.forEach(function(_,i){
+    var k=sAno+'-'+String(i+1).padStart(2,'0');
     var com=S.vendas.filter(function(v){ return v.mes===k&&isCom(v); });
-    labels.push(MESES_SHORT[d.getMonth()]);
-    data.push(com.reduce(function(s,v){ return s+(+v.vgv||0); },0));
+    data.push(i<sMes?com.reduce(function(s,v){ return s+(+v.vgv||0); },0):null);
     metas.push(_metas[k]||0);
-  }
-  var maxV = Math.max.apply(null, data.concat(metas));
+  });
+  var maxV = Math.max.apply(null, data.map(function(v){ return v==null?0:v; }).concat(metas));
   var semDados = maxV === 0;
   var dark=document.documentElement.getAttribute('data-theme')==='dark';
   if(_charts.bar) _charts.bar.destroy();
@@ -638,7 +644,7 @@ function drawBar(){
       var msg = document.createElement('div');
       msg.id = msgId;
       msg.style.cssText = 'display:flex;align-items:center;justify-content:center;height:100%;min-height:200px;color:'+(dark?'#5a6482':'#9aa5b9')+';font-size:13px;font-weight:600;text-align:center;padding:20px';
-      msg.innerHTML = '<div><div style="font-size:32px;margin-bottom:8px;opacity:.3">📊</div>Sem VGV comunicado nos últimos 6 meses<br><small style="font-size:11px;opacity:.7">Registre vendas em Gestão de Vendas</small></div>';
+      msg.innerHTML = '<div><div style="font-size:32px;margin-bottom:8px;opacity:.3">📊</div>Sem VGV comunicado em '+sAno+'<br><small style="font-size:11px;opacity:.7">Registre vendas em Gestão de Vendas</small></div>';
       parent.appendChild(msg);
     }
     return;
@@ -646,10 +652,32 @@ function drawBar(){
     canvas.style.display = '';
     if(existMsg) existMsg.remove();
   }
-  _charts.bar=new Chart(canvas,{type:'bar',data:{labels:labels,datasets:[
-    {label:'VGV Comunicado',data:data,backgroundColor:'rgba(22,72,216,.75)',borderRadius:6,borderSkipped:false},
-    {label:'Meta',data:metas,type:'line',borderColor:'#ff1e1e',backgroundColor:'rgba(255,30,30,.08)',borderWidth:2,borderDash:[5,3],pointRadius:3,pointBackgroundColor:'#ff1e1e',tension:.3,fill:true}
-  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{size:10},color:dark?'#8b93a7':'#687695'}},tooltip:{callbacks:{label:function(c){ return ' '+brl(c.raw); }}}},scales:{y:{grid:{color:dark?'rgba(255,255,255,.05)':'rgba(0,0,0,.04)'},ticks:{color:dark?'#8b93a7':'#9aa5b9',font:{size:9},callback:function(v){ return brl(v); },maxTicksLimit:6},beginAtZero:true},x:{grid:{display:false},ticks:{color:dark?'#8b93a7':'#9aa5b9',font:{size:9}}}}}});
+  var hint=document.getElementById('chBarHint');
+  if(hint) hint.textContent='Janeiro a dezembro de '+sAno+' · '+MESES[sMes-1]+' é parcial · meses futuros permanecem abertos';
+  var cores=labels.map(function(_,i){ return i===sMes-1?'#ff1e1e':(i<sMes-1?'rgba(22,72,216,.82)':'rgba(148,163,184,.18)'); });
+  _charts.bar=new Chart(canvas,{
+    type:'bar',
+    data:{labels:labels,datasets:[
+      {label:'VGV Comunicado',data:data,backgroundColor:cores,borderRadius:6,borderSkipped:false},
+      {label:'Meta',data:metas,type:'line',borderColor:'#ff1e1e',backgroundColor:'rgba(255,30,30,.08)',borderWidth:2,borderDash:[5,3],pointRadius:3,pointBackgroundColor:'#ff1e1e',tension:.3,fill:true}
+    ]},
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{labels:{font:{size:10},color:dark?'#c6d0e5':'#687695'}},
+        tooltip:{callbacks:{
+          title:function(items){ var i=items.length?items[0].dataIndex:0; return MESES[i]+' de '+sAno+(i===sMes-1?' · parcial':''); },
+          label:function(c){ return c.raw==null?' '+c.dataset.label+': período em aberto':' '+c.dataset.label+': '+brl(c.raw); }
+        }}
+      },
+      scales:{
+        y:{grid:{color:dark?'rgba(255,255,255,.07)':'rgba(0,0,0,.05)'},ticks:{color:dark?'#b8c3d9':'#74819a',font:{size:9},callback:function(v){ return brl(v); },maxTicksLimit:6},beginAtZero:true},
+        x:{grid:{display:false},ticks:{color:function(ctx){ return ctx.index===sMes-1?'#ff5b67':(dark?'#b8c3d9':'#74819a'); },font:{size:9,weight:function(ctx){ return ctx.index===sMes-1?'bold':'normal'; }}}}
+      }
+    }
+  });
 }
 function drawDonut(vds){
   var mE={}; vds.filter(isCom).forEach(function(v){ var e=v.empreendimento||'Outros'; mE[e]=(mE[e]||0)+(+v.vgv||0); });
