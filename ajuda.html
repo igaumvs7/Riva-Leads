@@ -19,11 +19,12 @@
 })();
 </script>
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Ajuda — Riva Vendas CE</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTMiIGZpbGw9IiNmZmYiLz4KICA8cGF0aCBkPSJNMTQgOHY0OGg5VjM1aDEwbDExIDE4aDEwTDQyIDMxYzUtMyA4LTggOC0xNCAwLTctNS0xMC0xMy0xMEgxNHptOSA5aDEyYzQgMCA2IDIgNiA1cy0yIDUtNiA1SDIzVjE3eiIgZmlsbD0iIzBkMWY2ZCIvPgogIDxwYXRoIGQ9Ik0yNSAyOXYxNmwxMy04LTEzLTh6IiBmaWxsPSIjZGMyNjI2Ii8+CiAgPGNpcmNsZSBjeD0iOCIgY3k9IjIyIiByPSIyLjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzE2NDhkOCIgc3Ryb2tlLXdpZHRoPSIxLjYiLz4KICA8Y2lyY2xlIGN4PSI4IiBjeT0iMzIiIHI9IjIuOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMTY0OGQ4IiBzdHJva2Utd2lkdGg9IjEuNiIvPgogIDxjaXJjbGUgY3g9IjgiIGN5PSI0MiIgcj0iMi44IiBmaWxsPSJub25lIiBzdHJva2U9IiMxNjQ4ZDgiIHN0cm9rZS13aWR0aD0iMS42Ii8+CiAgPGxpbmUgeDE9IjEwLjgiIHkxPSIyMiIgeDI9IjE0IiB5Mj0iMjIiIHN0cm9rZT0iIzE2NDhkOCIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxsaW5lIHgxPSIxMC44IiB5MT0iMzIiIHgyPSIxNCIgeTI9IjMyIiBzdHJva2U9IiMxNjQ4ZDgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8bGluZSB4MT0iMTAuOCIgeTE9IjQyIiB4Mj0iMTQiIHkyPSI0MiIgc3Ryb2tlPSIjMTY0OGQ4IiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPGxpbmUgeDE9IjgiIHkxPSIyNC44IiB4Mj0iOCIgeTI9IjI5LjIiIHN0cm9rZT0iIzE2NDhkOCIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxsaW5lIHgxPSI4IiB5MT0iMzQuOCIgeDI9IjgiIHkyPSIzOS4yIiBzdHJva2U9IiMxNjQ4ZDgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9zdmc+">
 <meta name="theme-color" content="#0d1f6d">
 <link rel="stylesheet" href="riva-shell.css">
+<link rel="stylesheet" href="riva-responsive.css">
 <style>
 .hHero{background:linear-gradient(135deg,#1648d8,#0d33a8);padding:28px 32px;border-radius:16px;color:#fff;margin-bottom:22px;box-shadow:0 12px 32px rgba(22,72,216,.2)}
 .hHero .eyebrow{font-size:10px;font-weight:850;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
@@ -382,9 +383,10 @@ vendas: `
 </div>
 
 <div class="hSection">
-  <div class="hSectHead"><div class="icn">🛒</div><div><h2>Consulta de vendas</h2><p>O que aparece na listagem</p></div></div>
-  <div class="hStep"><div class="hStepNum">1</div><div class="hStepBody"><h4>Status</h4><p>Uma venda pode estar <strong>Comunicada</strong> ou <strong>Não Comunicada</strong>. Os filtros permitem separar esses registros.</p></div></div>
-  <div class="hStep"><div class="hStepNum">2</div><div class="hStepBody"><h4>Dados da venda</h4><p>Cada linha mostra corretor, empreendimento, VGV, data e status.</p></div></div>
+  <div class="hSectHead"><div class="icn">🛒</div><div><h2>Aba: Vendas do Mês</h2><p>Consulta disponível para todos os usuários</p></div></div>
+  <div class="hStep"><div class="hStepNum">1</div><div class="hStepBody"><h4>Todas as vendas do período</h4><p>A aba lateral mostra as vendas do mês e ano escolhidos no topo, com corretor, empreendimento, VGV, data, status, responsável e observação.</p></div></div>
+  <div class="hStep"><div class="hStepNum">2</div><div class="hStepBody"><h4>Busca e status</h4><p>Pesquise pelo corretor, empreendimento ou responsável e filtre entre <strong>Comunicadas</strong>, <strong>Não Comunicadas</strong> e <strong>Canceladas</strong>.</p></div></div>
+  <div class="hStep"><div class="hStepNum">3</div><div class="hStepBody"><h4>Editar uma venda</h4><p>Diretor e Administrador podem clicar em <strong>Editar</strong>, alterar os campos e salvar. O sistema atualiza a mesma venda na nuvem, sem criar duplicidade.</p></div></div>
   <div class="hInfo"><strong>ℹ️ Para visualizadores:</strong> a consulta é somente leitura. Se identificar um dado incorreto, informe ao responsável pelo lançamento.</div>
 </div>
 
