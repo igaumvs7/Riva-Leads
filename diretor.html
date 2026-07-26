@@ -444,6 +444,20 @@ function arrayResposta(j,chave){
   if(j&&j.data&&Array.isArray(j.data[chave])) return j.data[chave];
   return [];
 }
+function normalizarMesVenda(valor){
+  if(!valor) return '';
+  var texto=String(valor).trim(), iso=texto.match(/^(\d{4})-(\d{2})/);
+  if(iso) return iso[1]+'-'+iso[2];
+  var data=new Date(valor);
+  return isNaN(data.getTime())?'':data.getFullYear()+'-'+String(data.getMonth()+1).padStart(2,'0');
+}
+function normalizarDataVenda(valor){
+  if(!valor) return '';
+  var texto=String(valor).trim(), iso=texto.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if(iso) return iso[1]+'-'+iso[2]+'-'+iso[3];
+  var data=new Date(valor);
+  return isNaN(data.getTime())?'':data.getFullYear()+'-'+String(data.getMonth()+1).padStart(2,'0')+'-'+String(data.getDate()).padStart(2,'0');
+}
 function normalizarVenda(v){
   return {
     id:v.id||'',
@@ -452,9 +466,9 @@ function normalizarVenda(v){
     vgv:parseFloat(v.vgv||v.valor)||0,
     valor:parseFloat(v.valor||v.vgv)||0,
     status:v.status||'nao_comunicada',
-    data:v.data||'',
+    data:normalizarDataVenda(v.data),
     obs:v.obs||'',
-    mes:v.mes||S.mes,
+    mes:normalizarMesVenda(v.mes)||normalizarMesVenda(v.data)||S.mes,
     criadoEm:v.criadoEm||'',
     criadoPor:v.criadoPor||''
   };
@@ -502,11 +516,10 @@ async function loadSheets(){
 function brl(v){ if(v>=1e6) return 'R$ '+(v/1e6).toFixed(2).replace('.',',')+' M'; if(v>=1e3) return 'R$ '+Math.round(v/1e3)+'K'; return 'R$ '+(v||0).toLocaleString('pt-BR'); }
 function fdt(d){
   if(!d) return '—';
-  var texto=String(d);
-  var iso=texto.match(/^(\d{4})-(\d{2})-(\d{2})/);
-  if(iso) return iso[3]+'/'+iso[2]+'/'+iso[1];
-  var dt=new Date(d);
-  return isNaN(dt.getTime())?texto:dt.toLocaleDateString('pt-BR');
+  var texto=normalizarDataVenda(d);
+  if(!texto) return '—';
+  var p=texto.split('-');
+  return p[2]+'/'+p[1]+'/'+p[0];
 }
 function isCom(v){ return v.status==='comunicada'||v.status==='confirmado'; }
 function ini(n){ return (n||'?').split(' ').map(function(x){ return x[0]; }).join('').toUpperCase().slice(0,2); }
