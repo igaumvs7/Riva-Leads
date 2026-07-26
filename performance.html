@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- RIVA CORREÇÃO FINAL 2026-07-26: acompanhamento semanal totalmente manual -->
+<!-- RIVA V18 2026-07-26: consolidado RIVA, diretorias trimestrais e navegação House -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -412,10 +412,19 @@
   background:linear-gradient(135deg,#1648d8,#0d2fa3);
   box-shadow:0 3px 9px rgba(22,72,216,.24);
 }
-.hTableWrap { width:100%; overflow:auto; overscroll-behavior-inline:contain; }
+.hTableWrap {
+  width:100%;
+  max-height:min(68vh,720px);
+  overflow:auto;
+  overscroll-behavior:contain;
+  scrollbar-gutter:stable both-edges;
+}
 .hTable { width:100%; border-collapse:separate; border-spacing:0; color:var(--h-text); font-size:11px; }
 .hTable th,.hTable td { border-color:var(--h-border); }
 .hTable thead th {
+  position:sticky;
+  top:0;
+  z-index:3;
   padding:10px 11px;
   border-bottom:2px solid var(--h-border);
   background:var(--h-surface-alt);
@@ -427,6 +436,43 @@
   text-transform:uppercase;
   white-space:nowrap;
 }
+.hTable thead th.hSticky,.hTable thead th:first-child { z-index:5; }
+.hManagerSelect {
+  min-height:34px;
+  max-width:210px;
+  padding:0 30px 0 10px;
+  border:1px solid var(--h-border);
+  border-radius:9px;
+  background:var(--h-surface-raised);
+  color:var(--h-text);
+  font:750 10px/1 inherit;
+}
+
+/* Consolidado geral da RIVA Vendas */
+.rivaPeriodGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.rivaPeriodCard{min-width:0;padding:18px;border:1px solid var(--h-border);border-top:3px solid var(--h-primary);border-radius:15px;background:var(--h-surface-raised);box-shadow:var(--h-shadow)}
+.rivaPeriodCard:nth-child(2){border-top-color:#7c3aed}
+.rivaPeriodCard:nth-child(3){border-top-color:var(--h-success)}
+.rivaPeriodCard span{display:block;color:var(--h-muted);font-size:9px;font-weight:850;letter-spacing:.08em;text-transform:uppercase}
+.rivaPeriodCard strong{display:block;margin-top:7px;color:var(--h-text);font-size:clamp(20px,2vw,28px);font-weight:900;line-height:1.05;letter-spacing:-.03em}
+.rivaPeriodCard small{display:block;margin-top:6px;color:var(--h-muted);font-size:10px}
+.rivaMonthGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:14px}
+.rivaMonthCard{min-width:0;padding:13px 14px;border:1px solid var(--h-border);border-radius:12px;background:var(--h-surface-alt)}
+.rivaMonthCard.current{border-color:#ff6b77;box-shadow:0 0 0 2px rgba(255,30,30,.1)}
+.rivaMonthCard.future{opacity:.72;border-style:dashed}
+.rivaMonthCard header{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.rivaMonthCard header strong{color:var(--h-text);font-size:12px}
+.rivaMonthCard header span{padding:4px 7px;border-radius:999px;background:var(--h-surface-accent);color:var(--h-primary);font-size:8px;font-weight:850}
+.rivaMonthCard.current header span{background:rgba(255,30,30,.11);color:#e02b3b}
+.rivaMonthCard>strong{display:block;margin-top:10px;color:var(--h-text);font-size:17px;font-weight:900}
+.rivaMonthCard>small{display:block;margin-top:4px;color:var(--h-muted);font-size:9px}
+.rivaProgress{height:6px;margin-top:9px;overflow:hidden;border-radius:999px;background:var(--h-border)}
+.rivaProgress i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#1648d8,#15a46f)}
+.rivaControls{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rivaControls label{display:flex;align-items:center;gap:7px;color:var(--h-muted);font-size:10px;font-weight:750}
+.rivaControls input,.rivaControls select{height:36px;padding:0 10px;border:1px solid var(--h-border);border-radius:9px;background:var(--h-surface-raised);color:var(--h-text);font:800 11px/1 inherit}
+.rivaStatus{display:inline-flex;align-items:center;gap:6px;color:var(--h-muted);font-size:9px;font-weight:750}
+.rivaStatus i{width:7px;height:7px;border-radius:50%;background:#ff1e1e;box-shadow:0 0 0 4px rgba(255,30,30,.1)}
 .hTable thead th:first-child,.hTable thead th:nth-child(2) { text-align:left; }
 .hTable tbody td { padding:5px 9px; border-bottom:1px solid var(--h-border); background:var(--h-surface); color:var(--h-text); }
 .hTable tbody tr:hover td { background:var(--h-surface-hover); }
@@ -564,6 +610,7 @@
 }
 @media(max-width:900px) {
   .hTopRow { grid-template-columns:1fr; }
+  .rivaMonthGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 @media(max-width:700px) {
   .hKpiGrid,.hKpiGrid.hKpiGridFour { grid-template-columns:repeat(2,minmax(0,1fr)); }
@@ -571,6 +618,9 @@
   .hCardHead { align-items:flex-start; }
   .hCardTools { width:100%; justify-content:space-between; }
   .hPeriodNav { max-width:100%; }
+  .rivaPeriodGrid{grid-template-columns:1fr}
+  .rivaMonthGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hTableWrap{max-height:62vh}
 }
 @media(max-width:480px) {
   .hKpiGrid,.hKpiGrid.hKpiGridFour { grid-template-columns:1fr; }
@@ -578,6 +628,8 @@
   .hSaveBar { padding:10px 12px; }
   .hSaveState { display:none; }
   .hSaveBtn { width:100%; }
+  .rivaMonthGrid{grid-template-columns:1fr}
+  .hManagerSelect{width:100%;max-width:none}
 }
 
 </style>
@@ -615,6 +667,10 @@
       <button class="navItem" data-page="house2" onclick="navTo('house2')">
         <span class="navIcon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 5-5"/></svg></span>
         <span class="navLabel">House — Desempenho</span>
+      </button>
+      <button class="navItem" data-page="riva" onclick="navTo('riva')">
+        <span class="navIcon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V9M10 19V5M16 19v-7M22 19V3"/><path d="M2 19h22"/></svg></span>
+        <span class="navLabel">RIVA — Consolidado</span>
       </button>
       <button class="navItem" data-page="equipes" onclick="navTo('equipes')">
         <span class="navIcon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
@@ -691,7 +747,7 @@
 var SU = 'https://script.google.com/macros/s/AKfycbz1_ohqAABk-RhPb-i67e6eITzk9ve5hNnCI9qICtEuudSCl0Pu3pHtlV0cxMGUsZyKAg/exec';
 var MS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 var LSV = 'riva_vendas_v1', LSC = 'riva_corretores_v1', LSM = 'riva_metas_v1';
-var PAGE_TITLES = { rene:'Regional Rene', cahu:'Regional Cahú', house:'House — Metas', house2:'House — Desempenho', equipes:'Gestão de Equipes', settings:'Configurações' };
+var PAGE_TITLES = { rene:'Regional Rene', cahu:'Regional Cahú', house:'House — Metas', house2:'House — Desempenho', riva:'RIVA — Consolidado', equipes:'Gestão de Equipes', settings:'Configurações' };
 
 var HIER_GVS = {
   rene: ['Aloisio','Flavia','Sergio','Pereira','Lima','Carol','Paulo','Lemos'],
@@ -1158,8 +1214,97 @@ function renderPage(){
   else if(S.page==='cahu'){ el.innerHTML = viewRegional('cahu'); afterRegional('cahu'); }
   else if(S.page==='house'){ el.innerHTML = viewHouse(); afterHouse(); }
   else if(S.page==='house2'){ el.innerHTML = viewHouse2(); afterHouse2(); }
+  else if(S.page==='riva'){ el.innerHTML = viewRivaConsolidado(); afterRivaConsolidado(); }
   else if(S.page==='equipes'){ el.innerHTML = viewEquipes(); afterEquipes(); }
   else if(S.page==='settings'){ el.innerHTML = viewSettings(); afterSettings(); }
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  RIVA — CONSOLIDADO GERAL (Gestão de Vendas)
+// ═══════════════════════════════════════════════════════════════
+function dadosRivaAno(){
+  var meses=_MS3.map(function(nome,i){
+    var chave=String(S.ano)+'-'+String(i+1).padStart(2,'0');
+    var vendas=(S.vendas||[]).filter(function(v){
+      return mesVendaExec(v)===chave&&vendaComunicadaExec(v);
+    });
+    return {
+      indice:i,
+      chave:chave,
+      nome:nome,
+      vendas:vendas.length,
+      vgv:vendas.reduce(function(total,v){ return total+num(v.vgv||v.valor); },0),
+      meta:num((S.metas||{})[chave])
+    };
+  });
+  return meses;
+}
+function somarRivaPeriodo(meses){
+  return meses.reduce(function(total,m){
+    total.vendas+=m.vendas;
+    total.vgv+=m.vgv;
+    total.meta+=m.meta;
+    return total;
+  },{vendas:0,vgv:0,meta:0});
+}
+function rivaPeriodoCard(titulo,dados,subtitulo){
+  var pct=dados.meta>0?Math.round(dados.vgv/dados.meta*100):0;
+  return '<article class="rivaPeriodCard"><span>'+hEsc(titulo)+'</span><strong>'+hFmt(dados.vgv)+'</strong>'
+    +'<small>'+dados.vendas+' venda'+(dados.vendas!==1?'s':'')+' comunicada'+(dados.vendas!==1?'s':'')
+    +(dados.meta?' · '+pct+'% da meta':'')+(subtitulo?' · '+hEsc(subtitulo):'')+'</small></article>';
+}
+function viewRivaConsolidado(){
+  var meses=dadosRivaAno();
+  var indiceMes=Math.max(0,Math.min(11,parseInt(String(S.mes||'').split('-')[1],10)-1||0));
+  var indiceTri=Math.floor(indiceMes/3);
+  var mes=meses[indiceMes];
+  var tri=somarRivaPeriodo(meses.slice(indiceTri*3,indiceTri*3+3));
+  var ano=somarRivaPeriodo(meses);
+  var agora=new Date();
+  var cardsMes=meses.map(function(m){
+    var futuro=Number(S.ano)>agora.getFullYear()||(Number(S.ano)===agora.getFullYear()&&m.indice>agora.getMonth());
+    var atual=Number(S.ano)===agora.getFullYear()&&m.indice===agora.getMonth();
+    var pct=m.meta>0?Math.round(m.vgv/m.meta*100):0;
+    return '<article class="rivaMonthCard'+(atual?' current':'')+(futuro?' future':'')+'">'
+      +'<header><strong>'+m.nome+'</strong><span>'+(atual?'PARCIAL':futuro?'EM ABERTO':m.vendas+' venda'+(m.vendas!==1?'s':''))+'</span></header>'
+      +'<strong>'+hFmt(m.vgv)+'</strong><small>'+(m.meta?'Meta '+hFmt(m.meta)+' · '+pct+'%':'Meta não definida')+'</small>'
+      +'<div class="rivaProgress"><i style="width:'+Math.min(100,pct)+'%"></i></div></article>';
+  }).join('');
+  var tris=[0,1,2,3].map(function(q){
+    var dados=somarRivaPeriodo(meses.slice(q*3,q*3+3));
+    var pct=dados.meta>0?Math.round(dados.vgv/dados.meta*100):0;
+    return '<tr><td class="hSticky hNameCell"><strong>'+(q+1)+'º Trimestre</strong><small style="display:block;margin-top:3px;color:var(--h-muted)">'+_MS3[q*3]+' · '+_MS3[q*3+1]+' · '+_MS3[q*3+2]+'</small></td>'
+      +'<td class="hRight">'+dados.vendas+'</td><td class="hRight"><span class="hValueSuccess">'+hFmt(dados.vgv)+'</span></td>'
+      +'<td class="hRight"><span class="hValueDanger">'+hFmt(dados.meta)+'</span></td><td class="hRight">'+(dados.meta?pct+'%':'—')+_bar(pct)+'</td></tr>';
+  }).join('');
+  return '<div class="hPage">'
+    +'<div class="hHouseToolbar"><div class="rivaControls">'
+    +'<label>Ano<input id="rivaAno" type="number" min="2020" max="2099" value="'+S.ano+'"></label>'
+    +'<label>Mês<select id="rivaMes">'+_MS3.map(function(n,i){ return '<option value="'+String(i+1).padStart(2,'0')+'"'+(i===indiceMes?' selected':'')+'>'+n+'</option>'; }).join('')+'</select></label>'
+    +'</div><span class="rivaStatus"><i></i> Dados comunicados na Gestão de Vendas</span></div>'
+    +'<div class="rivaPeriodGrid">'
+    +rivaPeriodoCard('Mês · '+MS[indiceMes],mes,'acompanhamento mensal')
+    +rivaPeriodoCard((indiceTri+1)+'º Trimestre',tri,_MS3[indiceTri*3]+' a '+_MS3[indiceTri*3+2])
+    +rivaPeriodoCard('Ano '+S.ano,ano,'acumulado anual')
+    +'</div>'
+    +'<div class="hCard"><div class="hCardHead"><div><div class="hCardTitle">RIVA Vendas por mês</div><div class="hCardSub">Janeiro a dezembro · o mês corrente é parcial e os meses futuros permanecem em aberto</div></div><span class="hCardBadge">'+S.ano+'</span></div>'
+    +'<div class="rivaMonthGrid">'+cardsMes+'</div></div>'
+    +'<div class="hCard"><div class="hCardHead"><div><div class="hCardTitle">RIVA Vendas por trimestre</div><div class="hCardSub">Vendas, VGV comunicado, meta e atingimento no ano selecionado</div></div></div>'
+    +'<div class="hTableWrap"><table class="hTable"><thead><tr><th class="hSticky">Período</th><th>Vendas</th><th>VGV</th><th>Meta</th><th>Atingimento</th></tr></thead>'
+    +'<tbody>'+tris+'</tbody><tfoot><tr class="hTotalRow"><td class="hSticky">ANO '+S.ano+'</td><td class="hRight">'+ano.vendas+'</td><td class="hRight"><span class="hValueSuccess">'+hFmt(ano.vgv)+'</span></td><td class="hRight"><span class="hValueDanger">'+hFmt(ano.meta)+'</span></td><td class="hRight">'+(ano.meta?Math.round(ano.vgv/ano.meta*100)+'%':'—')+'</td></tr></tfoot></table></div></div>'
+    +'</div>';
+}
+function afterRivaConsolidado(){
+  var ano=document.getElementById('rivaAno');
+  var mes=document.getElementById('rivaMes');
+  function atualizar(){
+    var novoAno=Math.max(2020,Math.min(2099,parseInt(ano.value,10)||S.ano));
+    S.ano=novoAno;
+    S.mes=novoAno+'-'+mes.value;
+    renderPage();
+  }
+  if(ano) ano.onchange=atualizar;
+  if(mes) mes.onchange=atualizar;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1679,6 +1824,20 @@ function hMonthNav() {
     + '</div>';
 }
 
+function hManagerSelect(lista) {
+  var filtro=String(window._hManagerFilter||'');
+  if(filtro&&lista.indexOf(filtro)<0){ filtro=''; window._hManagerFilter=''; }
+  return '<select class="hManagerSelect" aria-label="Filtrar gerente" onchange="hSetManagerFilter(this.value)">'
+    +'<option value="">Todos os gerentes</option>'
+    +lista.map(function(nome){ return '<option value="'+hEsc(nome)+'"'+(filtro===nome?' selected':'')+'>'+hEsc(nome)+'</option>'; }).join('')
+    +'</select>';
+}
+function hSetManagerFilter(nome) {
+  window._hManagerFilter=String(nome||'');
+  if(S.page==='house2') h2Tab(window._h2Tab||'mensal');
+  else hTab(window._hTab||'gv');
+}
+
 function hSetMonthView(view) {
   if (!/^(q[1-4]|all)$/.test(view)) return;
   window._hMonthView = view;
@@ -1727,7 +1886,8 @@ function _inpCell(htype, nome, mes, field, val) {
 // ── TAB GV ──
 function hGV() {
   var d = dadosHouse();
-  var gvList = getAllGVs(false).map(function(g) { return typeof g === 'object' ? g.nome : g; }).concat(['Desligados']);
+  var todosGVs = getAllGVs(false).map(function(g) { return typeof g === 'object' ? g.nome : g; }).concat(['Desligados']);
+  var gvList = window._hManagerFilter?todosGVs.filter(function(nome){ return nome===window._hManagerFilter; }):todosGVs.slice();
   var meses = hMonthIndexes();
   var totM = new Array(12).fill(0), totR = new Array(12).fill(0);
 
@@ -1773,9 +1933,9 @@ function hGV() {
     if (meses.indexOf(ti) < 0) { aTM += totM[ti]; aTR += totR[ti]; }
   }
 
-  return '<div class="hCard">'
+  var mensal = '<div class="hCard">'
     + '<div class="hCardHead"><div><div class="hCardTitle">Gerentes de Vendas</div><div class="hCardSub">Meta (vermelho) &bull; Realizado (verde) &bull; Pendente calculado &bull; % no ano</div></div>'
-    + '<div class="hCardTools">' + hMonthNav() + '<span class="hCardBadge">' + gvList.length + ' gerentes</span></div></div>'
+    + '<div class="hCardTools">' + hManagerSelect(todosGVs) + hMonthNav() + '<span class="hCardBadge">' + gvList.length + ' de '+todosGVs.length+'</span></div></div>'
     + '<div class="hTableWrap"><table class="hTable">'
     + '<thead><tr style="background:#f7f9fd">'
     + '<th style="padding:10px 14px;text-align:left;font-size:10px;font-weight:850;color:#9aa5b9;letter-spacing:.06em;text-transform:uppercase;position:sticky;left:0;background:#f7f9fd;z-index:2;min-width:130px">Gerente</th>'
@@ -1793,6 +1953,7 @@ function hGV() {
     + _pendSpan(aTM, aTR)
     + '</td></tr></tfoot>'
     + '</table></div></div>';
+  return mensal;
 }
 
 // ── TAB TRI ──
@@ -1839,7 +2000,7 @@ function hTri() {
       + _bar(p2) + '</td>';
   }).join('');
 
-  return '<div class="hCard">'
+  var mensal = '<div class="hCard">'
     + '<div class="hCardHead"><div><div class="hCardTitle">Trimestral</div><div class="hCardSub">Calculado automaticamente dos dados mensais</div></div></div>'
     + '<div class="hTableWrap"><table class="hTable">'
     + '<thead><tr style="background:#f7f9fd">'
@@ -1858,6 +2019,7 @@ function hTri() {
     + _pendSpan(aTM, aTR)
     + '</td></tr></tfoot>'
     + '</table></div></div>';
+  return mensal;
 }
 
 // ── TAB DIR ──
@@ -1894,7 +2056,7 @@ function hDir() {
   }).join('');
   totD.forEach(function(v) { aTD += v; });
 
-  return '<div class="hCard">'
+  var mensal = '<div class="hCard">'
     + '<div class="hCardHead"><div><div class="hCardTitle">Diretores</div><div class="hCardSub">Clique no nome para editar &bull; &times; para remover</div></div>'
     + '<div class="hCardTools">' + hMonthNav() + '<button class="pSaveBtn" onclick="hAddDir()" style="font-size:11px">+ Diretoria</button></div></div>'
     + '<div class="hTableWrap"><table class="hTable">'
@@ -1910,6 +2072,33 @@ function hDir() {
     + _tdR('<strong style="color:#1648d8">' + hFmt(aTD) + '</strong>', ';background:#dce8ff;border-left:2px solid #c7d8ff')
     + '<td></td></tr></tfoot>'
     + '</table></div></div>';
+  return mensal + hDiretoriaTrimestral(d, dirNames);
+}
+
+function hDiretoriaTrimestral(d, dirNames) {
+  d=d||dadosHouse();
+  dirNames=(dirNames&&dirNames.length)?dirNames:((d.dirNames&&d.dirNames.length)?d.dirNames:Object.keys(d.diretores||{}));
+  var totais=[0,0,0,0],totalAno=0;
+  var rows=dirNames.map(function(nome){
+    var dd=d.diretores[nome]||{};
+    var ano=0;
+    var cells=[0,1,2,3].map(function(q){
+      var valor=0;
+      for(var i=q*3;i<q*3+3;i++) valor+=hParse(dd[String(i+1).padStart(2,'0')]);
+      totais[q]+=valor; ano+=valor;
+      return '<td class="hRight"><span class="hValueSuccess">'+hFmt(valor)+'</span></td>';
+    }).join('');
+    totalAno+=ano;
+    return '<tr><td class="hSticky hNameCell">'+hEsc(nome)+'</td>'+cells
+      +'<td class="hRight hYearCell"><span class="hValuePrimary">'+hFmt(ano)+'</span></td></tr>';
+  }).join('');
+  return '<div class="hCard"><div class="hCardHead"><div><div class="hCardTitle">Trimestral por Diretoria</div>'
+    +'<div class="hCardSub">Consolidado automático dos valores mensais de cada diretoria</div></div><span class="hCardBadge">4 trimestres</span></div>'
+    +'<div class="hTableWrap"><table class="hTable"><thead><tr><th class="hSticky">Diretoria</th><th>1º Tri</th><th>2º Tri</th><th>3º Tri</th><th>4º Tri</th><th class="hYearCell">Ano</th></tr></thead>'
+    +'<tbody>'+(rows||'<tr><td colspan="6" style="padding:20px;text-align:center;color:var(--h-muted)">Cadastre uma diretoria em House — Metas.</td></tr>')+'</tbody>'
+    +'<tfoot><tr class="hTotalRow"><td class="hSticky">TOTAL</td>'
+    +totais.map(function(v){ return '<td class="hRight"><strong>'+hFmt(v)+'</strong></td>'; }).join('')
+    +'<td class="hRight hTotalStrong"><strong>'+hFmt(totalAno)+'</strong></td></tr></tfoot></table></div></div>';
 }
 
 function hAddDir() {
@@ -2157,6 +2346,7 @@ function viewHouse2() {
     + '<div class="hTabBar">'
     +   '<button class="active" id="h2tab-mensal"      onclick="h2Tab(\'mensal\')"     >&#128197; Mensal</button>'
     +   '<button               id="h2tab-trimestral"   onclick="h2Tab(\'trimestral\')" >&#128202; Trimestral</button>'
+    +   '<button               id="h2tab-diretorias"   onclick="h2Tab(\'diretorias\')" >&#127970; Diretorias</button>'
     +   '<button               id="h2tab-regionais"    onclick="h2Tab(\'regionais\')"  >&#128506; Regionais</button>'
     + '</div>'
     + '<div id="h2TabBody"></div>'
@@ -2203,7 +2393,7 @@ function h2Kpis() {
 
 function h2Tab(tab) {
   window._h2Tab = tab;
-  ['mensal','trimestral','regionais'].forEach(function(t) {
+  ['mensal','trimestral','diretorias','regionais'].forEach(function(t) {
     var b = document.getElementById('h2tab-' + t);
     if (b) b.className = (t === tab) ? 'active' : '';
   });
@@ -2211,13 +2401,15 @@ function h2Tab(tab) {
   if (!el) return;
   if (tab === 'mensal')     el.innerHTML = h2Mensal();
   if (tab === 'trimestral') el.innerHTML = h2Trimestral();
+  if (tab === 'diretorias') el.innerHTML = h2Diretorias();
   if (tab === 'regionais')  el.innerHTML = h2Regionais();
 }
 
 function h2Mensal() {
   // Read-only view — same structure as hGV but no inputs
   var d = dadosHouse();
-  var gvList = getAllGVs(false).map(function(g) { return typeof g === 'object' ? g.nome : g; }).concat(['Desligados']);
+  var todosGVs = getAllGVs(false).map(function(g) { return typeof g === 'object' ? g.nome : g; }).concat(['Desligados']);
+  var gvList = window._hManagerFilter?todosGVs.filter(function(nome){ return nome===window._hManagerFilter; }):todosGVs.slice();
   var meses = hMonthIndexes();
   var totM = new Array(12).fill(0), totR = new Array(12).fill(0);
 
@@ -2254,7 +2446,7 @@ function h2Mensal() {
   }).join('');
   for (var ti = 0; ti < 12; ti++) { aTM += totM[ti]; aTR += totR[ti]; }
 
-  return '<div class="hCard"><div class="hCardHead"><div><div class="hCardTitle">Desempenho Mensal</div><div class="hCardSub">Somente leitura &mdash; edite em House &rsaquo; Metas</div></div><div class="hCardTools">' + hMonthNav() + '<span class="hCardBadge">3 meses por vez</span></div></div>'
+  return '<div class="hCard"><div class="hCardHead"><div><div class="hCardTitle">Desempenho Mensal</div><div class="hCardSub">Somente leitura &mdash; edite em House &rsaquo; Metas</div></div><div class="hCardTools">' + hManagerSelect(todosGVs) + hMonthNav() + '<span class="hCardBadge">' + gvList.length + ' de '+todosGVs.length+'</span></div></div>'
     + '<div class="hTableWrap"><table class="hTable">'
     + '<thead><tr style="background:#f7f9fd">'
     + '<th style="padding:10px 14px;text-align:left;position:sticky;left:0;background:#f7f9fd;z-index:2;min-width:130px;font-size:10px;font-weight:850;color:#9aa5b9;text-transform:uppercase;letter-spacing:.06em">Gerente</th>'
@@ -2270,6 +2462,12 @@ function h2Mensal() {
 
 function h2Trimestral() {
   return hTri();
+}
+
+function h2Diretorias() {
+  var d=dadosHouse();
+  var nomes=(d.dirNames&&d.dirNames.length)?d.dirNames:Object.keys(d.diretores||{});
+  return hDiretoriaTrimestral(d,nomes);
 }
 
 function h2Regionais() {
