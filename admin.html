@@ -8,9 +8,10 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Admin — Riva Vendas CE</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="riva-responsive.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Inter',sans-serif;background:#060c18;color:#e8eeff;min-height:100vh;-webkit-font-smoothing:antialiased}
@@ -385,7 +386,7 @@ var PERM_DEFAULT=[
   // ── Visibilidade de painéis ────────────────────────────────────
   {acao:'ver_leads_online',  label:'🖥 Ver Leads Online',       diretor:true,  regional:true,  gerente:true},
   {acao:'ver_dir_painel',    label:'📊 Ver Painel Diretor',     diretor:true,  regional:false, gerente:false},
-  {acao:'ver_gestao_vendas', label:'💼 Ver Gestão de Vendas',   diretor:true,  regional:true,  gerente:false},
+  {acao:'ver_gestao_vendas', label:'💼 Ver Gestão de Vendas',   diretor:true,  regional:true,  gerente:true},
   {acao:'ver_performance',   label:'📈 Ver Análise Executiva', diretor:true, regional:true, gerente:false},
   {acao:'ver_reunioes',      label:'📅 Ver Agenda Riva',        diretor:true,  regional:true,  gerente:false},
 ];
