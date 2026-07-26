@@ -1,0 +1,200 @@
+/*
+ * RIVA RESPONSIVE — camada global de compatibilidade
+ * Android, iOS, tablets, notebooks e monitores desktop.
+ * Mantém os componentes específicos de cada painel e corrige somente
+ * limites, rolagem, toque, formulários e adaptação por largura.
+ */
+
+html {
+  width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  width: 100%;
+  min-width: 0;
+  max-width: 100vw;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
+input,
+select,
+textarea,
+button {
+  max-width: 100%;
+  font-family: inherit;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  touch-action: manipulation;
+}
+
+.app,
+.main,
+.mainContent,
+.pageContent,
+#pageContent,
+.panel,
+.card,
+.moduleCard,
+.chartBox,
+.chartPad {
+  min-width: 0;
+}
+
+.tableWrap,
+.tableContainer,
+.hTableWrap,
+.historyTableWrap,
+.mpTableWrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tableWrap table,
+.tableContainer table,
+.hTableWrap table,
+.historyTableWrap table,
+.mpTableWrap table {
+  max-width: none;
+}
+
+@media (pointer: coarse) {
+  button,
+  .navItem,
+  .fTab,
+  .tab,
+  a.moduleCard {
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .dualGrid,
+  .chartGrid,
+  .dashboardPrimaryGrid,
+  .dashboardSecondaryGrid,
+  .analyticsGrid,
+  .lowerGrid,
+  .calculatorGrid,
+  .hTopRow {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+@media (max-width: 760px) {
+  :root {
+    --riva-mobile-gutter: 12px;
+  }
+
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+
+  .panelHeader,
+  .moduleHeader,
+  .calHead,
+  .perfTop,
+  .toolbar,
+  .modalFoot,
+  .fRow {
+    flex-wrap: wrap;
+  }
+
+  .fRow,
+  .formRow {
+    flex-direction: column;
+  }
+
+  .fFld,
+  .formField,
+  .searchField,
+  .filterSel {
+    width: 100%;
+    min-width: 0 !important;
+  }
+
+  .modalOverlay {
+    padding:
+      max(10px, env(safe-area-inset-top))
+      max(10px, env(safe-area-inset-right))
+      max(10px, env(safe-area-inset-bottom))
+      max(10px, env(safe-area-inset-left)) !important;
+  }
+
+  .modalCard,
+  .modalPresCard {
+    width: 100% !important;
+    max-width: calc(100vw - 20px) !important;
+    max-height: calc(100dvh - 20px) !important;
+  }
+
+  .toastMessage,
+  .toast {
+    width: calc(100vw - 24px);
+    min-width: 0 !important;
+    max-width: 420px !important;
+    bottom: max(12px, env(safe-area-inset-bottom)) !important;
+  }
+
+  .profileMenu,
+  #userMenu {
+    max-width: calc(100vw - 24px) !important;
+    right: 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .panelHeader,
+  .modalBody,
+  .modalFoot,
+  .formCard,
+  .chartPad {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .kpiGrid,
+  .pKpiRow,
+  .moduleStats,
+  .profileKpis,
+  .profileRates,
+  .qcKpiGrid,
+  .hKpiGrid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
