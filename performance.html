@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- RIVA V19.2 2026-07-27: consolidado RIVA com metas e realizados mensais editáveis -->
+<!-- RIVA V19.1 2026-07-27: comparativo mensal, trimestral e anual entre diretores -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -765,7 +765,7 @@
 .hv19Btn:disabled{opacity:.6;cursor:wait}
 
 /* RIVA — Consolidado V19: gráfico responsivo, sem barra horizontal */
-.rivaV19Chart{margin-bottom:16px;padding:16px;border:1px solid var(--h-border);border-radius:16px;background:var(--h-surface-raised);box-shadow:var(--h-shadow)}
+.rivaV19Chart{padding:16px;border:1px solid var(--h-border);border-radius:16px;background:var(--h-surface-raised);box-shadow:var(--h-shadow)}
 .rivaV19ChartHead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:14px}
 .rivaV19ChartHead h3{margin:0;color:var(--h-text);font-size:14px}
 .rivaV19ChartHead p{margin:4px 0 0;color:var(--h-muted);font-size:9px}
@@ -783,38 +783,11 @@
 .rivaV19Quarter strong{display:block;margin-top:7px;color:var(--h-text);font-size:18px;font-weight:900}
 .rivaV19Quarter small{display:block;margin-top:5px;color:var(--h-muted);font-size:9px}
 
-/* RIVA — Consolidado V19.2: indicadores anuais e edição mensal */
-.rivaV20Kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-bottom:16px}
-.rivaV20Kpi{min-width:0;padding:17px;border:1px solid var(--h-border);border-top:3px solid var(--h-primary);border-radius:15px;background:var(--h-surface-raised);box-shadow:var(--h-shadow);color:var(--h-text);font-family:inherit;text-align:left}
-button.rivaV20Kpi{cursor:pointer;transition:transform .15s,border-color .15s,box-shadow .15s}
-button.rivaV20Kpi:hover{transform:translateY(-2px);border-color:#8ba9f4;box-shadow:0 11px 25px rgba(22,72,216,.14)}
-button.rivaV20Kpi:focus-visible{outline:3px solid rgba(22,72,216,.22);outline-offset:2px}
-.rivaV20Kpi:nth-child(2){border-top-color:var(--h-success)}
-.rivaV20Kpi:nth-child(3){border-top-color:#7c3aed}
-.rivaV20Kpi:nth-child(4){border-top-color:var(--h-danger)}
-.rivaV20KpiLabel{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--h-muted);font-size:8px;font-weight:900;letter-spacing:.075em;text-transform:uppercase}
-.rivaV20KpiLabel i{padding:4px 6px;border-radius:999px;background:var(--h-surface-accent);color:var(--h-primary);font-style:normal;font-size:7px;letter-spacing:.04em}
-.rivaV20Kpi strong{display:block;margin-top:9px;overflow:hidden;color:var(--h-text);font-size:clamp(19px,2vw,27px);font-weight:900;letter-spacing:-.03em;text-overflow:ellipsis;white-space:nowrap}
-.rivaV20Kpi small{display:block;margin-top:6px;color:var(--h-muted);font-size:9px;line-height:1.45}
-.rivaV20Kpi.danger strong{color:var(--h-danger)}
-.rivaV20Kpi.success strong{color:var(--h-success)}
-.rivaMonthCard.editable{display:block;width:100%;color:inherit;font-family:inherit;text-align:left;cursor:pointer;transition:transform .15s,border-color .15s,box-shadow .15s}
-.rivaMonthCard.editable:hover{transform:translateY(-2px);border-color:#8ba9f4;box-shadow:0 9px 20px rgba(22,72,216,.12)}
-.rivaMonthCard.editable:focus-visible{outline:3px solid rgba(22,72,216,.22);outline-offset:2px}
-.rivaMonthCard.selected{border-color:var(--h-primary);box-shadow:0 0 0 2px rgba(22,72,216,.12)}
-.rivaMonthCard.manual header span{background:rgba(124,58,237,.13);color:#8b5cf6}
-.rivaV20ModalCalc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
-.rivaV20CalcCard{padding:12px;border:1px solid var(--h-border);border-radius:10px;background:var(--h-surface-alt)}
-.rivaV20CalcCard span{display:block;color:var(--h-muted);font-size:8px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
-.rivaV20CalcCard strong{display:block;margin-top:6px;color:var(--h-text);font-size:17px;font-weight:900}
-.rivaV20Help{margin:0;color:var(--h-muted);font-size:9px;line-height:1.55}
-
 @media(max-width:1000px){
   .hv19Global{grid-template-columns:1fr}
   .hv19Summary,.hv19MonthGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
   .hv19CompareSummary{grid-template-columns:repeat(2,minmax(0,1fr))}
   .hv19QuarterGrid,.rivaV19QuarterGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .rivaV20Kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
   .rivaV19Bars{grid-template-columns:repeat(6,minmax(0,1fr));height:auto}
   .rivaV19Bar{height:180px}
 }
@@ -835,7 +808,6 @@ button.rivaV20Kpi:focus-visible{outline:3px solid rgba(22,72,216,.22);outline-of
   .hv19Toolbar{align-items:flex-start}
   .hv19Year{width:100%;justify-content:space-between}
   .hv19MonthGrid,.hv19QuarterGrid,.rivaV19QuarterGrid{grid-template-columns:1fr}
-  .rivaV20Kpis,.rivaV20ModalCalc{grid-template-columns:1fr}
   .rivaV19Bars{grid-template-columns:repeat(3,minmax(0,1fr))}
   .rivaV19Bar{height:155px}
   .hv19QuarterRow{grid-template-columns:58px minmax(0,1fr)}
@@ -1520,28 +1492,18 @@ function renderPage(){
 //  RIVA — CONSOLIDADO GERAL (Gestão de Vendas)
 // ═══════════════════════════════════════════════════════════════
 function dadosRivaAno(){
-  var houseAno=S.config&&S.config['house_'+S.ano];
-  var ajustes=houseAno&&houseAno.riva&&typeof houseAno.riva==='object'?houseAno.riva:{};
   var meses=_MS3.map(function(nome,i){
     var chave=String(S.ano)+'-'+String(i+1).padStart(2,'0');
     var vendas=(S.vendas||[]).filter(function(v){
       return mesVendaExec(v)===chave&&vendaComunicadaExec(v);
     });
-    var automatico=vendas.reduce(function(total,v){ return total+num(v.vgv||v.valor); },0);
-    var ajuste=ajustes[String(i+1).padStart(2,'0')];
-    ajuste=ajuste&&typeof ajuste==='object'&&!Array.isArray(ajuste)?ajuste:{};
-    var manual=ajuste.manual===true;
-    var metaEditada=Object.prototype.hasOwnProperty.call(ajuste,'meta');
     return {
       indice:i,
       chave:chave,
       nome:nome,
       vendas:vendas.length,
-      automatico:automatico,
-      manual:manual,
-      vgv:manual?hParse(ajuste.realizado):automatico,
-      meta:metaEditada?hParse(ajuste.meta):num((S.metas||{})[chave]),
-      metaEditada:metaEditada
+      vgv:vendas.reduce(function(total,v){ return total+num(v.vgv||v.valor); },0),
+      meta:num((S.metas||{})[chave])
     };
   });
   return meses;
@@ -2873,18 +2835,11 @@ function dadosHouse() {
 
   var d = {
     metaRiva:hParse(saved.metaRiva),
-    riva:{},
     gvs:{},
     diretores:{},
     dirNames:Array.isArray(saved.dirNames) ? saved.dirNames.filter(Boolean) : [],
     regionais:{rene:{},cahu:{}}
   };
-
-  Object.keys((saved && saved.riva) || {}).forEach(function(rivaMk) {
-    if (/^(0[1-9]|1[0-2])$/.test(rivaMk)) {
-      d.riva[rivaMk] = houseV19Linha(saved.riva[rivaMk]);
-    }
-  });
 
   Object.keys(gestores).forEach(function(nome) {
     d.gvs[nome] = {};
@@ -2974,21 +2929,11 @@ function aplicarRealizadoGestaoHouse(d) {
 function houseV19Serializar(d) {
   var limpo = {
     metaRiva:hParse(d.metaRiva),
-    riva:{},
     gvs:{},
     diretores:{},
     dirNames:(d.dirNames || []).slice(),
     regionais:{rene:{},cahu:{}}
   };
-  Object.keys(d.riva || {}).forEach(function(rivaMk) {
-    if (!/^(0[1-9]|1[0-2])$/.test(rivaMk)) return;
-    var rivaRow = d.riva[rivaMk] || {};
-    limpo.riva[rivaMk] = {
-      meta:hParse(rivaRow.meta),
-      realizado:hParse(rivaRow.realizado),
-      manual:rivaRow.manual === true
-    };
-  });
   Object.keys(d.gvs || {}).forEach(function(nome) {
     limpo.gvs[nome] = {};
     for (var m = 1; m <= 12; m++) {
@@ -3727,34 +3672,12 @@ function hRemDir() { houseV19RemoveDirector(); }
 //  RIVA — CONSOLIDADO V19 · gráfico sem canvas e sem scroll
 // ═══════════════════════════════════════════════════════════════
 
-function rivaV20ValorComZero(valor) {
-  valor = hParse(valor);
-  return valor ? hFmt(valor) : 'R$\u00a00';
-}
-
-function rivaV20TopCards(mes,ano,indiceMes) {
-  var agora = new Date();
-  var vigente = Number(S.ano) === agora.getFullYear() && indiceMes === agora.getMonth();
-  var percentualMes = hP(mes.vgv,mes.meta);
-  var percentualAno = hP(ano.vgv,ano.meta);
-  var pendente = ano.meta > 0 ? Math.max(0,ano.meta-ano.vgv) : 0;
-  var rotuloMes = (vigente ? 'Mês vigente' : 'Mês selecionado')+' · '+_MS3[indiceMes];
-  return '<section class="rivaV20Kpis" aria-label="Resumo do consolidado RIVA">'
-    +'<button type="button" class="rivaV20Kpi" onclick="rivaV20OpenMonth(\''+String(indiceMes+1).padStart(2,'0')+'\')" aria-label="Editar meta e realizado de '+hEsc(MS[indiceMes])+'">'
-    +'<span class="rivaV20KpiLabel">'+hEsc(rotuloMes)+'<i>CLIQUE PARA EDITAR</i></span><strong>'+hFmt(mes.vgv)+'</strong>'
-    +'<small>'+(mes.meta?'Meta '+hFmt(mes.meta)+' · '+percentualMes+'% da meta':'Meta não definida · '+percentualMes+'%')+'</small></button>'
-    +'<article class="rivaV20Kpi success"><span class="rivaV20KpiLabel">Realizado anual</span><strong>'+hFmt(ano.vgv)+'</strong>'
-    +'<small>'+percentualAno+'% da meta anual · valores mensais consolidados</small></article>'
-    +'<article class="rivaV20Kpi"><span class="rivaV20KpiLabel">Meta anual</span><strong>'+hFmt(ano.meta)+'</strong>'
-    +'<small>Soma das metas definidas nos 12 meses</small></article>'
-    +'<article class="rivaV20Kpi danger"><span class="rivaV20KpiLabel">Pendente no ano</span><strong>'+(ano.meta?rivaV20ValorComZero(pendente):'—')+'</strong>'
-    +'<small>'+(ano.meta?(pendente?'Falta para atingir a meta anual':'Meta anual atingida ou superada'):'Defina as metas mensais para calcular')+'</small></article></section>';
-}
-
 function rivaV19Body() {
   var meses = dadosRivaAno();
   var indiceMes = Math.max(0,Math.min(11,parseInt(String(S.mes || '').split('-')[1],10)-1 || 0));
+  var indiceTri = Math.floor(indiceMes/3);
   var mes = meses[indiceMes];
+  var tri = somarRivaPeriodo(meses.slice(indiceTri*3,indiceTri*3+3));
   var ano = somarRivaPeriodo(meses);
   var agora = new Date();
   var maximo = Math.max.apply(null,meses.map(function(item){ return item.vgv; }).concat([1]));
@@ -3769,13 +3692,11 @@ function rivaV19Body() {
   var cardsMes = meses.map(function(item) {
     var futuro = Number(S.ano) > agora.getFullYear() || (Number(S.ano) === agora.getFullYear() && item.indice > agora.getMonth());
     var atual = Number(S.ano) === agora.getFullYear() && item.indice === agora.getMonth();
-    var selecionado = item.indice === indiceMes;
     var percentual = item.meta > 0 ? Math.round(item.vgv/item.meta*100) : 0;
-    var status = item.manual ? 'MANUAL' : (atual?'PARCIAL':futuro?'EM ABERTO':item.vendas+' venda'+(item.vendas !== 1 ? 's' : ''));
-    return '<button type="button" class="rivaMonthCard editable'+(atual?' current':'')+(selecionado?' selected':'')+(futuro?' future':'')+(item.manual?' manual':'')+'" onclick="rivaV20OpenMonth(\''+String(item.indice+1).padStart(2,'0')+'\')" aria-label="Editar '+hEsc(item.nome)+'"><header><strong>'+item.nome+'</strong><span>'
-      +status+'</span></header>'
+    return '<article class="rivaMonthCard'+(atual?' current':'')+(futuro?' future':'')+'"><header><strong>'+item.nome+'</strong><span>'
+      +(atual?'PARCIAL':futuro?'EM ABERTO':item.vendas+' venda'+(item.vendas !== 1 ? 's' : ''))+'</span></header>'
       +'<strong>'+hFmt(item.vgv)+'</strong><small>'+(item.meta?'Meta '+hFmt(item.meta)+' · '+percentual+'%':'Meta não definida')+'</small>'
-      +'<div class="rivaProgress"><i style="width:'+Math.min(100,percentual)+'%"></i></div></button>';
+      +'<div class="rivaProgress"><i style="width:'+Math.min(100,percentual)+'%"></i></div></article>';
   }).join('');
   var quarters = [0,1,2,3].map(function(q) {
     var dados = somarRivaPeriodo(meses.slice(q*3,q*3+3));
@@ -3784,103 +3705,15 @@ function rivaV19Body() {
       +'<strong>'+hFmt(dados.vgv)+'</strong><small>'+dados.vendas+' venda'+(dados.vendas !== 1 ? 's' : '')+(dados.meta?' · Meta '+hFmt(dados.meta)+' · '+percentual+'%':'')+'</small>'
       +'<div class="rivaProgress"><i style="width:'+Math.min(100,percentual)+'%"></i></div></article>';
   }).join('');
-  return rivaV20TopCards(mes,ano,indiceMes)
+  return '<div class="rivaPeriodGrid">'
+    +rivaPeriodoCard('Mês · '+MS[indiceMes],mes,'acompanhamento mensal')
+    +rivaPeriodoCard((indiceTri+1)+'º Trimestre',tri,_MS3[indiceTri*3]+' a '+_MS3[indiceTri*3+2])
+    +rivaPeriodoCard('Ano '+S.ano,ano,'acumulado anual')+'</div>'
     +'<section class="rivaV19Chart"><header class="rivaV19ChartHead"><div><h3>Evolução mensal do VGV comunicado</h3><p>Janeiro a dezembro · adapta-se à largura da tela sem barra horizontal</p></div><span class="hCardBadge">'+S.ano+'</span></header>'
     +'<div class="rivaV19Bars">'+barras+'</div></section>'
-    +'<section class="hCard"><header class="hCardHead"><div><div class="hCardTitle">RIVA Vendas por mês</div><div class="hCardSub">Clique em qualquer mês para informar a meta e, quando necessário, substituir o realizado automático</div></div></header>'
+    +'<section class="hCard"><header class="hCardHead"><div><div class="hCardTitle">RIVA Vendas por mês</div><div class="hCardSub">O mês atual é parcial; meses futuros permanecem em aberto</div></div></header>'
     +'<div class="rivaMonthGrid">'+cardsMes+'</div></section>'
     +'<section><div class="hv19SectionLabel" style="padding:0 0 10px">Consolidado trimestral</div><div class="rivaV19QuarterGrid">'+quarters+'</div></section>';
-}
-
-function rivaV20OpenMonth(mk) {
-  if (!/^(0[1-9]|1[0-2])$/.test(String(mk || ''))) return;
-  var indice = parseInt(mk,10)-1;
-  S.mes = String(S.ano)+'-'+mk;
-  var seletor = document.getElementById('rivaMes');
-  if (seletor) seletor.value = mk;
-  var item = dadosRivaAno()[indice];
-  var modal = document.getElementById('rivaV20Modal');
-  if (!modal || !item) return;
-  modal.dataset.mes = mk;
-  modal.innerHTML = '<article class="hv19ModalCard"><header class="hv19ModalHead"><div><h3>'+hEsc(MS[indice])+' · RIVA Consolidado</h3>'
-    +'<p>'+S.ano+' · meta, realizado e percentual do mês</p></div><button class="hv19Close" onclick="rivaV20CloseModal()" aria-label="Fechar">&times;</button></header>'
-    +'<div class="hv19ModalBody"><div class="hv19Field"><label>Meta do mês</label><input id="rivaV20Meta" type="text" inputmode="numeric" value="'+(item.meta?hEsc(hFmt(item.meta)):'')+'" placeholder="R$ 0" oninput="rivaV20AtualizarCalculo()" onblur="hNorm(this);rivaV20AtualizarCalculo()"></div>'
-    +'<label class="hv19Switch"><input id="rivaV20Manual" type="checkbox"'+(item.manual?' checked':'')+' onchange="rivaV20ToggleManual()">Preencher o realizado manualmente</label>'
-    +'<div class="hv19AutoHint">Valor automático das vendas comunicadas: '+rivaV20ValorComZero(item.automatico)+'</div>'
-    +'<div class="hv19Field"><label>Realizado do mês</label><input id="rivaV20Realizado" type="text" inputmode="numeric" data-auto="'+item.automatico+'" value="'+(item.vgv?hEsc(hFmt(item.vgv)):'')+'" placeholder="R$ 0"'+(item.manual?'':' disabled')+' oninput="rivaV20AtualizarCalculo()" onblur="hNorm(this);rivaV20AtualizarCalculo()"></div>'
-    +'<div class="rivaV20ModalCalc"><div class="rivaV20CalcCard"><span>Percentual da meta</span><strong id="rivaV20Percentual">0%</strong></div>'
-    +'<div class="rivaV20CalcCard"><span>Pendente no mês</span><strong id="rivaV20Pendente">—</strong></div></div>'
-    +'<p class="rivaV20Help">O percentual é calculado automaticamente. Ao desmarcar o preenchimento manual, o realizado volta a acompanhar as vendas comunicadas.</p></div>'
-    +'<footer class="hv19ModalActions"><span class="hv19ModalState" id="hv19ModalState">A tela só fecha depois da confirmação da nuvem.</span>'
-    +'<button class="hv19Btn" onclick="rivaV20CloseModal()">Cancelar</button><button class="hv19Btn primary" id="rivaV20SaveMonth" onclick="rivaV20SaveMonth()">Salvar mês</button></footer></article>';
-  modal.classList.add('open');
-  document.body.style.overflow = 'hidden';
-  rivaV20AtualizarCalculo();
-  setTimeout(function(){
-    var campo = document.getElementById('rivaV20Meta');
-    if (campo) { campo.focus(); campo.select(); }
-  },0);
-}
-
-function rivaV20ValorEfetivoModal() {
-  var manual = document.getElementById('rivaV20Manual');
-  var realizado = document.getElementById('rivaV20Realizado');
-  if (!realizado) return 0;
-  return manual && manual.checked ? hParse(realizado.value) : hParse(realizado.dataset.auto);
-}
-
-function rivaV20AtualizarCalculo() {
-  var meta = hParse((document.getElementById('rivaV20Meta') || {}).value);
-  var realizado = rivaV20ValorEfetivoModal();
-  var percentual = document.getElementById('rivaV20Percentual');
-  var pendente = document.getElementById('rivaV20Pendente');
-  if (percentual) percentual.textContent = hP(realizado,meta)+'%';
-  if (pendente) pendente.textContent = meta ? rivaV20ValorComZero(Math.max(0,meta-realizado)) : '—';
-}
-
-function rivaV20ToggleManual() {
-  var check = document.getElementById('rivaV20Manual');
-  var realizado = document.getElementById('rivaV20Realizado');
-  if (!check || !realizado) return;
-  realizado.disabled = !check.checked;
-  if (!check.checked) {
-    var automatico = hParse(realizado.dataset.auto);
-    realizado.value = automatico ? hFmt(automatico) : '';
-  } else {
-    realizado.focus();
-    realizado.select();
-  }
-  rivaV20AtualizarCalculo();
-}
-
-function rivaV20CloseModal() {
-  var modal = document.getElementById('rivaV20Modal');
-  if (modal) {
-    modal.classList.remove('open');
-    modal.innerHTML = '';
-  }
-  document.body.style.overflow = '';
-}
-
-async function rivaV20SaveMonth() {
-  var modal = document.getElementById('rivaV20Modal');
-  if (!modal) return;
-  var mk = modal.dataset.mes;
-  if (!/^(0[1-9]|1[0-2])$/.test(String(mk || ''))) return;
-  var manual = !!(document.getElementById('rivaV20Manual') || {}).checked;
-  var meta = hParse((document.getElementById('rivaV20Meta') || {}).value);
-  var realizado = rivaV20ValorEfetivoModal();
-  var d = dadosHouse();
-  if (!d.riva) d.riva = {};
-  d.riva[mk] = {meta:meta,realizado:realizado,manual:manual,automatico:0};
-  var patch = {riva:{}};
-  patch.riva[mk] = {meta:meta,realizado:realizado,manual:manual};
-  var ok = await houseV19Persistir(d,document.getElementById('rivaV20SaveMonth'),patch);
-  if (ok) {
-    rivaV20CloseModal();
-    rivaV19RenderContent();
-    toast('Meta, realizado e percentual do mês foram atualizados!');
-  }
 }
 
 function viewRivaConsolidado() {
@@ -3889,8 +3722,7 @@ function viewRivaConsolidado() {
     +'<p>Resultados mensais, trimestrais e anuais das vendas comunicadas.</p></div><div class="rivaControls">'
     +'<label>Ano<input id="rivaAno" type="number" min="2020" max="2099" value="'+S.ano+'"></label>'
     +'<label>Mês<select id="rivaMes">'+_MS3.map(function(nome,indice){ return '<option value="'+String(indice+1).padStart(2,'0')+'"'+(indice === indiceMes?' selected':'')+'>'+nome+'</option>'; }).join('')+'</select></label>'
-    +'</div></section><div id="rivaV19Content">'+rivaV19Body()+'</div>'
-    +'<div class="hv19Modal" id="rivaV20Modal" onclick="if(event.target===this)rivaV20CloseModal()"></div></div>';
+    +'</div></section><div id="rivaV19Content">'+rivaV19Body()+'</div></div>';
 }
 
 function afterRivaConsolidado() {
