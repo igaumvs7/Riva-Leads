@@ -410,7 +410,7 @@ body{color:#e8ecf5;background:#050817;overflow-x:hidden}
   </div>
 </div>
 <script>
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbz1_ohqAABk-RhPb-i67e6eITzk9ve5hNnCI9qICtEuudSCl0Pu3pHtlV0cxMGUsZyKAg/exec';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwTkEbw4-5tf5pDn_Y8e6Ru7qurIGBfw1Wq3VKUybgXEeW9jBNWzBs8oH-iYqmKm4FUFQ/exec';
 
 // ═══════════════════════════════════════════════════════════════
 //  PRESENÇA — Config dos stands e hierarquia
@@ -431,7 +431,7 @@ var HIER = HIER_DEFAULT;
 
 async function carregarEquipes(){
   try{
-    var r = await fetch('https://script.google.com/macros/s/AKfycbz1_ohqAABk-RhPb-i67e6eITzk9ve5hNnCI9qICtEuudSCl0Pu3pHtlV0cxMGUsZyKAg/exec?action=getConfig&t='+Date.now());
+    var r = await fetch('https://script.google.com/macros/s/AKfycbwTkEbw4-5tf5pDn_Y8e6Ru7qurIGBfw1Wq3VKUybgXEeW9jBNWzBs8oH-iYqmKm4FUFQ/exec?action=getConfig&t='+Date.now());
     var j = await r.json();
     if(j.status==='ok' && j.config && j.config.equipes){
       var eq = j.config.equipes;
@@ -965,23 +965,22 @@ function logout(){
 }
 
 window.addEventListener('DOMContentLoaded',function(){
-  // Login removido temporariamente (pedido do dono, 2026-09-15): o backend
-  // compartilhado (Apps Script) perdeu as ações login/getConfig/getData/
-  // getPresenca quando o script foi substituído pro ESCALAS-RIVA. Até
-  // recuperar o código antigo (histórico de versões do Apps Script), o
-  // acesso ao portal fica liberado direto, sem pedir usuário/senha —
-  // mantém a sessão real se já existir uma válida, senão cria uma de
-  // Administrador na hora.
-  let s;
-  try { s = JSON.parse(localStorage.getItem('riva_sessao')||'{}'); } catch(e){ s = {}; }
-  const dias=Number(s.dias)||1, inicio=Number(s.ts), idade=Date.now()-inicio;
-  const valida=!!s.usuario && !!s.cargo && Number.isFinite(inicio) &&
-    Number.isFinite(dias) && dias>0 && idade>=0 && idade<dias*24*60*60*1000;
-  if(!valida){
-    s = { pessoaId:'owner', cargo:'Administrador', usuario:'igor', token:'', tokenExp:0, ts:Date.now(), dias:365 };
-    localStorage.setItem('riva_sessao', JSON.stringify(s));
+  const raw=localStorage.getItem('riva_sessao');
+  if(raw){
+    try{
+      const s=JSON.parse(raw);
+      const dias=Number(s.dias)||1;
+      const inicio=Number(s.ts);
+      const idade=Date.now()-inicio;
+      const valida=!!s.usuario && !!s.cargo && Number.isFinite(inicio) &&
+        Number.isFinite(dias) && dias>0 && idade>=0 && idade<dias*24*60*60*1000;
+      if(valida){
+        mostrarPortal(s.pessoaId,s.cargo);
+        return;
+      }
+    }catch(e){}
+    localStorage.removeItem('riva_sessao');
   }
-  mostrarPortal(s.pessoaId, s.cargo);
 });
 
 function toggleProfileMenu(e){
