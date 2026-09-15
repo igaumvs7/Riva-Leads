@@ -965,22 +965,23 @@ function logout(){
 }
 
 window.addEventListener('DOMContentLoaded',function(){
-  const raw=localStorage.getItem('riva_sessao');
-  if(raw){
-    try{
-      const s=JSON.parse(raw);
-      const dias=Number(s.dias)||1;
-      const inicio=Number(s.ts);
-      const idade=Date.now()-inicio;
-      const valida=!!s.usuario && !!s.cargo && Number.isFinite(inicio) &&
-        Number.isFinite(dias) && dias>0 && idade>=0 && idade<dias*24*60*60*1000;
-      if(valida){
-        mostrarPortal(s.pessoaId,s.cargo);
-        return;
-      }
-    }catch(e){}
-    localStorage.removeItem('riva_sessao');
+  // Login removido temporariamente (pedido do dono, 2026-09-15): o backend
+  // compartilhado (Apps Script) perdeu as ações login/getConfig/getData/
+  // getPresenca quando o script foi substituído pro ESCALAS-RIVA. Até
+  // recuperar o código antigo (histórico de versões do Apps Script), o
+  // acesso ao portal fica liberado direto, sem pedir usuário/senha —
+  // mantém a sessão real se já existir uma válida, senão cria uma de
+  // Administrador na hora.
+  let s;
+  try { s = JSON.parse(localStorage.getItem('riva_sessao')||'{}'); } catch(e){ s = {}; }
+  const dias=Number(s.dias)||1, inicio=Number(s.ts), idade=Date.now()-inicio;
+  const valida=!!s.usuario && !!s.cargo && Number.isFinite(inicio) &&
+    Number.isFinite(dias) && dias>0 && idade>=0 && idade<dias*24*60*60*1000;
+  if(!valida){
+    s = { pessoaId:'owner', cargo:'Administrador', usuario:'igor', token:'', tokenExp:0, ts:Date.now(), dias:365 };
+    localStorage.setItem('riva_sessao', JSON.stringify(s));
   }
+  mostrarPortal(s.pessoaId, s.cargo);
 });
 
 function toggleProfileMenu(e){
